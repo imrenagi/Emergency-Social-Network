@@ -1,2 +1,2 @@
 # ESN-F16-SA2
-FSE F16 Project Repository for Team SA2
+SA2 team project repo (PLEASE DO NOT CREATE ANY PUBLIC REPO INSIDE CMUSV-FSE)
