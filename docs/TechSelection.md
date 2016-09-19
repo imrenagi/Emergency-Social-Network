@@ -17,7 +17,7 @@
 | Socket io | Socket.io is a JavaScript-based middleware for real-time web applications. It enables real-time, bidirectional communication between web clients and servers. We need socket.io implement real-time private/public chat. |
 | Mocha, Sinon, Chai | Mocha is a JavaScript test framework running on Node.js and in the browser which also has capability to do asynchronous testing fairly easy. Chai is assertion library for Node.js and can be easily paired with Mocha. Sinon.js is standalone test spies, stubs, and mocks for JavaScript. |
 
-##### Fronted
+##### Frontend
 | Technology  | Descriptions |
 | ------------- | ------------- |
 | HTML, CSS, JS | HTML which stands for HyperText Markup Language, is used to deliver content in the form on web-pages. Browsers like Firefox, Chrome, Safari, etc. receive HTML documents from a Web Server or a local host, and then render the web page. HTML can be combined with other web technologies like JavaScript and CSS to deliver rich content. Due to the inherent inseparability of HTML from the WWW fabric, we have chosen to use this technology. |
