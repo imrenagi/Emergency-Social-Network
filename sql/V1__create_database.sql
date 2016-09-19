@@ -1,0 +1,2 @@
+CREATE DATABASE IF NOT EXISTS esn_db;
+USE esn_db;

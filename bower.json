@@ -1,0 +1,24 @@
+{
+  "name": "ESN_SA2",
+  "description": "Emergency Social Network",
+  "main": "",
+  "authors": [
+    "Imre Nagi <inagi@andrew.cmu.edu>",
+    "Ashutosh T <atadkase@andrew.cmu.edu>",
+    "Binglei Du <bdu@andrew.cmu.edu>",
+    "Xiangtian Li <xiangti1@andrew.cmu.edu>"
+  ],
+  "license": "MIT",
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "^3.3.7"
+  }
+}
