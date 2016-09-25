@@ -32,5 +32,5 @@
 | ------------- | ------------- |
 | StarUML | A software’s architectural details can be captured accurately using UML diagrams. StarUML is a UML tool provided by MKLab, which can adequately model the features of the software project that has to be implemented during this course. |
 | Sublime Text | Sublime Text is a proprietary cross-platform source code editor with a Python API. It natively supports many programming languages and markup languages, and its functionality can be extended by users with plugins, typically community-built and maintained under free-software licenses. |
-| Swagger.io | We use it to represent the REST API of our web app |
+| apiary.io | We use it to represent the REST API of our web app |
 | Circle CI | Continuous Integration tool will help us integrating the code and running some verification by using automated build that enables the developer team to detect and solve problem early. For this project, we choose Circle CI as the continuous integration tools. The benefits of the tools are: Simple setup and Support backend and frontend deployment. |
