@@ -16,7 +16,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname+ '/bower_components')));
-app.use(require('./controllers'))
+//app.use(require('./controllers'));
+app.use(require('./routes'));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
