@@ -1,4 +1,5 @@
-var joinService = require('../services/joinService');
+var JoinService = require('../services/joinService');
+var joinService = new JoinService();
 
 exports.joinPage = function(req, res) {
 	res.send("This is the join page");
@@ -8,5 +9,7 @@ exports.joinPage = function(req, res) {
 exports.joinCommunity = function(req, res) {
 	var userName = req.body.user_name;
 	var password = req.body.password;
-	joinService.validate();
+	joinService.isValid();
+	res.send("ok!");
 };
+

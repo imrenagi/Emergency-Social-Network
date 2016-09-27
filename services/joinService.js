@@ -1,5 +1,11 @@
+"use strict";
 
+class JoinService {
+	constructor() {}
 
-exports.validate = function(userName, password) {
+	isValid(userName, password) {
+		return true;
+	}
+}
 
-} 
+module.exports = JoinService;
