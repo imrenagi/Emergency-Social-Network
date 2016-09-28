@@ -1,0 +1,21 @@
+.glass {
+    max-width: 320px;
+    margin: 0 auto 100px;
+    padding: 45px;
+    text-align: center;
+    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+    transition: all .3s ease-in-out;
+    -webkit-transition: all .3s ease-in-out;
+    -moz-transition: all .3s ease-in-out;
+    -o-transition: all .3s ease-in-out;
+}
+
+.wrapper {
+    position: absolute;
+    width: 320px;
+    text-align: center;
+    top: 50%;
+    left: 50%;
+    margin-left: -160px;
+    margin-top: -220px;
+}
