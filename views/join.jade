@@ -1,0 +1,22 @@
+doctype html
+html(lang="en")
+  head
+    title= title
+    link(rel='stylesheet', href='http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.css')
+    link(rel='stylesheet', href='/css/join.css')
+  body
+    nav.navbar.navbar-default.navbar-static-top
+      div.container.view-nar
+        div.navbar-header
+          a.navbar-brand(href="#")
+            span Emergency Social Network
+    div.wrapper
+      div.form.center-block.glass
+        h2 Join ESN
+        br
+        form
+          div.form-group
+            input.form-control(name="username", type="text", placeholder="username")
+          div.form-group
+            input.form-control(name="password", type="password", placeholder="password")
+          input.btn.btn-primary.btn-block(type="button", value="Submit")
