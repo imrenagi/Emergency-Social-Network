@@ -6,7 +6,4 @@ exports.joinPage = function(req, res) {
 };
 
 exports.joinCommunity = function(req, res) {
-	var userName = req.body.user_name;
-	var password = req.body.password;
-	joinService.validate();
 };
