@@ -1,6 +1,7 @@
 "use strict";
 
 var db = require('../services/db');
+var User = require('../models/user');
 
 class JoinService {
 	constructor() {}
@@ -36,7 +37,18 @@ class JoinService {
 	}
 
 	confirm(userName, password) {
-
+		return new Promise(function(resolve, reject) {
+			var values = [userName, password];
+			db.get().query('INSERT INTO users (user_name, password) values (?, ?);', values, function(err, result) {
+				if (err) {
+					reject(err);
+				} else {
+					var res = JSON.parse(JSON.stringify(result));
+					var user = new User(res.insertId, userName);
+					resolve(user);
+				}
+			})
+		});
 	}
 }
 

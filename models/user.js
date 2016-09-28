@@ -1,18 +1,18 @@
 "use strict";
 
 class User {
-	constructor(id, userName) {
+	constructor(id, user_name) {
 		this.id = id
-		this.userName = userName
+		this.user_name = user_name
+	}
 
-		getId = function() {
-			return this.id
-		}
+	getId() {
+		return this.id;
+	}
 
-		getUserName = function() {
-			return this.userName
-		}
+	getUserName() {
+		return this.user_name
 	}
 }
 
-export.modules = User;
+module.exports = User;

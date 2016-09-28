@@ -42,3 +42,15 @@ exports.joinCommunity = function(req, res, next) {
 	})
 };
 
+exports.confirm = function(req, res, next) {
+	var userName = req.body.user_name;
+	var password = req.body.password;
+
+	joinService.confirm(userName, password)
+		.then(function(result) {
+			res.send(JSON.stringify(result));
+		}).catch(function(err) {
+			res.send(err);
+		})
+}
+
