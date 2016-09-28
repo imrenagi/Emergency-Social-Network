@@ -12,7 +12,16 @@ class JoinService {
 	    	//This interface should return a promise!
 	    	throw Error("Must override!");	
 	    }
+
+	    if(this.isUserNameValid === undefined) {
+	    	throw Error("Must override!");
+	    }
+
+	    if(this.isPasswordValid === undefined) {
+	    	throw Error("Must overirde");
+	    }
   	}
+
 
 }
 

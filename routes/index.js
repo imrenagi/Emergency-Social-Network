@@ -12,5 +12,6 @@ router.get('/', function(req, res) {
 
 router.use('/message', require('./sampleRoutes'));
 router.use('/join', require('./join'));
+router.use('/directory', require('./directory'));
 
 module.exports = router;
