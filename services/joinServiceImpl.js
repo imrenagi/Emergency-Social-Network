@@ -3,13 +3,29 @@
 var db = require('../services/db');
 var User = require('../models/user');
 var JoinService = require('./interfaces/JoinService');
+const RESERVED_USERNAMES = require('../utils/reservedUsernames');
 
 class JoinServiceImpl extends JoinService {
 	constructor() {
 		super();
 	}
 
-	isValid(userName, password) {
+	isUserNameValid(userName) {
+		if(userName.length < 3) {
+			return false;
+		}
+		for (var i in RESERVED_USERNAMES) {
+  			if(userName == RESERVED_USERNAMES[i]) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	isPasswordValid(password) {
+		if(password.length < 4) {
+			return false;
+		}
 		return true;
 	}
 
