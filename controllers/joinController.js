@@ -1,5 +1,5 @@
-var JoinService = require('../services/joinService');
-var joinService = new JoinService();
+var JoinServiceImpl = require('../services/JoinServiceImpl');
+var joinService = new JoinServiceImpl();
 
 const JOIN_ERROR = {
         INCORRECT_PASSWORD: 'JoinError.IncorrectPassword',
