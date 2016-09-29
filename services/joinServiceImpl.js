@@ -37,7 +37,7 @@ class JoinServiceImpl extends JoinService {
 			})
 		}).then(result => {
 			return new Promise(function(resolve, reject) {
-				var results = JSON.parse(JSON.stringify(result))
+				var results = JSON.parse(JSON.stringify(result));
 				if (results.length > 0) {
 					if (results[0].password === password) {
 						var user = new User(results[0].id, results[0].user_name);
