@@ -1,9 +1,14 @@
-var db = require('../services/db')
+"use strict";
 
+class Message {
+	constructor(id, sender, text, timestamp, status, location) {
+		this.id = id
+		this.sender = sender;
+		this.text = text;
+		this.timestamp = timestamp;
+		this.status = status;
+		this.location = location;
+	}
+}
 
-// exports.getPreviousMessages = function(lastId, limit, next) {
-// 	db.get().query('SELECT * FROM messages where id >='+ (lastId-limit) + ' and id < ' + lastId, function(err, result){
-// 		if (err) return next(err, null)
-// 		next(null, result)
-// 	})
-// }
+module.exports = Message;
