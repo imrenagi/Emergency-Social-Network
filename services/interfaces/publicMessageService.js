@@ -1,10 +1,11 @@
 "use strict";
 
 class PublicMessageService {
-		constructor() {
+	constructor() {
 	    if (this.getAllMessages === undefined) {
 	    	throw Error("Must override!");	
 	    }
+	}
 }
 
 module.exports = PublicMessageService;

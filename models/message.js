@@ -1,9 +1,10 @@
 "use strict";
 
 class Message {
-	constructor(id, sender_name, timestamp, status, location) {
+	constructor(id, sender, text, timestamp, status, location) {
 		this.id = id
-		this.sender_name = sender_name;
+		this.sender = sender;
+		this.text = text;
 		this.timestamp = timestamp;
 		this.status = status;
 		this.location = location;
