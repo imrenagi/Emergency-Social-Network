@@ -13,18 +13,6 @@ class PublicMessageServiceImpl extends PublicMessageService {
 	constructor() {
 		super();
 	}
-
-	parse(rawMessage) {
-	     var location = new Location(rawMessage.latitude, rawMessage.longitude);
-		var user = new Location(rawMessage.sender_id, "sesuatu");
-		var message = new Message(rawMessage.id, 
-			user,
-			rawMessage.message,
-			rawMessage.created_at,
-			rawMessage.message_status,
-			location)
-		return message;
-	}
 	
 	getAllMessages(page, limit) {
 		return new Promise(function(resolve, reject) {
