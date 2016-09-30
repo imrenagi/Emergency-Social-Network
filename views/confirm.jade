@@ -13,11 +13,14 @@ html(lang="en")
     .wrapper
       .form.center-block.glass
         div
-          p.label Join us
+          p.label Create New Account?
         br
-        form
-          .form-group
-            input.form-control(name='username', type='text', placeholder='username')
-          .form-group
-            input.form-control(name='password', type='password', placeholder='password')
-          input.btn.btn-primary.btn-block(type='button', value='Submit')
+        div
+          p Username does not exist. Do you want to sign up with the username you just entered?
+        br
+        .button-holder
+          .confirm
+            button.btn.btn-primary.btn-block(type='submit') Confirm
+          .cancel
+            button.btn.btn-primary.btn-block(type='submit') Cancel
+
