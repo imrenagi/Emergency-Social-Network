@@ -4,9 +4,9 @@ var express = require('express')
 var publicMessageService = new PublicMessageServiceImpl();
 
 exports.retrieveAllPublicMessages = function(req, res, next) {
-  var page = req.params.page || 1;
-  var limit = req.params.limit || 30;
-  publicMessageService.getAllMessages(page, limit)
+  var lastId = req.param('last_id') || -1;
+  var limit = req.param('limit') || 30;
+  publicMessageService.getAllMessages(lastId, limit)
     .then(function(results) {
       res.send(JSON.stringify(results));
     }).catch(function(err) {

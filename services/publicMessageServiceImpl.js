@@ -14,10 +14,16 @@ class PublicMessageServiceImpl extends PublicMessageService {
 		super();
 	}
 	
-	getAllMessages(page, limit) {
+	getAllMessages(lastId, limit) {
+		if (lastId === -1) {
+			var query = 'SELECT pm.*, u.user_name FROM public_messages pm LEFT JOIN users u ON pm.sender_id = u.id order by pm.id desc limit ' + limit	
+		} else {
+			var query = 'SELECT pm.*, u.user_name FROM public_messages pm LEFT JOIN users u ON pm.sender_id = u.id where pm.id >='+ (lastId-limit) + ' and pm.id < ' + lastId 
+		}
+		console.log(query);
+		
 		return new Promise(function(resolve, reject) {
-			db.get().query('SELECT pm.*, u.user_name FROM public_messages pm ' +
-				'LEFT JOIN users u ON pm.sender_id = u.id limit ?', limit, function(err, result) {
+			db.get().query(query, function(err, result) {
 				if (err) reject(err);
 				else {
 					var results = JSON.parse(JSON.stringify(result));
