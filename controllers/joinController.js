@@ -1,4 +1,4 @@
-var JoinServiceImpl = require('../services/JoinServiceImpl');
+var JoinServiceImpl = require('../services/joinServiceImpl');
 var joinService = new JoinServiceImpl();
 
 const JOIN_ERROR = {

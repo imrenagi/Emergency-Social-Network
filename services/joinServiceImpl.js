@@ -2,7 +2,7 @@
 
 var db = require('../services/db');
 var User = require('../models/user');
-var JoinService = require('./interfaces/JoinService');
+var JoinService = require('./interfaces/joinService');
 const RESERVED_USERNAMES = require('../utils/reservedUsernames');
 
 class JoinServiceImpl extends JoinService {
