@@ -10,9 +10,10 @@ class directoryServiceImpl extends directoryService {
 		super();
 	}
 
-	getDirectory() {
+	getDirectory(limit) {
+		var query = 'SELECT * from users limit ' + limit;
 		return new Promise(function(resolve, reject) {
-			db.get().query('SELECT * from users', function(err, result) {
+			db.get().query(query, function(err, result) {
 				if (err) reject(err);
 				else {
 					var members = [];
