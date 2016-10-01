@@ -7,6 +7,11 @@ router.use(function(req, res, next){
   next();
 })
 
+router.use(function(req, res, next){
+  res.setHeader('Content-Type', 'application/json');
+  next();
+})
+
 router.get('/', directoryController.displayDirectory);
 
 module.exports = router;

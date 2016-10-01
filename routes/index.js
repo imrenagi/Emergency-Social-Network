@@ -8,5 +8,7 @@ router.get('/', function(req, res) {
 router.use('/message', require('./sampleRoutes'));
 router.use('/join', require('./join'));
 router.use('/directory', require('./directory'));
+router.use('/publicChat', require('./publicChat'));
+router.use('/logout', require('./logout'));
 
 module.exports = router;
