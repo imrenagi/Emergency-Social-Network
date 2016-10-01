@@ -31,21 +31,31 @@ app.use(function(req, res, next) {
 
 if (app.get('env') === 'development') {
   app.use(function(err, req, res, next) {
-    res.status(err.status || 500);
-    res.render('error', {
-      message: err.message,
-      error: err
-    });
+    errorCode = err.status || 500;
+    res.status(errorCode);
+    if (errorCode === 401 || errorCode === 400) {
+      res.send(JSON.stringify(err))
+    } else {
+        res.render('error', {
+          message: err.message,
+          error: err
+        });
+    }
   });
 }
 
 app.use(function(err, req, res, next) {
-  res.status(err.status || 500);
-  res.render('error', {
-    message: err.message,
-    error: {}
+    errorCode = err.status || 500;
+    res.status(errorCode);
+    if (errorCode === 401 || errorCode === 400) {
+      res.send(JSON.stringify(err))
+    } else {
+        res.render('error', {
+          message: {},
+          error: err
+        });
+    }
   });
-});
 
 
 module.exports = app;
