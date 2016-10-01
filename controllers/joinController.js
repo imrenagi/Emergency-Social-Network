@@ -17,14 +17,16 @@ exports.joinCommunity = function(req, res, next) {
 	var userName = req.body.user_name;
 	var password = req.body.password;
 	if(!joinService.isPasswordValid(password)) {
-		res.status(400).send(JSON.stringify({
-		   	error_type:JOIN_ERROR.PASS_UNDER_QUALITY
-		}));
+		var err = new Error();
+	  	err.status = 400;
+	  	err.message = JOIN_ERROR.PASS_UNDER_QUALITY;
+	  	next(err);
 	}
 	else if(!joinService.isUserNameValid(userName)) {
-		res.status(400).send(JSON.stringify({
-		   	error_type:JOIN_ERROR.USER_NAME_UNDER_QUALITY
-		}));
+		var err = new Error();
+	  	err.status = 400;
+	  	err.message = JOIN_ERROR.USER_NAME_UNDER_QUALITY;
+	  	next(err);
 	}
 	else {
 		joinService.join(userName, password).then(function(result){
@@ -37,14 +39,16 @@ exports.joinCommunity = function(req, res, next) {
 		        	res.status(204).send(JSON.stringify({}));
 		        	break;
 		    	case 400:
-		    		res.status(400).send(JSON.stringify({
-		    			error_type:JOIN_ERROR.INCORRECT_PASSWORD
-		    		}));
+		    		var err = new Error();
+	  				err.status = 400;
+	  				err.message = JOIN_ERROR.INCORRECT_PASSWORD;
+	  				next(err)
 		        	break;
 		    	default:
-		    		res.status(400).send(JSON.stringify({
-		    			error_type:JOIN_ERROR.UNKNOWN_ERROR,
-		    		}));
+					var err = new Error();
+	  				err.status = 400;
+	  				err.message = JOIN_ERROR.INCORRECT_PASSWORD;
+	  				next(err);
 		    		break;
 			}
 		}).catch(function(err) {	

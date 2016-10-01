@@ -36,6 +36,7 @@ if (app.get('env') === 'development') {
     if (errorCode === 401 || errorCode === 400) {
       res.send(JSON.stringify(err))
     } else {
+        res.setHeader('Content-Type', 'text/html');
         res.render('error', {
           message: err.message,
           error: err
@@ -50,6 +51,7 @@ app.use(function(err, req, res, next) {
     if (errorCode === 401 || errorCode === 400) {
       res.send(JSON.stringify(err))
     } else {
+        res.setHeader('Content-Type', 'text/html');
         res.render('error', {
           message: {},
           error: err
