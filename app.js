@@ -3,6 +3,7 @@ var path = require('path');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var session = require('cookie-session');
 
 var app = express();
 
@@ -13,7 +14,8 @@ app.set('view engine', 'jade');
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cookieParser());
+app.use(cookieParser('1M6QMy7359Cyopz9hv8MsAGf2cio2yb2'))
+app.use(session({secret: 't6oCe14uH8tPO8Fr3c7z1qGWFP0mEeN3'}));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname+ '/bower_components')));
 //app.use(require('./controllers'));
