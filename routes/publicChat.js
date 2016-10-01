@@ -7,7 +7,5 @@ router.use(function(req, res, next){
   next();
 })
 
-router.get('/', publicChatController.publicChat);
-
 module.exports = router;
 

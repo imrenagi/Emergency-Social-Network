@@ -1,14 +1,6 @@
 var publicChatServiceImpl = require('../services/publicChatServiceImpl');
 var publicChatService = new publicChatServiceImpl();
 
-
-exports.publicChat = function(req, res, next) {
-	//TODO: return the public chat page with previous messages to client 
-	publicChatService.getPreviousMessages().then(function(result) {
-		res.send(JSON.stringfy(result));
-	});
-};
-
 exports.publicChatSocket = function(socket) {
 	console.log('A user elects to chat public');
 
