@@ -30,6 +30,7 @@ exports.joinCommunity = function(req, res, next) {
 		joinService.join(userName, password).then(function(result){
 			switch(result.code) {
 		    	case 200:
+		    		req.session.user_name = userName;
 		        	res.send(JSON.stringify(result.body));
 		        	break;
 		    	case 204:
@@ -58,6 +59,7 @@ exports.confirm = function(req, res, next) {
 
 	joinService.confirm(userName, password)
 		.then(function(result) {
+			req.session.user_name = userName;
 			res.send(JSON.stringify(result));
 		}).catch(function(err) {
 			res.send(err);
