@@ -8,7 +8,6 @@ class directoryServiceImpl extends directoryService {
 
 	constructor() {
 		super();
-		this.member;
 	}
 
 	getDirectory() {
@@ -19,7 +18,8 @@ class directoryServiceImpl extends directoryService {
 					var members = [];
 					var results = JSON.parse(JSON.stringify(result));
 					for(var i in results) {
-						var member = {user_name: results[i].user_name,
+						var member = {id: results[i].id,
+									user_name: results[i].user_name,
 									online: results[i].online};
 						members.push(member);
 					}
