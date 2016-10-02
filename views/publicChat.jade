@@ -1,0 +1,76 @@
+extends base
+block append stylesheet
+  link(rel='stylesheet', href='/css/public_chat.css')
+block append content
+  include navbar.jade
+  .container
+    .wrapper
+      .col-md-7
+        .panel.panel-default
+          .panel-heading.bg-white  
+            i.fa.fa-comments-o
+            span  Public Chat Room
+          .panel-body
+            .chat-window
+              .message.message-r 
+                p Hello!
+              .message.message-s 
+                p Hi
+              .message.message-r 
+                p Welcome to Emergency Social Network!
+              .message.message-r 
+                p What are tasks for Iteration 1?
+              .message.message-s  
+                p Iteration 1: Architecture & Design
+                p Use Case: Join Community & Chat Publicly
+              .message.message-r
+                p :)
+              .message.message-r
+                p Thanks~
+              .message.message-r 
+                p Once you're done: Submit your deliverables by adding them to the team GitHub repo. Submit your deliverables by adding them to the team GitHub repo. 
+              .message.message-r 
+                p Does each team member separately submit the same team deliverables?
+              .message.message-s  
+                p Iteration 1: Architecture & Design
+                p Use Case: Join Community & Chat Publicly
+              .message.message-r
+                p Thanks~
+
+            br
+            .input-group
+              textarea.form-control.custom-control(rows="1", style='resize:none;' placeholder='Share something...')
+              span.input-group-addon.btn.btn-default
+                span.glyphicon.glyphicon-send
+              
+      .col-md-3
+        .panel.panel-default
+          .panel-heading Online Users
+          .panel-fixed-height
+            table.table
+              tbody.ol-text
+                tr
+                  th
+                  td Imre Nagi
+                  td 
+                    i.fa.fa-comment-o
+                tr
+                  th
+                  td Xiangtian Li
+                  td 
+                    i.fa.fa-comment-o
+                tr
+                  th
+                  td Ashutosh Tadkase
+                  td
+                    i.fa.fa-comment-o
+                tr
+                  th
+                  td Binglei Du
+                  td
+                    span.fa.fa-comment-o
+
+block append script
+  script(src='https://code.jquery.com/jquery-1.10.2.min.js')
+  script(src='http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js')
+  script(src='/script/main.js')
