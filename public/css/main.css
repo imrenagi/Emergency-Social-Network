@@ -1,0 +1,12 @@
+.wrapper {
+    margin-top: 4%;
+    align-items: top;
+    display: flex;
+    justify-content: center;
+}
+.text-center {
+    text-align: center;
+}
+.ol-text {
+    color: #777;
+}
