@@ -30,7 +30,7 @@ class directoryServiceImpl extends directoryService {
 									online: results[i].online};
 						members.push(member);
 					}
-					resolve(members);
+					resolve({users: members});
 				}
 			})
 		});
