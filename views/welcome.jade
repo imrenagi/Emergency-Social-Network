@@ -3,8 +3,18 @@ block append stylesheet
   link(rel='stylesheet', href='/css/style.css')
 block append content
   include navbar.jade
+  #welcomeModal.modal.fade
+    .modal-dialog
+      .modal-header
+        button.close(type='button', data-dismiss='modal', aria-hidden='true') x
+        h3.modal-title  Welcome! 
+      .modal-body
+        | Hi! Welcome to the ESN. Here you can find multiple resources which could aid you in your current situation. Please click anywhere to continue.
+  #uerDirectory
+      ul#users  
 block append script
   script(src='https://code.jquery.com/jquery-1.10.2.min.js')
   script(src='http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js')
-
+  script(src='/script/show_modal.js')
+  script(src='/script/show_user_direc.js')
 
