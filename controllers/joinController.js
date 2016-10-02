@@ -16,16 +16,16 @@ exports.joinPage = function(req, res, next) {
 exports.joinCommunity = function(req, res, next) {
 	var userName = req.body.user_name;
 	var password = req.body.password;
-	if(!joinService.isPasswordValid(password)) {
-		var err = new Error();
-	  	err.status = 400;
-	  	err.message = JOIN_ERROR.PASS_UNDER_QUALITY;
-	  	next(err);
-	}
-	else if(!joinService.isUserNameValid(userName)) {
+	if(!joinService.isUserNameValid(userName)) {
 		var err = new Error();
 	  	err.status = 400;
 	  	err.message = JOIN_ERROR.USER_NAME_UNDER_QUALITY;
+	  	next(err);
+	}
+	else if(!joinService.isPasswordValid(password)) {
+		var err = new Error();
+	  	err.status = 400;
+	  	err.message = JOIN_ERROR.PASS_UNDER_QUALITY;
 	  	next(err);
 	}
 	else {
