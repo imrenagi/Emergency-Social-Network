@@ -2,18 +2,9 @@ var express = require('express');
 var router = express.Router();
 var logoutController = require('../controllers/logoutController');
 
-var isAuthorizedRequest = function (req, res, next) {
-	if (req.session.user_name) {
-		next();
-  	}
-  	else {
-    	var err = new Error('Unauthorized request');
-	  	err.status = 401;
-	  	next(err);
-  	}
-};
+var auth = require('../middleware/authorization');
+router.use(auth.isAuthorizedRequest);
 
-router.use(isAuthorizedRequest);
 
 router.use(function(req, res, next){
   res.setHeader('Content-Type', 'application/json');
