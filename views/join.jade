@@ -6,18 +6,22 @@ html(lang="en")
     link(rel='stylesheet', href='/css/join.css')
   body
     nav.navbar.navbar-default.navbar-static-top
-      .container.view-nar
+      .container
         .navbar-header
           a.navbar-brand(href='#')
             span Emergency Social Network
-    .wrapper
-      .form.center-block.glass
+    .wrapper#content
+      .form.center-block.glass#glass
         div
           p.label Join us
         br
         form
           .form-group
-            input.form-control(name='username', type='text', placeholder='username')
+            input.form-control(name='username', type='text', placeholder='username')#username
           .form-group
-            input.form-control(name='password', type='password', placeholder='password')
-          input.btn.btn-primary.btn-block(type='button', value='Submit')
+            input.form-control(name='password', type='password', placeholder='password')#password
+          p#warningMessage
+          input.btn.btn-primary.btn-block(type='button', value='Submit')#joinButton
+
+    script(src='https://code.jquery.com/jquery-1.10.2.min.js')
+    script(src='/script/join.js')
