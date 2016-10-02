@@ -1,27 +1,24 @@
-doctype html
-html(lang="en")
-  head
-    title= title
-    link(rel='stylesheet', href='http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.css')
-    link(rel='stylesheet', href='/css/join.css')
-  body
-    nav.navbar.navbar-default.navbar-static-top
-      .container
-        .navbar-header
-          a.navbar-brand(href='#')
-            span Emergency Social Network
-    .wrapper#content
-      .form.center-block.glass#glass
-        div
-          p.label Join us
-        br
-        form
-          .form-group
-            input.form-control(name='username', type='text', placeholder='username')#username
-          .form-group
-            input.form-control(name='password', type='password', placeholder='password')#password
-          p#warningMessage
-          input.btn.btn-primary.btn-block(type='button', value='Submit')#joinButton
-
-    script(src='https://code.jquery.com/jquery-1.10.2.min.js')
-    script(src='/script/join.js')
+extends base
+block append stylesheet
+  link(rel='stylesheet', href='/css/join.css')
+block append content
+  nav.navbar.navbar-default.navbar-static-top
+        .container
+          .navbar-header
+            a.navbar-brand(href='#')
+              span Emergency Social Network
+  .wrapper#content
+    .form.center-block.glass#glass
+      div
+        p.label Join us
+      br
+      form
+        .form-group
+          input.form-control(name='username', type='text', placeholder='username')#username
+        .form-group
+          input.form-control(name='password', type='password', placeholder='password')#password
+        p#warningMessage
+        input.btn.btn-primary.btn-block(type='button', value='Submit')#joinButton
+block append script
+  script(src='https://code.jquery.com/jquery-1.10.2.min.js')
+  script(src='/script/join.js')
