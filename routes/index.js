@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 
 router.get('/', function(req, res) {
-  res.render('join', {title: 'Emergency Social Network'});
+  res.render('welcome', {title: 'Emergency Social Network'});
 });
 
 router.get('/welcome', function(req, res) {
