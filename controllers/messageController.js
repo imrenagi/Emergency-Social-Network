@@ -20,6 +20,8 @@ exports.publicChatSocket = function(socket) {
 	//Update the chat box when a user post a new messaage and finish the persistence operation 
 	socket.on('post message', function(newMessage) {
 		console.log('user posts a message');
+		publicMessageService.postMessage(newMessage);
+	
 	});
 
 	//Update the online userList when the user leave

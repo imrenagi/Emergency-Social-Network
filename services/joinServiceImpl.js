@@ -4,6 +4,9 @@ var db = require('../services/db');
 var User = require('../models/user');
 var encryptor = require('../helpers/passwordEncryptor');
 var JoinService = require('./interfaces/joinService');
+var userDAOImpl = require('./userDAOImpl');
+var userDAO = new userDAOImpl();
+
 const RESERVED_USERNAMES = require('../utils/reservedUsernames');
 
 class JoinServiceImpl extends JoinService {
@@ -42,6 +45,8 @@ class JoinServiceImpl extends JoinService {
 				if (results.length > 0) {
 					if (encryptor.compare(password, results[0].password)) {
 						var user = new User(results[0].id, results[0].user_name);
+						userDAO.updateOnline(user, 1);
+
 						resolve({code : 200, body: user});
 					} else {
 						resolve({code : 400, body: {}});

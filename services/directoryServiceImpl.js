@@ -24,7 +24,9 @@ class directoryServiceImpl extends directoryService {
 		
 		return new Promise(function(resolve, reject) {
 			db.get().query('select count(*) total_users from users', function(err, result) {
-				if (err) reject(err);
+				if (err) {
+					reject(err);
+				}
 				else {
 					let res = JSON.parse(JSON.stringify(result[0]))
 					let total_users = res.total_users;

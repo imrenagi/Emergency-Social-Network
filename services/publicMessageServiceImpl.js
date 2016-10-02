@@ -37,7 +37,7 @@ class PublicMessageServiceImpl extends PublicMessageService {
 							rawMessage.message_status,
 							location)
 						return message;
-					}, results)
+					}, results);
 					resolve(out);
 				}
 			})

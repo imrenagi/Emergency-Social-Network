@@ -13,6 +13,7 @@ class User {
 	getUserName() {
 		return this.user_name
 	}
+
 }
 
 module.exports = User;
