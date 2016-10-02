@@ -29,3 +29,9 @@ CREATE TABLE IF NOT EXISTS public_messages (
 CREATE INDEX public_message_sender_id_index ON public_messages (sender_id);
 CREATE FULLTEXT INDEX public_message_message_index ON public_messages (message);
 
+-- Add index for online column in user table
+
+CREATE INDEX user_online_status ON users (online);
+
+
+
