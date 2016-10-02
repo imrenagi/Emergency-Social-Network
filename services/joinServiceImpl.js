@@ -2,6 +2,7 @@
 
 var db = require('../services/db');
 var User = require('../models/user');
+var encryptor = require('../helpers/passwordEncryptor');
 var JoinService = require('./interfaces/joinService');
 const RESERVED_USERNAMES = require('../utils/reservedUsernames');
 
@@ -39,7 +40,7 @@ class JoinServiceImpl extends JoinService {
 			return new Promise(function(resolve, reject) {
 				var results = JSON.parse(JSON.stringify(result));
 				if (results.length > 0) {
-					if (results[0].password === password) {
+					if (encryptor.compare(password, results[0].password)) {
 						var user = new User(results[0].id, results[0].user_name);
 						resolve({code : 200, body: user});
 					} else {
@@ -54,7 +55,8 @@ class JoinServiceImpl extends JoinService {
 
 	confirm(userName, password) {
 		return new Promise(function(resolve, reject) {
-			var values = [userName, password];
+			let encryptedPassword = encryptor.createHash(password);
+			let values = [userName, encryptedPassword];
 			db.get().query('INSERT INTO users (user_name, password) values (?, ?);', values, function(err, result) {
 				if (err) {
 					reject(err);
