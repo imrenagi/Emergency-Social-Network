@@ -27,10 +27,8 @@ class directoryServiceImpl extends directoryService {
 				if (err) reject(err);
 				else {
 					let res = JSON.parse(JSON.stringify(result[0]))
-					console.log(res)
 					let total_users = res.total_users;
 					let meta = new Meta(parseInt(currentPage), parseInt(limit), Math.ceil(total_users/limit), total_users)
-					console.log(meta)
 					resolve(meta);
 				}
 			})
