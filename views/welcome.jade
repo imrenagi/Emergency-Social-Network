@@ -9,7 +9,38 @@ block append content
         button.close(type='button', data-dismiss='modal', aria-hidden='true') x
         h3.modal-title  Welcome! 
       .modal-body
-        | Hi! Welcome to the ESN. Here you can find multiple resources which could aid you in your current situation. Please click anywhere to continue.
+        | Hi! Welcome to the ESN. Here you can find multiple resources which could aid you in your current situation. On this portal, the following icons are used to show the status of any user.
+        table.welcomeStatusTable
+          tr
+            th.statusTableHeader  Icon 
+            th.statusTableHeader  Colour Code 
+            th.statusTableHeader  Status 
+            th.statusTableHeader  Explanation 
+          tr
+            td.statusTableIcon
+              img(src='/icon/greenCheck.png')
+            td.statusTableInfo  Green  
+            td.statusTableInfo  OK 
+            td.statusTableInfo  I am OK. I do not need help. 
+          tr
+            td.statusTableIcon
+              img(src='/icon/yellowExclamation.png')
+            td.statusTableInfo  Yellow 
+            td.statusTableInfo  Help 
+            td.statusTableInfo  I need help, but this is not a life-threatening emergency. 
+          tr
+            td.statusTableIcon
+              img(src='/icon/redCross.png')
+            td.statusTableInfo  Red 
+            td.statusTableInfo  Emergency 
+            td.statusTableInfo  I need help now, as this is a life threatening emergency!
+          tr
+            td.statusTableIcon  No Icon 
+            td.statusTableInfo  N/A 
+            td.statusTableInfo  Undefined
+            td.statusTableInfo  The user has not provided status yet. 
+
+
   #uerDirectory
       ul#users  
 block append script
