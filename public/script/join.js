@@ -14,8 +14,11 @@ $('#content').on('click', '#joinButton',function() {
                 window.location = '/directory'
             },
             204: function() {
-                var text = '<p>' + userName +' does not exist. Do you want to sign up with the username you just entered?</p>' + '<p id="hiddenName" hidden="true">' + userName +'</p><p id="hiddenPwd" hidden="true">' + password + '</p>';
+                var text = '<p><span style="color: green; font-weight: bold;">' + userName +'</span> does not exist. Do you want to sign up with the username/password you just entered?</p>' + '<p id="hiddenName" hidden="true">' + userName +'</p><p id="hiddenPwd" hidden="true">' + password + '</p>';
                 $('#glass').replaceWith('<div id="glass" class="form center-block glass"><div><p class="label">Create New Account?</p></div><br><div>'+text+'</div><br><div class="button-holder"><div class="confirm"><button id="confirmButton" class="btn btn-primary btn-block">Confirm</button></div><div class="cancel"><button id="cancelButton" class="btn btn-primary btn-block">Cancel</button></div></div></div>');
+            },
+            400: function() {
+                $('#warningMessage').replaceWith('<p id="warningMessage" style="color: red"><span class="fa fa-exclamation-triangle"></span> Invalid username or password.</p>');
             }
         }
     });
