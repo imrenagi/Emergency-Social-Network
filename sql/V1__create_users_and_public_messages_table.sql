@@ -33,6 +33,7 @@ CREATE FULLTEXT INDEX public_message_message_index ON public_messages (message);
 
 CREATE INDEX user_online_status ON users (online);
 ALTER TABLE public_messages MODIFY message_status TINYINT DEFAULT 1;
+ALTER TABLE users ADD status TINYINT DEFAULT 1 AFTER online ;
 
 
 
