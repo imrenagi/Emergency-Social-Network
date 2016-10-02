@@ -61,7 +61,7 @@ function onError(error) {
   }
 }
 
-io.on('connnection', require('../controllers/publicChatController').publicChatSocket);
+io.on('connnection', require('../controllers/messageController').publicChatSocket);
 
 function onListening() {
   var addr = server.address();
