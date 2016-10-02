@@ -10,8 +10,14 @@ class directoryServiceImpl extends directoryService {
 		super();
 	}
 
-	getDirectory(limit) {
-		var query = 'SELECT * from users limit ' + limit;
+	getDirectory(page, limit) {
+		let offset = 0;
+		if (page === 0 || page === 1) {
+			offset = 0
+		} else {
+			offset = (page - 1) * limit
+		}
+		var query = 'select * from users ORDER BY  `online` DESC, user_name ASC, id ASC limit ' + offset +','+limit;
 		return new Promise(function(resolve, reject) {
 			db.get().query(query, function(err, result) {
 				if (err) reject(err);
@@ -24,17 +30,6 @@ class directoryServiceImpl extends directoryService {
 									online: results[i].online};
 						members.push(member);
 					}
-					//Sort the diercotry to alphabetical order, 
-					//starting with all the citizens who are online, and followed by all the citizens who are offline.
-					members.sort(function(a, b) {
-						if(a.online < b.online) return 1;
-						else if(a.online > b.online) return -1;
-						else {
-							if (a.user_name < b.user_name) return -1;
-							else if(a.user_name > b.user_name) return 1;
-							return 0;
-						}
-					});
 					resolve(members);
 				}
 			})

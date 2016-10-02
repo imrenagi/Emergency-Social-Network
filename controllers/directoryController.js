@@ -4,8 +4,9 @@ var direcotryService = new direcotryServiceImpl();
 
 
 exports.displayDirectory = function(req, res, next) {
+	var page = req.param('page') || 1;
 	var limit = req.param('limit') || 20;
-	direcotryService.getDirectory(limit).then(function(result) {
+	direcotryService.getDirectory(page, limit).then(function(result) {
 		res.send(JSON.stringify(result));
 	})
 }
