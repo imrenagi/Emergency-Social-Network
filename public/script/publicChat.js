@@ -64,6 +64,7 @@ window.onload = function() {
 
     socket.on('broadcast message', function(data) {
         $('#pins').prepend(updateMessage(JSON.parse(data)));
+        $('#pins').scrollTop(0);
     });
 }
 $('#input').on('click', '#sendButton', function() { 
