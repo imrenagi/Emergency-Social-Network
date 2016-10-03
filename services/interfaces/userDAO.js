@@ -5,6 +5,10 @@ class userDAO {
 		if(this.updateOnline === undefined) {
 			throw Error("Must override!");
 		}
+
+		if(this.updateStatus === undefined) {
+			throw Error("Must override!");
+		}
 	}
 }
 

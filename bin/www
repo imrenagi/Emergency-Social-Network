@@ -8,6 +8,7 @@ var debug = require('debug')('BeAnonymous:server');
 var http = require('http');
 var server = http.createServer(app);
 var io = require('socket.io')(server);
+exports.io = io;
 var db = require('../services/db');
 var chat = require('../services/chat');
 var Config = require('../utils/config');
@@ -60,8 +61,6 @@ function onError(error) {
       throw error;
   }
 }
-
-io.on('connnection', require('../services/chat').onListening);
 
 function onListening() {
   var addr = server.address();

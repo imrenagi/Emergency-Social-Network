@@ -12,5 +12,6 @@ router.use(function(req, res, next){
 })
 
 router.get('/', directoryController.displayDirectory);
+router.get('/user/:id', directoryController.getUser);
 
 module.exports = router;
