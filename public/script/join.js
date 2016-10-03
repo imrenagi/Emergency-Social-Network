@@ -57,7 +57,10 @@ $('#content').on('click', '#confirmButton', function(){
         },
         url: "join/confirm",
         dataType: "json",
-        success: function() {
+        success: function(data) {
+            localStorage.setItem('ID', data.id);
+            localStorage.setItem('USER_NAME', data.user_name);
+            localStorage.setItem('STATUS', data.status);
             window.location = '/welcome'
         }
     });
