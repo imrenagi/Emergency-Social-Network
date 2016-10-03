@@ -10,7 +10,10 @@ $('#content').on('click', '#joinButton',function() {
         url: "/join",
         dataType: "json",
         statusCode: {
-            200: function() {
+            200: function(data) {
+                localStorage.setItem('ID', data.id);
+                localStorage.setItem('USER_NAME', data.user_name);
+                localStorage.setItem('STATUS', data.status);
                 window.location = '/directory'
             },
             204: function() {
@@ -39,7 +42,6 @@ $('#content').on('click', '#joinButton',function() {
             500: function() {
                 $('#warningMessage').replaceWith('<p id="warningMessage" style="color: red"><span class="fa fa-exclamation-triangle"></span> Ups! Something wrong!</p>');  
             }
-
         }
     });
 });

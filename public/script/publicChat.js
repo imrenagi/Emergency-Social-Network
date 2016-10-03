@@ -15,6 +15,36 @@ function reformatTime(timestamp) {
                         + hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
     return formattedTime;
 };
+
+function updateMessage(data) {
+    var color = 'normal';
+    var icon = 'fa-minus';
+    var lat = data.location.lat, long = data.location.long;
+    var time = reformatTime(data.timestamp);
+    var user = data.sender.user_name;
+    var text = data.text;
+    switch (data.status) {
+        case 1:  {
+            color = 'ok';
+            icon = 'fa-check-circle';
+        };
+        break;
+        case 2: {
+            color = 'warning';
+            icon = 'fa-exclamation-triangle';
+        }
+        break;
+        case 3: {
+            color = 'danger';
+            icon = 'fa-plus-square';
+        }
+    }
+    var pin = '<div class="pin pin-' + color + '"><div class="info pin-heading-' + color + '"> <span class="fa fa-clock-o"></span> '+ time + '  | <span class="fa fa-map-marker"></span> ('+ lat + ', ' + long + ')</div><div class="pin-heading pin-heading-' + color + '"> <i class="fa ' + icon + '"></i> ' + user + ' </div><p>' + text + '</p></div>';
+    return pin;
+}
+
+var socket = io.connect("http://localhost:3000");
+
 window.onload = function() {
     $.ajax({
         type: "GET",
@@ -23,47 +53,40 @@ window.onload = function() {
         dataType: "json",
         statusCode: {
             200: function(data) {
+                var pins = '';
                 for (var i = 0; i < data.length; i++) {
-                    var color = 'normal';
-                    var icon = 'fa-minus';
-                    var lat = 0, long = 0;
-                    var time = reformatTime(data[i].timestamp);
-                    var user = data[i].sender.user_name;
-                    var text = data[i].text;
-                    switch (data[i].status) {
-                        case 1:  {
-                            color = 'ok';
-                            icon = 'fa-check-circle';
-                        };
-                        break;
-                        case 2: {
-                            color = 'warning';
-                            icon = 'fa-exclamation-triangle';
-                        }
-                        break;
-                        case 3: {
-                            color = 'danger';
-                            icon = 'fa-plus-square';
-                        }
-                    }
-                    $('#pins').append('<div class="pin pin-' + color + '"><div class="info pin-heading-' + color + '"> <span class="fa fa-clock-o"></span> '+ time + '  | <span class="fa fa-map-marker"></span> ('+ lat + ', ' + long + ')</div><div class="pin-heading pin-heading-' + color + '"> <i class="fa ' + icon + '"></i> ' + user + ' </div><p>' + text + '</p></div>');
+                    pins += updateMessage(data[i]);
                 }
+                $('#pins').prepend(pins);
             }
         }
     });
+
+    socket.on('broadcast message', function(data) {
+        $('#pins').prepend(updateMessage(JSON.parse(data)));
+    });
 }
 $('#input').on('click', '#sendButton', function() { 
-    var latitude = 0;
-    var longitude = 0;
-    // Get location
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(function(position){
-            latitude = position.coords.latitude;
-            longitude = position.coords.longitude;
-            console.log(latitude + ', ' + longitude);
-        });
-    } else {
-        console.log('Geolocation is not supported by this browser.');
+    var message = $('#text').val();
+    if (message != '') {
+        // Get location
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+                localStorage['latitude'] = position.coords.latitude;
+                localStorage['longitude'] = position.coords.longitude;
+            });
+        } else {
+            console.log('Geolocation is not supported by this browser.');
+        }
+        socket.emit('send message', { 
+                    sender_id: localStorage['ID'], 
+                    message: message, 
+                    message_status: localStorage['STATUS'],
+                    latitude: localStorage['latitude'],
+                    longitude: localStorage['longitude']
+                });
     }
+
+    
 });
 

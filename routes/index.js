@@ -5,6 +5,10 @@ router.get('/', function(req, res) {
   res.render('join', {title: 'Emergency Social Network'});
 });
 
+router.get('/publicChat', function(req, res) {
+  res.render('publicChat', {title: 'Public Wall - Emergency Social Network'});
+});
+
 router.get('/welcome', function(req, res) {
   res.render('welcome', {title: 'Welcome - Emergency Social Network'});
 });
