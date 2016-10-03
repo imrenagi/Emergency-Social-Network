@@ -62,18 +62,6 @@ function onError(error) {
   }
 }
 
-
-//io.on('connnection', require('../services/chat').onListening);
-// io.on('connection', function(socket) {
-//   console.log("connected");
-//   var i = 1;
-//   io.emit('broadcast new message', i);
-
-// });
-// console.log('hello');
-
-io.emit('broadcast new message', 'hello');
-
 function onListening() {
   var addr = server.address();
   var bind = typeof addr === 'string' ? 'pipe ' + addr : 'port ' + addr.port;

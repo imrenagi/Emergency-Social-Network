@@ -1,8 +1,6 @@
 var express = require('express')
   , PublicMessageServiceImpl = require('../services/publicMessageServiceImpl');
 
-var io = require('../bin/www').io;
-
 var publicMessageService = new PublicMessageServiceImpl();
 
 const MESSAGE_ERROR = {
@@ -16,12 +14,6 @@ exports.retrieveAllPublicMessages = function(req, res, next) {
   var limit = req.param('limit') || 30;
   publicMessageService.getAllMessages(lastId, limit)
     .then(function(results) {
-    io.on('connection', function(socket) {
-  				console.log("connected");
-  				var i = 1;
-  				io.emit('broadcast new message', i);
-
-	});
       res.send(JSON.stringify(results));
     }).catch(function(err) {
       res.send(err);
@@ -44,15 +36,6 @@ exports.sendMessage = function(req, res, next) {
 
 	publicMessageService.storeMessage(senderId, message, message_status, latitude, longitude)
 		.then(function(results) {
-			//io.emit('broadcast new message', JSON.stringify(results));
-			io.on('connection', function(socket) {
-  				console.log("connected");
-  				var i = 1;
-  				io.emit('broadcast new message', i);
-
-			});
-
-			console.log("12345");
 			res.send(JSON.stringify(results))
 		}).catch(function(err) {
 			var err = new Error();
