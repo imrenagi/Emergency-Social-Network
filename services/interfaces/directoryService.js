@@ -6,6 +6,10 @@ class directoryService {
 		if(this.getDirectory === undefined) {
 			throw("Must override!");
 		}
+
+		if(this.getUser === undefined) {
+			throw("Must override!");
+		}
 	}
 }
 

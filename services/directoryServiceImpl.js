@@ -55,6 +55,19 @@ class directoryServiceImpl extends directoryService {
 			});
 		});
 	}
+
+	getUser(id) {
+		return new Promise(function(resolve, reject) {
+			db.get().query('select * from users where id = ?', id, function(err, result) {
+				if (err) reject(err)
+				else {
+					let rawUser = JSON.parse(JSON.stringify(result[0]));
+					let user = new User(rawUser.id, rawUser.user_name, rawUser.online, rawUser.status);
+					resolve(user);
+				}
+			})
+		})
+	}
 }
 
 module.exports = directoryServiceImpl;

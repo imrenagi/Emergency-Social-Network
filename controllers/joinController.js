@@ -36,8 +36,6 @@ exports.joinCommunity = function(req, res, next) {
 		    			id: result.body.id,
 		    			user_name: result.body.user_name
 		    		}
-		    		delete result.body.status
-		    		delete result.body.online
 		        	res.status(200).send(JSON.stringify(result.body));
 		        	break;
 		    	case 204:
@@ -68,11 +66,9 @@ exports.confirm = function(req, res, next) {
 	joinService.confirm(userName, password)
 		.then(function(result) {
 			req.session.user = {
-		    			id: result.id,
-		    			user_name: result.user_name
+		    	id: result.id,
+		    	user_name: result.user_name
 			}
-			delete result.status
-		    delete result.online
 			res.send(JSON.stringify(result));
 		}).catch(function(err) {
 			res.send(err);
