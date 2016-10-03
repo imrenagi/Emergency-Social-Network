@@ -19,7 +19,7 @@ function loadMoreUsers()
       		  switch(element.status)
       		  {
       			 case 0:
-      				    iconPath = '';
+      				    iconPath = '<i class="fa fa-minus"></i>';
       				    break;
           			case 1:
           				iconPath = '<i style="color: #9ccb19" class="fa fa-check-circle"></i>';
