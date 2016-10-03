@@ -32,6 +32,7 @@ CREATE FULLTEXT INDEX public_message_message_index ON public_messages (message);
 -- Add index for online column in user table
 
 CREATE INDEX user_online_status ON users (online);
+ALTER TABLE public_messages MODIFY message_status TINYINT DEFAULT 1;
 
 
 

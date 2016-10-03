@@ -11,5 +11,6 @@ router.use(function(req, res, next){
 })
 
 router.get('/public', messageController.retrieveAllPublicMessages);
+router.post('/public', messageController.sendMessage);
 
 module.exports = router;
