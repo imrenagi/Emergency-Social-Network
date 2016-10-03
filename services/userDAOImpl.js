@@ -16,5 +16,7 @@ class userDAOImpl extends userDAO {
 				}
 			});
 	}
+
+	
 }
 module.exports = userDAOImpl;

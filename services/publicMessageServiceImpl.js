@@ -73,7 +73,7 @@ class PublicMessageServiceImpl extends PublicMessageService {
 							rawMessage.message,
 							dateHelper.convertDateToTimestamp(rawMessage.created_at),
 							parseInt(rawMessage.message_status),
-							location)
+							location);
 						resolve(message)
 					}
 				})

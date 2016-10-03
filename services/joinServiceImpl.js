@@ -67,6 +67,7 @@ class JoinServiceImpl extends JoinService {
 				} else {
 					var res = JSON.parse(JSON.stringify(result));
 					var user = new User(res.insertId, userName);
+					userDAO.updateOnline(user, 1);
 					resolve(user);
 				}
 			})
