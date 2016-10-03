@@ -69,8 +69,3 @@ exports.confirm = function(req, res, next) {
 			res.send(err);
 		})
 }
-
-exports.logout = function(req, res, next) {
-	req.session = null;
-  	return res.json({});
-}
