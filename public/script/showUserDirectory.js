@@ -2,7 +2,7 @@ var lastPageId = 0;
 var hasMorePages = true;
 var isLoadingPages = false;
 var limit =  1;
-var loadMoreButton = $('<tr><td class = "text-center"><button class="loadmore" id="loadMoreButton" onclick="loadMoreUsers()">Load More</button></td></tr>');
+var loadMoreButton = $('<button class="loadmore" id="loadMoreButton" onclick="loadMoreUsers()"> Load More </button>');
 $(document).ready(function(){
 	loadMoreUsers();
 });
@@ -35,7 +35,7 @@ function loadMoreUsers()
         				iconPath ="";
         				break;
         		}
-         		$('.directorytable').append($('<tr><th>' + element.id +'</th> <td>' + element.user_name +'</td><td class="text-center statusTableIcon">'+  (element.status?(iconPath):"N/A")  + '</td><td class="text-center">' + (element.online? "Y":"N")+ '</td> <td class="text-center"> <span class="fa fa-comment-o"> </span></td> </tr>'));
+         		$('.directorytable').append($('<tr><th>' + element.id +'</th>  <td>' + element.user_name +'</td><td class="text-center statusTableIcon">'+  (element.status?(iconPath):"N/A")  + '</td><td class="text-center">' + (element.online? "Y":"N")+ '</td> <td class="text-center"> <span class="fa fa-comment-o"> </span></td> </tr>'));
         	});
            lastPageId = data.meta.page;
            if(lastPageId >= data.meta.page_count)
@@ -44,7 +44,7 @@ function loadMoreUsers()
            }
            if(hasMorePages)
            {
-                $('.directorytable').append(loadMoreButton);
+                $('.loadMoreSpan').append(loadMoreButton);
            }
            else
            {
