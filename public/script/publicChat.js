@@ -1,8 +1,8 @@
 var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 
-function reformatTime(timestamp) {
+function reformatTime(date) {
     // multiplied by 1000 so that the argument is in milliseconds, not seconds.
-    var date = new Date(timestamp*1000);
+    var date = new Date(date);
     // Hours part from the timestamp
     var hours = date.getHours();
     // Minutes part from the timestamp
@@ -17,10 +17,12 @@ function reformatTime(timestamp) {
 };
 
 function updateMessage(data) {
+    console.log(data.timestamp);
     var color = 'normal';
     var icon = 'fa-minus';
     var lat = data.location.lat, long = data.location.long;
-    var time = reformatTime(data.timestamp);
+    var date = new Date(moment(data.timestamp*1000).format('MM/DD/YYYY hh:mm:ss A') + ' UTC');
+    var time = reformatTime(date);
     var user = data.sender.user_name;
     var text = data.text;
     switch (data.status) {
