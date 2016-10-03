@@ -46,7 +46,6 @@ class JoinServiceImpl extends JoinService {
 					if (encryptor.compare(password, results[0].password)) {
 						var user = new User(results[0].id, results[0].user_name);
 						userDAO.updateOnline(user, 1);
-
 						resolve({code : 200, body: user});
 					} else {
 						resolve({code : 400, body: {}});
