@@ -32,8 +32,13 @@ exports.joinCommunity = function(req, res, next) {
 		joinService.join(userName, password).then(function(result){
 			switch(result.code) {
 		    	case 200:
-		    		req.session.user_name = userName;
-		        	res.send(JSON.stringify(result.body));
+		    		req.session.user = {
+		    			id: result.body.id,
+		    			user_name: result.body.user_name
+		    		}
+		    		delete result.body.status
+		    		delete result.body.online
+		        	res.status(200).send(JSON.stringify(result.body));
 		        	break;
 		    	case 204:
 		        	res.status(204).send(JSON.stringify({}));
@@ -62,7 +67,12 @@ exports.confirm = function(req, res, next) {
 	var password = req.body.password;
 	joinService.confirm(userName, password)
 		.then(function(result) {
-			req.session.user_name = userName;
+			req.session.user = {
+		    			id: result.id,
+		    			user_name: result.user_name
+			}
+			delete result.status
+		    delete result.online
 			res.send(JSON.stringify(result));
 		}).catch(function(err) {
 			res.send(err);
