@@ -64,7 +64,7 @@ textarea {
     min-height: 34px;
 }
 
-.panel-fixed-height{
+.panel-fixed-height {
     height: 450px;
     overflow-y: scroll;
 }

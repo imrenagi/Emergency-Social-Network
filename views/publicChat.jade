@@ -7,77 +7,11 @@ block append content
   .container
     .wrapper
       .col-md-9
-        h2.ol-list 
-        #pins
-          .pin.pin-normal
-            .info.pin-heading-normal
-              tr
-                td 
-                  span.fa.fa-clock-o
-                  | 
-                  | Sun 6:09 PM 
-                td  |
-                td 
-                  span.fa.fa-map-marker
-                  | 
-                  | San Jose, CA
-            .pin-heading.pin-heading-normal 
-              i.fa.fa-minus
-              |  Binglei Du 
-            p I am OK. I do not need help.
-          .pin.pin-ok
-            .info.pin-heading-ok
-              tr
-                td 
-                  span.fa.fa-clock-o
-                  | 
-                  | Sun 6:09 PM 
-                td  |
-                td 
-                  span.fa.fa-map-marker
-                  | 
-                  | San Jose, CA 
-            .pin-heading.pin-heading-ok 
-              i.fa.fa-check-circle
-              |  Xiangtian Li
-            p :)
-          .pin.pin-warning
-            .info.pin-heading-warning
-              tr
-                td 
-                  span.fa.fa-clock-o
-                  | 
-                  | Sun 6:09 PM 
-                td  |
-                td 
-                  span.fa.fa-map-marker
-                  | 
-                  | San Jose, CA 
-            .pin-heading.pin-heading-warning 
-              i.fa.fa-exclamation-triangle
-              |  admin
-              
-            p I need help, but this is not a life-threatening emergency.
-          .pin.pin-danger
-            .info.pin-heading-danger
-              tr
-                td 
-                  span.fa.fa-clock-o
-                  | 
-                  | Sun 6:09 PM 
-                td  |
-                td 
-                  span.fa.fa-map-marker
-                  | 
-                  | San Jose, CA 
-            .pin-heading.pin-heading-danger 
-              i.fa.fa-plus-square 
-              |  victim
-            p I need help now, as this is a life threatening emergency!
-        #input
+        #pins.panel-fixed-height
+        #input(style='padding-top:5px;')
           .input-group
             textarea.form-control.custom-control(rows="4", style='resize:none;' placeholder='Share something...')
-            span.input-group-addon.btn.btn-danger
+            span.input-group-addon.btn.btn-danger#sendButton
               span.glyphicon.glyphicon-send(style="font-size: 25px;")
 
 block append script
@@ -85,3 +19,4 @@ block append script
   script(src='http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js')
   script(src='/socket.io/socket.io.js')
   script(src='/script/main.js')
+  script(src='/script/publicChat.js')
