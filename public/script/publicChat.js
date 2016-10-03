@@ -86,6 +86,7 @@ $('#input').on('click', '#sendButton', function() {
                     latitude: localStorage['latitude'],
                     longitude: localStorage['longitude']
                 });
+        $('#text').val('');
     }
 
     
