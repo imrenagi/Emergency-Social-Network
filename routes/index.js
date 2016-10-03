@@ -1,12 +1,8 @@
 var express = require('express');
 var router = express.Router();
 
-// router.get('/', function(req, res) {
-//   res.render('join', {title: 'Emergency Social Network'});
-// });
-
 router.get('/', function(req, res) {
-  res.render('publicChat', {title: 'Emergency Social Network'});
+  res.render('join', {title: 'Emergency Social Network'});
 });
 
 router.get('/welcome', function(req, res) {

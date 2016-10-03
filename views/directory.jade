@@ -7,7 +7,7 @@ block append content
     .wrapper
       .panel.panel-default
         .panel-heading.text-center User Directory
-        table.table
+        table.directorytable
           thead
             tr
               th #
@@ -16,36 +16,10 @@ block append content
               th Online
               th options
           tbody
-            tr
-              th 1
-              td Imre Nagi
-              td.text-center OK
-              td.text-center Y 
-              td.text-center 
-                i.fa.fa-comment-o
-            tr
-              th 2
-              td Xiangtian Li
-              td.text-center NA
-              td.text-center Y
-              td.text-center 
-                i.fa.fa-comment-o
-            tr
-              th 3
-              td Ashutosh Tadkase
-              td.text-center Help
-              td.text-center Y
-              td.text-center
-                i.fa.fa-comment-o
-            tr
-              th 4
-              td Binglei Du
-              td.text-center Emergency
-              td.text-center N
-              td.text-center
-                span.fa.fa-comment-o
+
+        span.loadMoreSpan
 
 block append script
   script(src='https://code.jquery.com/jquery-1.10.2.min.js')
   script(src='http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js')
-
+  script(src='/script/showUserDirectory.js')
