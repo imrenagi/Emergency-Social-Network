@@ -5,6 +5,10 @@ class PublicMessageService {
 	    if (this.getAllMessages === undefined) {
 	    	throw Error("Must override!");	
 	    }
+
+	    if (this.storeMessage === undefined) {
+	    	throw Error("Must override!");		
+	    }
 	}
 }
 

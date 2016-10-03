@@ -60,7 +60,6 @@ exports.joinCommunity = function(req, res, next) {
 exports.confirm = function(req, res, next) {
 	var userName = req.body.user_name;
 	var password = req.body.password;
-
 	joinService.confirm(userName, password)
 		.then(function(result) {
 			req.session.user_name = userName;
@@ -68,9 +67,4 @@ exports.confirm = function(req, res, next) {
 		}).catch(function(err) {
 			res.send(err);
 		})
-}
-
-exports.logout = function(req, res, next) {
-	req.session = null;
-  	return res.json({});
 }

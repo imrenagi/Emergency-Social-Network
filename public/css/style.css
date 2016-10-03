@@ -1,6 +1,5 @@
 .modal-backdrop {
-background-color: white;
-box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+  background-color: white;
 }
 
 .modal {
@@ -20,23 +19,8 @@ box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
   display: inline-block;
   text-align: left;
   vertical-align: middle;
-}
-
-.welcomeStatusTable {
-  text-align: center;
-  border: 1px solid black;
-}
-
-
-.statusTableHeader{
-  text-align: center;
-  border: 1px solid black;
-}
-
-.statusTableIcon{
-  border: 1px solid black;
-}
-
-.statusTableInfo{
-  border: 1px solid black;
+  padding-top: 10px;
+  padding-left: 12px;
+  padding-right: 12px;
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
 }

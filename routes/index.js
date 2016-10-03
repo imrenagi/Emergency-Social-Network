@@ -11,7 +11,6 @@ router.get('/welcome', function(req, res) {
 
 router.use('/join', require('./join'));
 router.use('/directory', require('./directory'));
-router.use('/publicChat', require('./publicChat'));
 router.use('/logout', require('./logout'));
 router.use('/message', require('./message'));
 
