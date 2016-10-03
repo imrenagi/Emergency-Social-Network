@@ -43,7 +43,8 @@ class directoryServiceImpl extends directoryService {
 						for(var i in results) {
 							var member = {id: results[i].id,
 										user_name: results[i].user_name,
-										online: results[i].online};
+										online: results[i].online,
+										status: results[i].status};
 							members.push(member);
 						}
 						resolve({users: members, meta: meta});

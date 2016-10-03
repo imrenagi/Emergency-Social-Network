@@ -1,9 +1,11 @@
 "use strict";
 
 class User {
-	constructor(id, user_name) {
+	constructor(id, user_name, online, status) {
 		this.id = id
 		this.user_name = user_name
+		this.online = online || 0
+		this.status = status || 0
 	}
 
 	getId() {

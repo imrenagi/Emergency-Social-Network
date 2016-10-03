@@ -29,7 +29,7 @@ class PublicMessageServiceImpl extends PublicMessageService {
 					var results = JSON.parse(JSON.stringify(result));
 					var out = R.map(function(rawMessage) {
 						var location = new Location(rawMessage.latitude, rawMessage.longitude);
-						var user = new User(rawMessage.sender_id, rawMessage.user_name);
+						var user = new User(rawMessage.sender_id, rawMessage.user_name, rawMessage.online, rawMessage.status);
 						var message = new Message(rawMessage.id, 
 							user,
 							rawMessage.message,
@@ -67,7 +67,7 @@ class PublicMessageServiceImpl extends PublicMessageService {
 						var res = JSON.parse(JSON.stringify(result));
 						var rawMessage = res[0];
 						var location = new Location(rawMessage.latitude, rawMessage.longitude);
-						var user = new User(rawMessage.sender_id, rawMessage.user_name);
+						var user = new User(rawMessage.sender_id, rawMessage.user_name, rawMessage.online, rawMessage.status);
 						var message = new Message(rawMessage.id, 
 							user,
 							rawMessage.message,
