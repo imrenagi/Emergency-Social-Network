@@ -5,7 +5,8 @@ var publicMessageService = new PublicMessageServiceImpl();
 
 const MESSAGE_ERROR = {
         EMPTY_SENDER_OR_MESSAGE: 'MessageError.EmptySenderNameOrMessage',
-		UNKNOWN_ERROR: 'MessageError.UnknownError'
+		UNKNOWN_ERROR: 'MessageError.UnknownError',
+		MYSQL_EXCEPTION: 'MessageError.InvalidMessageData'
     }
 
 exports.retrieveAllPublicMessages = function(req, res, next) {
@@ -37,7 +38,10 @@ exports.sendMessage = function(req, res, next) {
 		.then(function(results) {
 			res.send(JSON.stringify(results))
 		}).catch(function(err) {
-			res.send(err)
+			var err = new Error();
+		  	err.status = 400;
+		  	err.message = MESSAGE_ERROR.MYSQL_EXCEPTION;
+		  	next(err);
 		})
 }
 
