@@ -44,17 +44,25 @@ class JoinServiceImpl extends JoinService {
 				var results = JSON.parse(JSON.stringify(result));
 				if (results.length > 0) {
 					if (encryptor.compare(password, results[0].password)) {
-						var user = new User(results[0].id, results[0].user_name);
-						userDAO.updateOnline(user, 1);
-						resolve({code : 200, body: user});
+						var user = new User(results[0].id, 
+							results[0].user_name, 
+							results[0].online,
+							results[0].status );
+						userDAO.updateOnline(user, 1)
+							.then(function(res) {
+								user.online = 1;
+								resolve({code : 200, body: user});
+							}).catch(function(err) {
+								resolve({code : 200, body: user});
+							})
 					} else {
 						resolve({code : 400, body: {}});
 					}	
 				} else {
 					resolve({code : 204, body: {}});
 				}
-			});
-		});
+			})
+		})
 	}
 
 	confirm(userName, password) {
@@ -66,9 +74,14 @@ class JoinServiceImpl extends JoinService {
 					reject(err);
 				} else {
 					var res = JSON.parse(JSON.stringify(result));
-					var user = new User(res.insertId, userName);
-					userDAO.updateOnline(user, 1);
-					resolve(user);
+					var user = new User(res.insertId, userName, 0, 0);
+					userDAO.updateOnline(user, 1)
+						.then(function(res) {
+							user.online = 1;
+							resolve(user);
+						}).catch(function(err) {
+							resolve(user);
+						})
 				}
 			})
 		});
