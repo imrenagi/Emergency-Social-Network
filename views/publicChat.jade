@@ -1,74 +1,84 @@
 extends base
 block append stylesheet
-  link(rel='stylesheet', href='/css/public_chat.css')
+  link(rel='stylesheet', href='/css/chat.css')
+  link(rel='stylesheet', href='/css/main.css')
 block append content
   include navbar.jade
   .container
     .wrapper
-      .col-md-7
-        .panel.panel-default
-          .panel-heading.bg-white  
-            i.fa.fa-comments-o
-            span  Public Chat Room
-          .panel-body
-            .chat-window
-              .message.message-r 
-                p Hello!
-              .message.message-s 
-                p Hi
-              .message.message-r 
-                p Welcome to Emergency Social Network!
-              .message.message-r 
-                p What are tasks for Iteration 1?
-              .message.message-s  
-                p Iteration 1: Architecture & Design
-                p Use Case: Join Community & Chat Publicly
-              .message.message-r
-                p :)
-              .message.message-r
-                p Thanks~
-              .message.message-r 
-                p Once you're done: Submit your deliverables by adding them to the team GitHub repo. Submit your deliverables by adding them to the team GitHub repo. 
-              .message.message-r 
-                p Does each team member separately submit the same team deliverables?
-              .message.message-s  
-                p Iteration 1: Architecture & Design
-                p Use Case: Join Community & Chat Publicly
-              .message.message-r
-                p Thanks~
-
-            br
-            .input-group
-              textarea.form-control.custom-control(rows="1", style='resize:none;' placeholder='Share something...')
-              span.input-group-addon.btn.btn-default
-                span.glyphicon.glyphicon-send
+      .col-md-9
+        h2.ol-list 
+        #pins
+          .pin.pin-normal
+            .info.pin-heading-normal
+              tr
+                td 
+                  span.fa.fa-clock-o
+                  | 
+                  | Sun 6:09 PM 
+                td  |
+                td 
+                  span.fa.fa-map-marker
+                  | 
+                  | San Jose, CA
+            .pin-heading.pin-heading-normal 
+              i.fa.fa-minus
+              |  Binglei Du 
+            p I am OK. I do not need help.
+          .pin.pin-ok
+            .info.pin-heading-ok
+              tr
+                td 
+                  span.fa.fa-clock-o
+                  | 
+                  | Sun 6:09 PM 
+                td  |
+                td 
+                  span.fa.fa-map-marker
+                  | 
+                  | San Jose, CA 
+            .pin-heading.pin-heading-ok 
+              i.fa.fa-check-circle
+              |  Xiangtian Li
+            p :)
+          .pin.pin-warning
+            .info.pin-heading-warning
+              tr
+                td 
+                  span.fa.fa-clock-o
+                  | 
+                  | Sun 6:09 PM 
+                td  |
+                td 
+                  span.fa.fa-map-marker
+                  | 
+                  | San Jose, CA 
+            .pin-heading.pin-heading-warning 
+              i.fa.fa-exclamation-triangle
+              |  admin
               
-      .col-md-3
-        .panel.panel-default
-          .panel-heading Online Users
-          .panel-fixed-height
-            table.table
-              tbody.ol-text
-                tr
-                  th
-                  td Imre Nagi
-                  td 
-                    i.fa.fa-comment-o
-                tr
-                  th
-                  td Xiangtian Li
-                  td 
-                    i.fa.fa-comment-o
-                tr
-                  th
-                  td Ashutosh Tadkase
-                  td
-                    i.fa.fa-comment-o
-                tr
-                  th
-                  td Binglei Du
-                  td
-                    span.fa.fa-comment-o
+            p I need help, but this is not a life-threatening emergency.
+          .pin.pin-danger
+            .info.pin-heading-danger
+              tr
+                td 
+                  span.fa.fa-clock-o
+                  | 
+                  | Sun 6:09 PM 
+                td  |
+                td 
+                  span.fa.fa-map-marker
+                  | 
+                  | San Jose, CA 
+            .pin-heading.pin-heading-danger 
+              i.fa.fa-plus-square 
+              |  victim
+            p I need help now, as this is a life threatening emergency!
+        #input
+          .input-group
+            textarea.form-control.custom-control(rows="4", style='resize:none;' placeholder='Share something...')
+            span.input-group-addon.btn.btn-danger
+              span.glyphicon.glyphicon-send(style="font-size: 25px;")
 
 block append script
   script(src='https://code.jquery.com/jquery-1.10.2.min.js')

@@ -29,7 +29,7 @@ class PublicMessageServiceImpl extends PublicMessageService {
 					var results = JSON.parse(JSON.stringify(result));
 					var out = R.map(function(rawMessage) {
 						var location = new Location(rawMessage.latitude, rawMessage.longitude);
-						var user = new User(rawMessage.sender_id, rawMessage.user_name);
+						var user = new User(rawMessage.sender_id, rawMessage.user_name, rawMessage.online, rawMessage.status);
 						var message = new Message(rawMessage.id, 
 							user,
 							rawMessage.message,
@@ -60,14 +60,14 @@ class PublicMessageServiceImpl extends PublicMessageService {
 			});
 		}).then(function(result) {
 			return new Promise(function(resolve, reject) {
-				let query = 'SELECT * from public_messages where id = ?'
+				let query = 'SELECT pm.*, u.user_name FROM public_messages pm LEFT JOIN users u ON pm.sender_id = u.id where pm.id = ?'
 				db.get().query(query, result, function(err, result) {
 					if (err) reject(err);
 					else {
 						var res = JSON.parse(JSON.stringify(result));
 						var rawMessage = res[0];
 						var location = new Location(rawMessage.latitude, rawMessage.longitude);
-						var user = new User(rawMessage.sender_id, rawMessage.user_name);
+						var user = new User(rawMessage.sender_id, rawMessage.user_name, rawMessage.online, rawMessage.status);
 						var message = new Message(rawMessage.id, 
 							user,
 							rawMessage.message,

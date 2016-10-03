@@ -1,9 +1,54 @@
-.wrapper {
-    margin-top: 4%;
-    align-items: top;
-    display: flex;
-    justify-content: center;
+.pin {
+    width: 100%;
+    padding: 15px;
+    margin: 15px 0;
+    border: 1px solid #eee;
+    border-left-width: 5px;
+    border-radius: 3px;
 }
+
+.info {
+    float: right;
+}
+
+.pin-ok {
+    border-left-color: #9ccb19;
+}
+
+.pin-danger {
+    border-left-color: #ce4844;
+}
+
+.pin-normal {
+    border-left-color: #1b809e;
+}
+
+.pin-warning {
+    border-left-color: #fcd116;
+}
+
+.pin-heading {
+    margin-top: 0;
+    margin-bottom: 5px;
+    font-size: 18px;
+}
+
+.pin-heading-normal {
+    color: #1b809e;
+}
+
+.pin-heading-ok {
+    color: #9ccb19;
+}
+
+.pin-heading-warning {
+    color: #fcd116;
+}
+
+.pin-heading-danger {
+    color: #ce4844;
+}
+
 .chat-window {
     padding: 20px 10px;
     height: 365px;
@@ -15,17 +60,15 @@
     overflow-y: scroll;
 }
 
-.ol-text {
-    color: #777;
-}
-
 textarea {
     min-height: 34px;
 }
+
 .panel-fixed-height{
     height: 450px;
     overflow-y: scroll;
 }
+
 .message {
     margin: 5px;
     max-width: 90%;
@@ -35,18 +78,21 @@ textarea {
     padding-right: 8px; 
     box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.12), 0 5px 5px 0 rgba(0, 0, 0, 0.12);
 }
+
 .tag {
     line-height: 5px;
     font-weight: bold;
     color: #aaa;
     text-align: left;
 }
+
 .message-r {
     float: left;
     clear: both;
     background-color: #d9edf7;
     border-color: #bce8f1;
 }
+
 .message-s {
     float: right;
     clear: both;

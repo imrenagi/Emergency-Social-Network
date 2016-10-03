@@ -11,10 +11,19 @@ class userDAOImpl extends userDAO {
 	updateOnline(user, isOnline) {
 		var query = 'UPDATE users SET online = ' + isOnline + ' WHERE id = ' + user.getId();
 		db.get().query(query, function(err, result) {
-				if (err) {
-					return console.log(err);
-				}
-			});
+			if (err) {
+				return console.log(err);
+			}
+		});
+	}
+
+	updateStatus(user, status) {
+		var query = 'UPDATE users SET status = ' + status + ' WHERE id = ' + user.getId();
+		db.get().query(query, function(err, result) {
+			if (err) {
+				return console.log(err);
+			}
+		});
 	}
 
 	
