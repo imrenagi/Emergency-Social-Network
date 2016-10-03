@@ -23,7 +23,7 @@ exports.retrieveAllPublicMessages = function(req, res, next) {
 exports.sendMessage = function(req, res, next) {
 	var senderId = req.param('sender_id');
 	var message = req.param('message');
-	var message_status = req.param('message_status') || 1;
+	var message_status = req.param('message_status') || 0;
 	var latitude = req.param('latitude') || null;
 	var longitude = req.param('longitude') || null;
 
