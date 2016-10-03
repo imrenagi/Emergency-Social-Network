@@ -37,11 +37,7 @@ exports.onListening = function(socket) {
 		.then(function(results) {
 			io.emit('broadcast message', JSON.stringify(results));
 		}).catch(function(err) {
-			//return console.log(err);
-			var err = new Error();
-		  	err.status = 400;
-		  	err.message = MESSAGE_ERROR.MYSQL_EXCEPTION;
-		  	return console.log(err);
+			return console.log(err);
 		})
   	});
 
