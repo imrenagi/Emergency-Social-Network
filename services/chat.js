@@ -1,6 +1,7 @@
 var express = require('express')
   , PublicMessageServiceImpl = require('./publicMessageServiceImpl');
-var publicMessageService = new PublicMessageServiceImpl()
+var publicMessageService = new PublicMessageServiceImpl();
+var io = require('../bin/www').io;
 
 const MESSAGE_ERROR = {
         EMPTY_SENDER_OR_MESSAGE: 'MessageError.EmptySenderNameOrMessage',
@@ -32,11 +33,11 @@ exports.onListening = function(socket) {
 	  		err.message = MESSAGE_ERROR.EMPTY_SENDER_OR_MESSAGE;
 	  		return console.log(err);
 		}
-
 		publicMessageService.storeMessage(senderId, message, message_status, latitude, longitude)
 		.then(function(results) {
 			io.emit('broadcast message', JSON.stringify(results));
 		}).catch(function(err) {
+			//return console.log(err);
 			var err = new Error();
 		  	err.status = 400;
 		  	err.message = MESSAGE_ERROR.MYSQL_EXCEPTION;

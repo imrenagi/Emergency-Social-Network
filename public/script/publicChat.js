@@ -67,4 +67,3 @@ $('#input').on('click', '#sendButton', function() {
     }
 });
 
-
