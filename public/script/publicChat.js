@@ -1,5 +1,8 @@
 var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-
+var hasMoreMessages = true;
+var lastMessageId = 0;
+var loadMoreButton = $('<button class="btn btn-default btn-block loadmore" id="loadMoreButton" onclick="loadMoreMessages()"> Load More </button>');
+var limit = 30;
 function reformatTime(date) {
     // multiplied by 1000 so that the argument is in milliseconds, not seconds.
     var date = new Date(date);
@@ -42,28 +45,15 @@ function updateMessage(data) {
         }
     }
     var pin = '<div class="pin pin-' + color + '"><div class="info pin-heading-' + color + '"> <span class="fa fa-clock-o"></span> '+ time + '  | <span class="fa fa-map-marker"></span> ('+ lat + ', ' + long + ')</div><div class="pin-heading pin-heading-' + color + '"> <i class="fa ' + icon + '"></i> ' + user + ' </div><p>' + text + '</p></div>';
+    lastMessageId = data.id;
     return pin;
 }
 
 var socket = io.connect("http://localhost:3000");
 
 window.onload = function() {
-    $.ajax({
-        type: "GET",
-        data: {},
-        url: "/message/public",
-        dataType: "json",
-        statusCode: {
-            200: function(data) {
-                var pins = '';
-                for (var i = 0; i < data.length; i++) {
-                    pins += updateMessage(data[i]);
-                }
-                $('#pins').prepend(pins);
-            }
-        }
-    });
 
+    loadMoreMessages();
     socket.on('broadcast message', function(data) {
         $('#pins').prepend(updateMessage(JSON.parse(data)));
         $('#pins').scrollTop(0);
@@ -94,3 +84,52 @@ $('#input').on('click', '#sendButton', function() {
     
 });
 
+function loadMoreMessages()
+{
+
+    if(hasMoreMessages)
+    {
+        if (lastMessageId == 0)
+        {
+                $.ajax({
+                        type: "GET",
+                        data: {},
+                        url: "/message/public",
+                        dataType: "json",
+                        statusCode: {
+                            200: function(data) {
+                                var pins = '';
+                                for (var i = 0; i < data.length; i++) {
+                                    pins += updateMessage(data[i]);
+                                 }
+                                 $('#pins').prepend(pins);
+                                }
+                        }
+                });
+        }
+        else{
+                $.get('/message/public?last_id='+(lastMessageId)+'&limit='+limit, function(data) 
+                   {
+                            var pins = '';
+                            for (var i = 0; i < data.length; i++) {
+                                pins += updateMessage(data[i]);
+                            }
+                            $('#pins').append(pins);
+                   });
+            }
+
+                       if(lastMessageId == 1 )
+                        {
+                                hasMoreMessages = false;
+                        }
+                       if(hasMoreMessages)
+                       {
+                            $('.loadmore').append(loadMoreButton);
+                       }
+                       else
+                       {
+                            loadMoreButton.remove();
+                       }
+                
+                } 
+}
