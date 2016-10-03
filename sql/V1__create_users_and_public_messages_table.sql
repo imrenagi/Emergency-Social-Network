@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS users (
 	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
 	updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP,
 	deleted_at TIMESTAMP NULL,
-	online TINYINT DEFAULT 0
+	`online` TINYINT DEFAULT 0
 );
 
 CREATE INDEX user_id_index ON users (id);
@@ -33,9 +33,9 @@ CREATE FULLTEXT INDEX public_message_message_index ON public_messages (message);
 
 -- Add index for online column in user table
 
-CREATE INDEX user_online_status ON users (online);
+CREATE INDEX user_online_status ON users (`online`);
 ALTER TABLE public_messages MODIFY message_status TINYINT DEFAULT 0;
-ALTER TABLE users ADD status TINYINT DEFAULT 0 AFTER online ;
+ALTER TABLE users ADD status TINYINT DEFAULT 0 AFTER `online` ;
 
 
 
