@@ -1,3 +1,4 @@
+'use strict';
 
 var userDAOImpl = require('../services/userDAOImpl');
 var userDAO = new userDAOImpl();
