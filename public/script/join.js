@@ -64,3 +64,10 @@ $('#content').on('click', '#confirmButton', function(){
 $('#content').on('click', '#cancelButton', function(){
     $('#glass').replaceWith('<div id="glass" class="form center-block glass"><div><p class="label">Join us</p></div><br><form><div class="form-group"><input name="username" type="text" placeholder="username" id="username" class="form-control"></div><div class="form-group"><input name="password" type="password" placeholder="password" id="password" class="form-control"></div><input type="button" value="Submit" id="joinButton" class="btn btn-primary btn-block"></form></div>');
 });
+
+
+var socket = io();
+socket.on('broadcast new message', function(data) {
+        console.log("i am here");
+      });
+console.log("i am there"); 
