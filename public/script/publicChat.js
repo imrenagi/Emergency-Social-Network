@@ -1,5 +1,4 @@
 var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-var hasMoreMessages = true;
 var lastMessageId = 0;
 var loadMoreButton = $('<button class="btn btn-default btn-block loadmore" id="loadMoreButton" onclick="loadMoreMessages()"> Load More </button>');
 var limit = 30;
@@ -20,7 +19,6 @@ function reformatTime(date) {
 };
 
 function updateMessage(data) {
-    console.log(data.timestamp);
     var color = 'normal';
     var icon = 'fa-minus';
     var lat = data.location.lat, long = data.location.long;
@@ -52,13 +50,13 @@ function updateMessage(data) {
 var socket = io.connect("http://localhost:3000");
 
 window.onload = function() {
-
     loadMoreMessages();
     socket.on('broadcast message', function(data) {
-        $('#pins').prepend(updateMessage(JSON.parse(data)));
+        $('#messages').prepend(updateMessage(JSON.parse(data)));
         $('#pins').scrollTop(0);
     });
 }
+
 $('#input').on('click', '#sendButton', function() { 
     var message = $('#text').val();
     if (message != '') {
@@ -84,52 +82,40 @@ $('#input').on('click', '#sendButton', function() {
     
 });
 
-function loadMoreMessages()
-{
-
-    if(hasMoreMessages)
-    {
-        if (lastMessageId == 0)
-        {
-                $.ajax({
-                        type: "GET",
-                        data: {},
-                        url: "/message/public",
-                        dataType: "json",
-                        statusCode: {
-                            200: function(data) {
-                                var pins = '';
-                                for (var i = 0; i < data.length; i++) {
-                                    pins += updateMessage(data[i]);
-                                 }
-                                 $('#pins').prepend(pins);
-                                }
-                        }
-                });
-        }
-        else{
-                $.get('/message/public?last_id='+(lastMessageId)+'&limit='+limit, function(data) 
-                   {
-                            var pins = '';
-                            for (var i = 0; i < data.length; i++) {
-                                pins += updateMessage(data[i]);
-                            }
-                            $('#pins').append(pins);
-                   });
+function loadMoreMessages() {
+    if (lastMessageId == 0) {
+        $.ajax({
+            type: "GET",
+            data: {},
+            url: "/message/public",
+            dataType: "json",
+            statusCode: {
+                200: function(data) {
+                    var pins = '';
+                    for (var i = 0; i < data.length; i++) {
+                        pins += updateMessage(data[i]);
+                    }
+                    $('#messages').prepend(pins);
+                    if (data.length == limit) {
+                        $('.loadmore').append(loadMoreButton);
+                    } else {
+                        loadMoreButton.remove();
+                    }
+                }
             }
-
-                       if(lastMessageId == 1 )
-                        {
-                                hasMoreMessages = false;
-                        }
-                       if(hasMoreMessages)
-                       {
-                            $('.loadmore').append(loadMoreButton);
-                       }
-                       else
-                       {
-                            loadMoreButton.remove();
-                       }
-                
-                } 
-}
+        });
+    } else {
+        $.get('/message/public?last_id='+(lastMessageId)+'&limit='+limit, function(data) {
+            var pins = '';
+            for (var i = 0; i < data.length; i++) {
+                pins += updateMessage(data[i]);
+            }
+            $('#messages').append(pins);
+            if (data.length == limit) {
+                $('.loadmore').append(loadMoreButton);
+            } else {
+                loadMoreButton.remove();
+            }
+        });
+    }  
+} 
