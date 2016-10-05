@@ -1,8 +1,3 @@
-if (localStorage['USER_NAME']) {
-    $('#user-setting').append(' ' + localStorage['USER_NAME']);
-} else {
-    window.location = '/'
-}
 $('#navbar-right').on('click', '#logout', function(event) {
      $.ajax({
         type: "DELETE",
