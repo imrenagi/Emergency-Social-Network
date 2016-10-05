@@ -47,7 +47,7 @@ function updateMessage(data) {
     return pin;
 }
 
-var socket = io.connect("http://localhost:3000");
+var socket = io();
 
 window.onload = function() {
     loadMoreMessages();
