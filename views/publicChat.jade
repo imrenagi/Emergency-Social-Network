@@ -1,0 +1,26 @@
+extends base
+block append stylesheet
+  link(rel='stylesheet', href='/css/chat.css')
+  link(rel='stylesheet', href='/css/main.css')
+block append content
+  include navbar.jade
+  .container
+    .wrapper
+      .col-md-9
+        #pins.panel-fixed-height
+          #messages
+          span.loadmore
+        #input(style='padding-top:5px;')
+          .input-group
+            textarea.form-control.custom-control(rows="4", style='resize:none;' placeholder='Share something...')#text
+            span.input-group-addon.btn.btn-danger#sendButton
+              span.glyphicon.glyphicon-send(style="font-size: 25px;")
+
+block append script
+  script(src='https://code.jquery.com/jquery-1.10.2.min.js')
+  script(src='http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js')
+  script(src='/socket.io/socket.io.js')
+  script(src='/libs/moment.min.js')
+  script(src='/script/main.js')
+  script(src='/script/publicChat.js')
+  script(src='/script/navigationBar.js')

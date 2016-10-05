@@ -1,0 +1,39 @@
+<!-- navbar -->
+nav.navbar.navbar-default.navbar-static-top
+  .container
+    <!-- Brand and toggle get grouped for better mobile display -->
+    .navbar-header
+      button.navbar-toggle.collapsed(type='button', data-toggle='collapse', data-target='#navbar', aria-expanded='false', aria-controls='navbar')
+        span.sr-only lists
+        span.icon-bar
+        span.icon-bar
+        span.icon-bar
+      a.navbar-brand(type='button')
+        span Emergency Social Network
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    #navbar.navbar-collapse.collapse
+      .navbar-right
+        ul.nav.navbar-nav#navbar-right
+          li
+            a(href='#')#help
+              span.fa.fa-book
+              | 
+              | Help
+          li
+            a(href='#')#user-setting
+              span.glyphicon.glyphicon-user
+          li
+            a(href='/userDirectory')#user-directory
+              span.glyphicon.glyphicon-list
+              | 
+              | User Directory
+          li
+            a(href='/publicChat')#public-chat
+              span.fa.fa-users
+              | 
+              | Public Chat
+          li
+            a(href='#')#logout
+              span.fa.fa-sign-out
+              | 
+              | Logout
