@@ -21,6 +21,7 @@ export DB_PASSWORD="<your_db_password>"
 npm install bower -g
 npm install forever -g
 npm install promise -g
+sudo npm install -g grunt-cli
 ```
 
 * Run `npm install` to install all node modules
