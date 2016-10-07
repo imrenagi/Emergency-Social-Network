@@ -78,7 +78,7 @@ textarea {
     min-height: 34px;
 }
 
-.contact-list {
+.contact-list, .panel-fixed-height {
     height: 450px;
     overflow-y: scroll;
     width: 100%;
