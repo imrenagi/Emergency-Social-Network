@@ -1,29 +1,43 @@
+.badge-contact {
+    color: #fff;
+    border: 1px solid #1ABB9C !important;
+    background: #1ABB9C !important;
+}
+
+.badge-announce {
+    color: #fff;
+    border: 1px solid #fff !important;
+    background: #fff !important;
+}
 .pin {
     width: 100%;
     padding: 15px;
     margin: 12px 0;
     border: 1px solid #eee;
-    border-left-width: 5px;
     border-radius: 3px;
+}
+
+.pin, .contact-normal, .contact-ok, .contact-warning, .contact-danger{
+    border-left-width: 5px;
 }
 
 .info {
     float: right;
 }
 
-.pin-ok {
+.pin-ok, .contact-ok {
     border-left-color: #9ccb19;
 }
 
-.pin-danger {
+.pin-danger, .contact-danger {
     border-left-color: #ce4844;
 }
 
-.pin-normal {
+.pin-normal, .contact-normal {
     border-left-color: #1b809e;
 }
 
-.pin-warning {
+.pin-warning, .contact-warning {
     border-left-color: #fcd116;
 }
 
@@ -64,9 +78,10 @@ textarea {
     min-height: 34px;
 }
 
-.panel-fixed-height {
+.contact-list {
     height: 450px;
     overflow-y: scroll;
+    width: 100%;
 }
 
 .message {

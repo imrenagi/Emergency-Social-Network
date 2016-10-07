@@ -1,0 +1,76 @@
+extends base
+block append stylesheet
+  link(rel='stylesheet', href='/css/chat.css')
+  link(rel='stylesheet', href='/css/main.css')
+block append content
+  include navbar.jade
+  .container
+    .wrapper
+      navbar
+      .col-md-3
+        .contact-list.btn-group-vertical(role='group', aria-label='Vertical button group')
+            button.btn.btn-primary.text-left
+              i.fa.fa-volume-up
+              span  Announcement 
+              .float-right
+                .badge.badge-announce 1
+            button.btn.btn-default.contact-ok.text-left
+              .float-right
+                .badge.badge-contact 6
+              span  Imre Nagi
+            button.btn.btn-default.contact-warning.text-left 
+              .float-right
+                .badge.badge-contact 2
+              span  Xiangtian Li
+            button.btn.btn-default.contact-danger.text-left 
+              .float-right
+                .badge.badge-contact 3 
+              span Ashutosh Tadkase
+            button.btn.btn-default.contact-normal.text-left
+              span  Binglei Du
+      .col-md-7
+        .panel.panel-default
+          .panel-heading.bg-white  
+            i.fa.fa-comments-o
+            span  Chatting with ...
+            .float-right
+              span(style='color: #9ccb19') Imre Nagi 
+                i.fa.fa-check-circle
+          .panel-body
+            .chat-window
+              .message.message-r 
+                p Hello!
+              .message.message-s 
+                p Hi
+              .message.message-r 
+                p Welcome to Emergency Social Network!
+              .message.message-r 
+                p What are tasks for Iteration 1?
+              .message.message-s  
+                p Iteration 1: Architecture & Design
+                p Use Case: Join Community & Chat Publicly
+              .message.message-r
+                p :)
+              .message.message-r
+                p Thanks~
+              .message.message-r 
+                p Once you're done: Submit your deliverables by adding them to the team GitHub repo. Submit your deliverables by adding them to the team GitHub repo. 
+              .message.message-r 
+                p Does each team member separately submit the same team deliverables?
+              .message.message-s  
+                p Iteration 1: Architecture & Design
+                p Use Case: Join Community & Chat Publicly
+              .message.message-r
+                p Thanks~
+
+            br
+            .input-group
+              textarea.form-control.custom-control(rows="1", style='resize:none;' placeholder='Share something...')
+              span.input-group-addon.btn.btn-default
+                span.glyphicon.glyphicon-send
+
+block append script
+  script(src='https://code.jquery.com/jquery-1.10.2.min.js')
+  script(src='http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js')
+  script(src='/script/main.js')
+  script(src='/script/navigationBar.js')
