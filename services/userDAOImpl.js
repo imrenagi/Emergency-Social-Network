@@ -29,8 +29,13 @@ class userDAOImpl extends userDAO {
 		});
 	}
 
-	updateStatus(userId, status) {
-		var query = 'UPDATE users SET status = ' + status + ', status_updated_at = now() WHERE id = ' + userId;
+	updateStatus(userId, status, lat, long) {
+		let query = ''
+		if (lat === undefined || long === undefined) {
+			query = 'UPDATE users SET status = ' + status + ', status_updated_at = now() WHERE id = ' + userId;
+		} else {
+			query = 'UPDATE users SET status = ' + status + ', status_updated_at = now(), latitude = '+ lat +', longitude = '+long+' WHERE id = ' + userId;
+		}
 		return new Promise(function(resolve, reject) {
 				db.get().query(query, function(err, result) {
 					if (err) {
@@ -56,7 +61,5 @@ class userDAOImpl extends userDAO {
 		});
 	}
 
-
-	
 }
 module.exports = userDAOImpl;

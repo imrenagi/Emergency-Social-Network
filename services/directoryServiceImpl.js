@@ -74,8 +74,8 @@ class directoryServiceImpl extends directoryService {
 		})
 	}
 
-	updateUserStatus(id, status) {
-		return userDAO.updateStatus(id, status).then(function(results) {
+	updateUserStatus(id, status, lat, long) {
+		return userDAO.updateStatus(id, status, lat, long).then(function(results) {
 			return userDAO.getUser(id).then(function(result) {
 				var user = {
 					id: result.id,

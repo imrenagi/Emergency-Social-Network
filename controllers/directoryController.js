@@ -30,6 +30,8 @@ exports.getUser = function(req, res, next) {
 exports.updateStatus = function(req, res, next) {
 	var userId = req.params.id;
 	var status = req.param('status');
+	var lat = req.param('lat');
+	var long = req.param('long')
 	if (userId === undefined || status === undefined) {
 		var err = new Error();
 	  	err.status = 400;
@@ -39,7 +41,7 @@ exports.updateStatus = function(req, res, next) {
 		// var user = directoryService.updateUserStatus(userId);
 		// res.send(user);
 
-		directoryService.updateUserStatus(userId,status).then(function(result) {
+		directoryService.updateUserStatus(userId, status, lat, long).then(function(result) {
 				res.send(result);
 			}).catch(function(err) {
 				console.log(err)
