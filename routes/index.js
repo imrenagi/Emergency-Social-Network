@@ -21,5 +21,6 @@ router.use('/join', require('./join'));
 router.use('/directory', require('./directory'));
 router.use('/logout', require('./logout'));
 router.use('/message', require('./message'));
+router.use('/announcement', require('./announcement'));
 
 module.exports = router;
