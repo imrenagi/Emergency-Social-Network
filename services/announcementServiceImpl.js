@@ -16,11 +16,11 @@ class AnnouncementServiceImpl extends AnnouncementService {
 			lat: lat,
 			long: long
 		}
-		return announcementDAO.save(announcement);
+		return this.announcementDAO.save(announcement);
 	}
 
 	getByAnnouncementId(id) {
-		return announcementDAO.getByAnnouncementId(id).then(function(result) {
+		return this.announcementDAO.getByAnnouncementId(id).then(function(result) {
 			var announcement = {
 				id: result.id,
 				sender: {

@@ -13,15 +13,15 @@ class AnnouncementDAOImpl extends AnnouncementDAO {
 		var message = announcement.message;
 		var lat = announcement.lat;
 		var long = announcement.long;
-		var values = []; 
 
+		var values = []; 
 		let query = ''
 		if (lat === undefined || long === undefined) {
-			values = [senderId, message, lat, long];
-			query = 'INSERT INTO announcements (sender_id, message, latitude, longitude) values (?,?,?,?)';
-		} else {
 			values = [senderId, message];
 			query = 'INSERT INTO announcements (sender_id, message) values (?,?)';
+		} else {
+			values = [senderId, message, lat, long];
+			query = 'INSERT INTO announcements (sender_id, message, latitude, longitude) values (?,?,?,?)';
 		}
 		return new Promise(function(resolve, reject) {
 			db.get().query(query, values, function(err, result) {
@@ -37,14 +37,11 @@ class AnnouncementDAOImpl extends AnnouncementDAO {
 	}
 
 	getByAnnouncementId(id) {
-		let query = 'SELECT a.*, u.user_name from announcements a where id = ? left join users u';
+		let query = 'SELECT a.*, u.user_name from announcements a left join users u on u.id = a.sender_id where a.id = ?';
 		return new Promise(function(resolve, reject) {
 			db.get().query(query, id, function(err, results) {
 				if(err) reject(err);
-				else {
-					var announcement = JSON.stringify(results[0]);
-					resolve(announcement);
-				}
+				else resolve(results[0]);
 			});
 		})
 	}

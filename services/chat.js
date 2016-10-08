@@ -54,15 +54,18 @@ exports.onListening = function(socket) {
   	});
 
   	socket.on('post announcement', function(data) {
-  		if (senderId === undefined || message === undefined) {
+  		if (data.sender_id === undefined || data.message === undefined) {
 			var err = new Error();
 	  		err.status = 400;
 	  		err.message = ANNOUNCEMENT_ERROR.EMPTY_SENDER_OR_ANNOUNCEMENT;
 	  		return console.log(err);
 		}
-  		announcementService.save(data).then(function(result) {
-  			announcementService.getByAnnouncementId(result).then(function(result) {
+		
+  		announcementService.post(data.sender_id, data.message, data.lat, data.long).then(function(id) {
+  			announcementService.getByAnnouncementId(id).then(function(result) {
   				io.emmit('broadcast announcement', result);
+  			}).catch(function(err){
+  				return console.log(err)
   			});
   		}).catch(function(err) {
   			return console.log(err);
