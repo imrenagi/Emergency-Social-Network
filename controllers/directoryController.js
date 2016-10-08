@@ -1,12 +1,12 @@
 
-var direcotryServiceImpl = require('../services/directoryServiceImpl');
-var direcotryService = new direcotryServiceImpl();
+var directoryServiceImpl = require('../services/directoryServiceImpl');
+var directoryService = new directoryServiceImpl();
 
 
 exports.displayDirectory = function(req, res, next) {
 	var page = req.param('page') || 1;
 	var limit = req.param('limit') || 100;
-	direcotryService.getDirectory(page, limit).then(function(result) {
+	directoryService.getDirectory(page, limit).then(function(result) {
 		res.send(JSON.stringify(result));
 	})
 }
@@ -19,10 +19,32 @@ exports.getUser = function(req, res, next) {
 	  	err.message = "Invalid request!";
 	  	next(err);
 	} else {
-		direcotryService.getUser(userId).then(function(result) {
+		directoryService.getUser(userId).then(function(result) {
 			res.status(200).send(JSON.stringify(result))
 		}).catch(function(err) {
 			next(err)
 		}) 
+	}
+}
+
+exports.updateStatus = function(req, res, next) {
+	var userId = req.params.id;
+	var status = req.param('status');
+	var lat = req.param('lat');
+	var long = req.param('long')
+	if (userId === undefined || status === undefined) {
+		var err = new Error();
+	  	err.status = 400;
+	  	err.message = "Invalid request!";
+	  	next(err);
+	} else {
+		// var user = directoryService.updateUserStatus(userId);
+		// res.send(user);
+
+		directoryService.updateUserStatus(userId, status, lat, long).then(function(result) {
+				res.send(result);
+			}).catch(function(err) {
+				console.log(err)
+			})
 	}
 }
