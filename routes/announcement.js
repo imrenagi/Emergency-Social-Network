@@ -7,7 +7,7 @@ router.use(function(req, res, next){
   next();
 })
 
-// router.get('/', joinController.joinPage);
+router.get('/', announcementController.retrieveAnnouncements);
 //router.post('/', announcementController.createAnnouncement);
 
 

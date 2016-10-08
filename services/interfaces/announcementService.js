@@ -8,7 +8,12 @@ class announcementService {
 		if(this.post === undefined) {
 			throw("Must override!");
 		}
-
+		if(this.getAllAnnouncements === undefined) {
+			throw("Must override!");
+		}
+		if(this.getByAnnouncementId === undefined) {
+			throw Error("Must override!");
+		}
 	}
 }
 

@@ -8,6 +8,10 @@ class AnnouncementDAO {
 		if(this.getByAnnouncementId === undefined) {
 			throw Error("Must override!");
 		}
+		if(this.findAll === undefined) {
+			throw Error("Must override!");
+		}
+		
 	}
 }
 
