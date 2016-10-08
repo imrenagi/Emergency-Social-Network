@@ -6,8 +6,8 @@ class User {
 		this.user_name = user_name
 		this.online = online || 0
 		this.status = status || 0
-		this.location = null
-		this.status_updated_at = null;
+		this.location = undefined
+		this.status_updated_at = undefined;
 	}
 
 	getId() {

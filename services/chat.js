@@ -1,6 +1,13 @@
 var express = require('express')
-  , PublicMessageServiceImpl = require('./publicMessageServiceImpl');
+var PublicMessageServiceImpl = require('./publicMessageServiceImpl');
 var publicMessageService = new PublicMessageServiceImpl();
+
+var AnnouncementDAOImpl = require('./announcementDAOImpl');
+var announcementDAO = new AnnouncementDAOImpl();
+var AnnouncementServiceImpl = require('./announcementServiceImpl');
+var announcementService = new AnnouncementServiceImpl(announcementDAO);
+
+
 var io = require('../bin/www').io;
 
 const MESSAGE_ERROR = {
@@ -8,6 +15,11 @@ const MESSAGE_ERROR = {
 		UNKNOWN_ERROR: 'MessageError.UnknownError',
 		MYSQL_EXCEPTION: 'MessageError.InvalidMessageData'
     }
+
+const ANNOUNCEMENT_ERROR = {
+	EMPTY_SENDER_OR_ANNOUNCEMENT: 'Announcement.EmptySenderIdOrAnnouncement',
+	UNKNOWN_ERROR: 'Announcement.Unknown'
+}
 
 
 exports.onListening = function(socket) {
@@ -38,7 +50,23 @@ exports.onListening = function(socket) {
 			io.emit('broadcast message', JSON.stringify(results));
 		}).catch(function(err) {
 			return console.log(err);
-		})
+		});
+  	});
+
+  	socket.on('post announcement', function(data) {
+  		if (senderId === undefined || message === undefined) {
+			var err = new Error();
+	  		err.status = 400;
+	  		err.message = ANNOUNCEMENT_ERROR.EMPTY_SENDER_OR_ANNOUNCEMENT;
+	  		return console.log(err);
+		}
+  		announcementService.save(data).then(function(result) {
+  			announcementService.getByAnnouncementId(result).then(function(result) {
+  				io.emmit('broadcast announcement', result);
+  			});
+  		}).catch(function(err) {
+  			return console.log(err);
+  		});
   	});
 
 }
