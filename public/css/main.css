@@ -32,3 +32,6 @@
     border-radius: 8px;
     white-space: nowrap;
 }
+.dropdown-menu {
+  min-width:auto;
+}

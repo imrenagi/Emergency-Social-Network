@@ -20,9 +20,6 @@ nav.navbar.navbar-default.navbar-static-top
               | 
               | Help
           li
-            a(href='#')#user-setting
-              span.glyphicon.glyphicon-user
-          li
             a(href='/userDirectory')#user-directory
               span.glyphicon.glyphicon-list
               | 
@@ -32,8 +29,25 @@ nav.navbar.navbar-default.navbar-static-top
               span.fa.fa-users
               | 
               | Public Chat
-          li
-            a(href='#')#logout
-              span.fa.fa-sign-out
-              | 
-              | Logout
+          li.dropdown
+              a.dropdown-toggle(href='#', data-toggle='dropdown', role='button' aria-haspopup='true' aria-expanded='false')#user-setting
+                span.glyphicon.glyphicon-user
+              ul.dropdown-menu
+                li
+                  a(href='#', style='color: #9ccb19')#status-ok
+                    i.fa.fa-check-circle
+                    | &nbsp OK
+                li
+                  a(href='#', style='color: #fcd116')#status-help
+                    i.fa.fa-exclamation-triangle
+                    | &nbsp Help
+                li
+                  a(href='#', style='color: #ce4844')#status-emergency
+                    i.fa.fa-plus-square
+                    | &nbsp Emergency
+                li.divider(role="separator")
+                li.dropdown-header
+                  a(href='#')#logout
+                    span.fa.fa-sign-out
+                    | 
+                    | Logout
