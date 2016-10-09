@@ -32,6 +32,15 @@
     border-radius: 8px;
     white-space: nowrap;
 }
+.badge-note {
+    font-family: sans-serif;
+    position: absolute;
+    right: 2px;
+    top: 8px;
+    background: #1ABB9C !important;
+    border: 1px solid #1ABB9C !important;
+    color: #fff;
+}
 .dropdown-menu {
   min-width:auto;
 }

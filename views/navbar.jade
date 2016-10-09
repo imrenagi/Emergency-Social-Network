@@ -29,25 +29,29 @@ nav.navbar.navbar-default.navbar-static-top
               span.fa.fa-users
               | 
               | Public Chat
+          li
+            a(href='notification')
+              i.fa.fa-bell-o(style='font-size: 16px')
+                #notification.badge.badge-note 1
           li.dropdown
-              a.dropdown-toggle(href='#', data-toggle='dropdown', role='button' aria-haspopup='true' aria-expanded='false')#user-setting
-                span.glyphicon.glyphicon-user
-              ul.dropdown-menu
-                li
-                  a(href='#', style='color: #9ccb19')#status-ok
-                    i.fa.fa-check-circle
-                    | &nbsp OK
-                li
-                  a(href='#', style='color: #fcd116')#status-help
-                    i.fa.fa-exclamation-triangle
-                    | &nbsp Help
-                li
-                  a(href='#', style='color: #ce4844')#status-emergency
-                    i.fa.fa-plus-square
-                    | &nbsp Emergency
-                li.divider(role="separator")
-                li.dropdown-header
-                  a(href='#')#logout
-                    span.fa.fa-sign-out
-                    | 
-                    | Logout
+            a.dropdown-toggle(href='#', data-toggle='dropdown', role='button' aria-haspopup='true' aria-expanded='false')#user-setting
+              span.glyphicon.glyphicon-user
+            ul.dropdown-menu
+              li
+                a(href='#', style='color: #9ccb19')#status-ok
+                  i.fa.fa-check-circle
+                  | &nbsp OK
+              li
+                a(href='#', style='color: #fcd116')#status-help
+                  i.fa.fa-exclamation-triangle
+                  | &nbsp Help
+              li
+                a(href='#', style='color: #ce4844')#status-emergency
+                  i.fa.fa-plus-square
+                  | &nbsp Emergency
+              li.divider(role="separator")
+              li.dropdown-header
+                a(href='#')#logout
+                  span.fa.fa-sign-out
+                  | 
+                  | Logout
