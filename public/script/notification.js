@@ -2,25 +2,43 @@ var inputArea = '<div id="textarea" class="input-group"><textarea rows="1" style
 var panelHeading = document.getElementById('panel-heading');
 var loadMoreButton = $('<button class="btn btn-default btn-block loadmore" id="loadMoreButton" onclick="loadMoreMessages()"> Load More </button>');
 var limit = 30;
+var btnCls = ['contact-normal', 'contact-ok', 'contact-warning', 'contact-danger']
+
 function isCoordinator() {
     return true;
 }
 
+function getUsrInfo(id) {
+    var usrinfo = '';
+    $.ajax({
+        type: 'GET',
+        data: {},
+        url: '/directory/user/' + id,
+        dataType: "json",
+        async: false,
+        success: function(data) {
+            usrinfo = data; 
+        }
+    });
+    return usrinfo;
+}
+
 function getContacts() {
     data = [
-            {id: 1, username: 'Imre Nagi', unread: 6, status: 0}, 
-            {id: 2, username: 'Xiangtian Li', unread: 2, status: 1},
-            {id: 3, username: 'Ashutosh Tadkase', unread: 3, status: 2},
-            {id: 4, username: 'Binglei Du', unread: 0, status: 3}
+            {id: 1, user_name: 'Imre Nagi', unread: 6, status: 0}, 
+            {id: 2, user_name: 'Xiangtian Li', unread: 2, status: 1},
+            {id: 3, user_name: 'Ashutosh Tadkase', unread: 3, status: 2},
+            {id: 4, user_name: 'Binglei Du', unread: 0, status: 3}
         ];
+    var tab = panelHeading.getAttribute('tab');
+    if (tab != '0') {
+        var usrinfo = getUsrInfo(tab);
+        $('#contacts').append('<button id="btn-' + usrinfo.id + '" status="' + usrinfo.status +'" user="' + usrinfo.user_name + '" onclick="tabClicked(' + usrinfo.id + ')" class="btn btn-default ' + btnCls[usrinfo.status]+ ' text-left"><div class="float-right"><div class="badge badge-contact">' + '' +  '</div></div><span> ' + usrinfo.user_name + '</span></button>');
+    }
     for (var i = 0; i < data.length; i++) {
-        var btnCls = 'contact-normal';
-        switch (data[i].status) {
-            case 1: btnCls = 'contact-ok'; break;
-            case 2: btnCls = 'contact-warning'; break;
-            case 3: btnCls = 'contact-danger';
-        }
-        $('#contacts').append('<button id="btn-' + data[i].id + '" status="' + data[i].status +'" user="' + data[i].username + '" onclick="tabClicked(' + data[i].id + ')" class="btn btn-default ' + btnCls + ' text-left"><div class="float-right"><div class="badge badge-contact">' + ((data[i].unread > 0) ? data[i].unread : '') +  '</div></div><span> ' + data[i].username + '</span></button>');
+        if (data[i].id == tab) 
+            continue;
+        $('#contacts').append('<button id="btn-' + data[i].id + '" status="' + data[i].status +'" user="' + data[i].user_name + '" onclick="tabClicked(' + data[i].id + ')" class="btn btn-default ' + btnCls[data[i].status] + ' text-left"><div class="float-right"><div class="badge badge-contact">' + ((data[i].unread > 0) ? data[i].unread : '') +  '</div></div><span> ' + data[i].user_name + '</span></button>');
     }
 }
 
@@ -66,6 +84,7 @@ function getChatWindow() {
     else {
         $('#textarea').show();
         var button = document.getElementById('btn-'+tab);
+        console.log();
         var name = button.getAttribute('user');
         var color = '#';
         var icon = 'fa-minus';
