@@ -15,7 +15,7 @@ var format = function(result) {
 		timestamp: dateHelper.convertDateToTimestamp(result.created_at),
 		location: {
 			lat: result.latitude,
-			long: result.longtitude
+			long: result.longitude
 		}
 	}
 	return announcement;

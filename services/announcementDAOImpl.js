@@ -53,7 +53,6 @@ class AnnouncementDAOImpl extends AnnouncementDAO {
 		} else {
 			query = 'SELECT a.*, u.user_name from announcements a left join users u on u.id = a.sender_id where a.id >='+ (lastId-limit) + ' and a.id < ' + lastId + ' order by a.id desc';
 		}
-		console.log(query);
 		return new Promise(function(resolve, reject) {
 			db.get().query(query, function(err, results) {
 				if (err) reject(err);

@@ -63,7 +63,7 @@ exports.onListening = function(socket) {
 		
   		announcementService.post(data.sender_id, data.message, data.lat, data.long).then(function(id) {
   			announcementService.getByAnnouncementId(id).then(function(result) {
-  				io.emmit('broadcast announcement', result);
+  				io.emit('broadcast announcement', result);
   			}).catch(function(err){
   				return console.log(err)
   			});

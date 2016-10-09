@@ -12,6 +12,7 @@ function showStatus() {
     }
     $('#status').replaceWith(status);
 }
+
 $(document).ready(function(){
     $('#user-setting').append(' ' + localStorage['USER_NAME'] + ' &nbsp<i id="status"></i> <span class="caret"></span>');
     showStatus();

@@ -9,6 +9,10 @@ router.get('/userDirectory', function(req, res) {
   res.render('directory', {title: 'Public Wall - Emergency Social Network'});
 });
 
+router.get('/notification', function(req, res) {
+  res.render('privateChat', {title: 'Notification - Emergency Social Network', tab: 0});
+});
+
 router.get('/publicChat', function(req, res) {
   res.render('publicChat', {title: 'Public Wall - Emergency Social Network'});
 });
