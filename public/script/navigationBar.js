@@ -24,7 +24,7 @@ function updateUserStatus(status) {
         data: {
             status: status
         },
-        url: 'directory/user/'+localStorage['ID']+'/status',
+        url: '/directory/user/'+localStorage['ID']+'/status',
         success: function() {
             localStorage['STATUS'] = status;
             showStatus();
