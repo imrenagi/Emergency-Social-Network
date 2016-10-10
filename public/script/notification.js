@@ -17,7 +17,7 @@ function getUsrInfo(id) {
         dataType: "json",
         async: false,
         success: function(data) {
-            usrinfo = data; 
+            usrinfo = data;
         }
     });
     return usrinfo;
@@ -33,7 +33,9 @@ function getContacts() {
     var tab = panelHeading.getAttribute('tab');
     if (tab != '0') {
         var usrinfo = getUsrInfo(tab);
-        $('#contacts').append('<button id="btn-' + usrinfo.id + '" status="' + usrinfo.status +'" user="' + usrinfo.user_name + '" onclick="tabClicked(' + usrinfo.id + ')" class="btn btn-default ' + btnCls[usrinfo.status]+ ' text-left"><div class="float-right"><div class="badge badge-contact">' + '' +  '</div></div><span> ' + usrinfo.user_name + '</span></button>');
+        if (usrinfo) {
+            $('#contacts').append('<button id="btn-' + usrinfo.id + '" status="' + usrinfo.status +'" user="' + usrinfo.user_name + '" onclick="tabClicked(' + usrinfo.id + ')" class="btn btn-default ' + btnCls[usrinfo.status]+ ' text-left"><div class="float-right"><div class="badge badge-contact">' + '' +  '</div></div><span> ' + usrinfo.user_name + '</span></button>');
+        }
     }
     for (var i = 0; i < data.length; i++) {
         if (data[i].id == tab) 
