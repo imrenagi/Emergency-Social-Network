@@ -44,6 +44,22 @@ function getContacts() {
     }
 }
 
+function retrievePreviousMsgHistory(convId, lastId, limit){
+    $.get('/messages/private/'+(convId)+'?last_id='+lastId+'&limit='+(limit), function(data) {
+            var messages = '';
+            for (var i = 0; i < data.length; i++) {
+                messages += formatPrivateMessage(data[i]);
+            }
+            $('#messages').append(messages);
+            if (data.length == limit) {
+                $('.loadmore').append(loadMoreButton);
+            } else {
+                loadMoreButton.remove();
+            }
+        });
+
+}
+
 function formatAnnouncement(data) {
     var lat = data.location.lat, long = data.location.long;
     var date = new Date(moment(data.timestamp*1000).format('MM/DD/YYYY hh:mm:ss A') + ' UTC');
