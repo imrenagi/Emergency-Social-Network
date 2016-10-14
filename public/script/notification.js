@@ -1,7 +1,7 @@
 var inputArea = '<div id="textarea" class="input-group"><textarea rows="1" style="resize:none;" placeholder="Share something..." class="form-control custom-control"></textarea><span class="input-group-addon btn btn-default"><span class="glyphicon glyphicon-send"></span></span></div>';
 var panelHeading = document.getElementById('panel-heading');
 var loadMoreButton = $('<button class="btn btn-default btn-block loadmore" id="loadMoreButton" onclick="loadMoreMessages()"> Load More </button>');
-var limit = 30;
+var limit = 10;
 var btnCls = ['contact-normal', 'contact-ok', 'contact-warning', 'contact-danger']
 
 function isCoordinator() {
@@ -33,7 +33,7 @@ function getContacts() {
     var tab = panelHeading.getAttribute('tab');
     if (tab != '0') {
         var usrinfo = getUsrInfo(tab);
-        if (usrinfo) {
+        if (usrinfo && usrinfo.id != localStorage['ID']) {
             $('#contacts').append('<button id="btn-' + usrinfo.id + '" status="' + usrinfo.status +'" user="' + usrinfo.user_name + '" onclick="tabClicked(' + usrinfo.id + ')" class="btn btn-default ' + btnCls[usrinfo.status]+ ' text-left"><div class="float-right"><div class="badge badge-contact">' + '' +  '</div></div><span> ' + usrinfo.user_name + '</span></button>');
         }
     }
@@ -42,6 +42,12 @@ function getContacts() {
             continue;
         $('#contacts').append('<button id="btn-' + data[i].id + '" status="' + data[i].status +'" user="' + data[i].user_name + '" onclick="tabClicked(' + data[i].id + ')" class="btn btn-default ' + btnCls[data[i].status] + ' text-left"><div class="float-right"><div class="badge badge-contact">' + ((data[i].unread > 0) ? data[i].unread : '') +  '</div></div><span> ' + data[i].user_name + '</span></button>');
     }
+}
+
+function formatPrivateMessage(data) {
+    var cls = (data.id.sender_id == localStorage['ID']) ? 'message-s' : 'message-r';
+    var html = '<div class="message ' + cls + '"><p>' + data.text + '</p></div>';
+    return html;
 }
 
 function retrievePreviousMsgHistory(convId, lastId, limit){
@@ -57,8 +63,6 @@ function retrievePreviousMsgHistory(convId, lastId, limit){
                 loadMoreButton.remove();
             }
         });
-
-}
 
 function formatAnnouncement(data) {
     var lat = data.location.lat, long = data.location.long;
