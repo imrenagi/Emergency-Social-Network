@@ -1,12 +1,13 @@
 var inputArea = '<div id="textarea" class="input-group"><textarea rows="1" style="resize:none;" placeholder="Share something..." class="form-control custom-control"></textarea><span class="input-group-addon btn btn-default"><span class="glyphicon glyphicon-send"></span></span></div>';
 var panelHeading = document.getElementById('panel-heading');
-var loadMoreButton = $('<button class="btn btn-default btn-block loadmore" id="loadMoreButton" onclick="loadMoreMessages()"> Load More </button>');
+
 var limit = 10;
 var btnCls = ['contact-normal', 'contact-ok', 'contact-warning', 'contact-danger']
 
 function isCoordinator() {
     return true;
 }
+
 
 function getUsrInfo(id) {
     var usrinfo = '';
@@ -21,6 +22,18 @@ function getUsrInfo(id) {
         }
     });
     return usrinfo;
+}
+
+function loadMoreMessages(convId){
+    if(convId == 0)
+    {
+        retrieveAnnouncement();
+    }
+    else
+    {
+        retrievePreviousMsgHistory(convId, lastId, limit);
+    }
+
 }
 
 function getContacts() {
@@ -58,6 +71,7 @@ function retrievePreviousMsgHistory(convId, lastId, limit){
             }
             $('#messages').append(messages);
             if (data.length == limit) {
+                var loadMoreButton = $('<button class="btn btn-default btn-block loadmore" id="loadMoreButton" onclick="loadMoreMessages('+convId+')"> Load More </button>');
                 $('.loadmore').append(loadMoreButton);
             } else {
                 loadMoreButton.remove();
@@ -86,6 +100,7 @@ function retrieveAnnouncement() {
             }
             $('#messages').prepend(announcements);
             if (data.announcements.length == limit) {
+                var loadMoreButton = $('<button class="btn btn-default btn-block loadmore" id="loadMoreButton" onclick="loadMoreMessages(0)"> Load More </button>');
                 $('.loadmore').append(loadMoreButton);
             } else {
                 loadMoreButton.remove();
