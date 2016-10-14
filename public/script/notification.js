@@ -70,13 +70,14 @@ function retrievePreviousMsgHistory(convId, lastId, limit){
                 messages += formatPrivateMessage(data[i]);
             }
             $('#messages').append(messages);
+            var loadMoreButton = $('<button class="btn btn-default btn-block loadmore" id="loadMoreButton" onclick="loadMoreMessages('+convId+')"> Load More </button>');
             if (data.length == limit) {
-                var loadMoreButton = $('<button class="btn btn-default btn-block loadmore" id="loadMoreButton" onclick="loadMoreMessages('+convId+')"> Load More </button>');
                 $('.loadmore').append(loadMoreButton);
             } else {
                 loadMoreButton.remove();
             }
         });
+}
 
 function formatAnnouncement(data) {
     var lat = data.location.lat, long = data.location.long;
@@ -99,8 +100,8 @@ function retrieveAnnouncement() {
                 announcements += formatAnnouncement(data.announcements[i]);
             }
             $('#messages').prepend(announcements);
+            var loadMoreButton = $('<button class="btn btn-default btn-block loadmore" id="loadMoreButton" onclick="loadMoreMessages(0)"> Load More </button>');
             if (data.announcements.length == limit) {
-                var loadMoreButton = $('<button class="btn btn-default btn-block loadmore" id="loadMoreButton" onclick="loadMoreMessages(0)"> Load More </button>');
                 $('.loadmore').append(loadMoreButton);
             } else {
                 loadMoreButton.remove();
