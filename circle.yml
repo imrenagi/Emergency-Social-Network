@@ -39,7 +39,15 @@ test:
     - grunt circleci
 
 deployment:
-  staging:
-    branch: develop
+  production:
+    branch: master
     heroku:
       appname: esn-f16-sa2
+  development:
+    branch: develop
+    heroku:
+      appname: esn-f16-sa2-staging
+  testing:
+    branch: feature/heroku
+    heroku:
+      appname: esn-f16-sa2-test

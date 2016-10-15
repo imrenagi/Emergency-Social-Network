@@ -4,7 +4,8 @@
   "description": "Emergency Social Network",
   "private": true,
   "scripts": {
-    "preinstall": "./scripts/preinstall.sh",
+    "preinstall": "npm install bower -g && npm install forever -g && npm install promise -g && sudo npm install -g grunt-cli mocha istanbul",
+    "postinstall": "bower install",
     "start": "forever -w bin/www",
     "test": "grunt test"
   },
