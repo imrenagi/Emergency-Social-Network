@@ -14,8 +14,6 @@ checkout:
    # Sometimes git might ask for your identity and block the build. Add one valid account here:
     - git config user.email "inagi@andrew.cmu.edu" 
     - git config user.name "Imre Nagi"
-   # Merge with master on CircleCI before running the tests.
-    # - git rebase origin/master
 
 database:
   override:
