@@ -1,8 +1,13 @@
 var express = require('express')
   , PublicMessageServiceImpl = require('../services/publicMessageServiceImpl');
+
+var PrivateMessageDAOImpl = require('../services/privateMessageDAOImpl');
+var privateMessageDAO = new PrivateMessageDAOImpl();  
 var PrivateMessageServiceImpl = require('../services/privateMessageServiceImpl');
+var privateMessageService = new PrivateMessageServiceImpl(privateMessageDAO);
+
 var publicMessageService = new PublicMessageServiceImpl();
-var privateMessageService = new PrivateMessageServiceImpl();
+
 
 const MESSAGE_ERROR = {
         EMPTY_SENDER_OR_MESSAGE: 'MessageError.EmptySenderNameOrMessage',
@@ -46,7 +51,20 @@ exports.sendMessage = function(req, res, next) {
 		})
 }
 
+exports.retrieveAllConversations = function(req, res, next) {
+	var userId = req.params.user_id;
+	privateMessageService.getAllConversations(userId);
+}
+
 exports.retrieveAllPrivateMessages = function(req, res, next) {
-	var conversationID = req.params.conversation_id;
+	var conversationId = req.params.conversation_id;
+	var lastId = req.param('last_id') || -1;
+  	var limit = req.param('limit') || 30;
+  	privateMessageService.getAllPrivateMessages(conversationId, lastId, limit).then(function(results) {
+	  		console.log(results);
+	      	res.send(JSON.stringify(results));
+	    }).catch(function(err) {
+	      res.send(err);
+	    });
 }
 

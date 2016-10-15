@@ -16,8 +16,8 @@ CREATE TABLE IF NOT EXISTS announcements (
 
 CREATE TABLE IF NOT EXISTS conversations (
 	id INT UNSIGNED AUTO_INCREMENT NOT NULL PRIMARY KEY,
-	sender_id INT UNSIGNED NOT NULL,
-	receiver_id INT UNSIGNED NOT NULL,
+	user1_id INT UNSIGNED NOT NULL,
+	user2_id INT UNSIGNED NOT NULL,
 	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
 	updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP,
 	deleted_at TIMESTAMP NULL
@@ -27,6 +27,8 @@ CREATE TABLE IF NOT EXISTS private_messages (
 	id INT UNSIGNED AUTO_INCREMENT NOT NULL PRIMARY KEY,
 	conversation_id INT UNSIGNED NOT NULL,
 	message TEXT NOT NULL,
+	sender_id INT UNSIGNED NOT NULL,
+	receiver_id INT UNSIGNED NOT NULL,
 	message_status VARCHAR(255) NULL,
 	latitude FLOAT NULL,
 	longitude FLOAT NULL,
@@ -36,3 +38,5 @@ CREATE TABLE IF NOT EXISTS private_messages (
 	FOREIGN KEY fk_conversation(conversation_id) REFERENCES users(id)
 );
 
+alter table private_messages add read_flag TINYINT DEFAULT 0;
+ALTER TABLE private_messages MODIFY message_status TINYINT DEFAULT 0;
