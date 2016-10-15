@@ -34,8 +34,3 @@ deployment:
     branch: develop
     heroku:
       appname: esn-f16-sa2-staging
-  testing:
-    branch: feature/heroku
-    heroku:
-      appname: esn-f16-sa2-test
-      
