@@ -49,12 +49,10 @@ deployment:
       appname: esn-f16-sa2-staging
   testing:
     branch: feature/heroku
-    heroku:
-      appname: esn-f16-sa2-test
     commands:
-      - heroku maintenance:on
-      - heroku scale worker=0
-      - run db-migrate up
-      - heroku scale worker=x
-      - heroku maintenance:off
+      - heroku maintenance:on --app esn-f16-sa2-test
+      - heroku scale worker=0 --app esn-f16-sa2-test
+      - run db-migrate up --app esn-f16-sa2-test
+      - heroku scale worker=x --app esn-f16-sa2-test
+      - heroku maintenance:off --app esn-f16-sa2-test
 
