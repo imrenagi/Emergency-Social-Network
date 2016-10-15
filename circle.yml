@@ -14,23 +14,10 @@ checkout:
    # Sometimes git might ask for your identity and block the build. Add one valid account here:
     - git config user.email "inagi@andrew.cmu.edu" 
     - git config user.name "Imre Nagi"
-   # Merge with master on CircleCI before running the tests.
-    # - git rebase origin/master
 
 database:
   override:
     - mysql -u ubuntu circle_test < ./sql/V1__create_users_and_public_messages_table.sql
-#    - mysql -u ubuntu circle_test < ./sql/V2__interation2.sql
-
-# install dependencies
-dependencies:
-  override:
-    - npm install bower -g
-    - npm install forever -g
-    - npm install promise -g
-    - npm install -g grunt-cli mocha istanbul
-    - npm install
-    - bower install
 
 # run tests
 test:
@@ -39,7 +26,11 @@ test:
     - grunt circleci
 
 deployment:
-  staging:
-    branch: develop
+  production:
+    branch: master
     heroku:
       appname: esn-f16-sa2
+  development:
+    branch: develop
+    heroku:
+      appname: esn-f16-sa2-staging
