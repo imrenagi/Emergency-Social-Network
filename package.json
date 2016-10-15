@@ -7,7 +7,8 @@
     "preinstall": "./scripts/preinstall.sh",
     "postinstall": "./scripts/postinstall.sh",
     "start": "forever -w bin/www",
-    "test": "grunt test"
+    "test": "grunt test",
+    "prestart": "db-migrate up"
   },
   "author": "Imre Nagi <inagi@andrew.cmu.edu>, Ashutosh T <atadkase@andrew.cmu.edu>, Binglei Du <bdu@andrew.cmu.edu>, Xiangtian Li <xiangti1@andrew.cmu.edu>",
   "dependencies": {
