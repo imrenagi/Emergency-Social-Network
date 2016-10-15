@@ -4,6 +4,8 @@
   "description": "Emergency Social Network",
   "private": true,
   "scripts": {
+    "preinstall": "scripts/preinstall.sh",
+    "postinstall": "scripts/postinstall.sh",
     "start": "forever -w bin/www",
     "test": "grunt test"
   },
