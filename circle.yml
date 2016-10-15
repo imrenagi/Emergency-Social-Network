@@ -20,7 +20,7 @@ checkout:
 database:
   override:
     - mysql -u ubuntu circle_test < ./sql/V1__create_users_and_public_messages_table.sql
-    - mysql -u ubuntu circle_test < ./sql/V2__interation2.sql
+#    - mysql -u ubuntu circle_test < ./sql/V2__interation2.sql
 
 # install dependencies
 dependencies:
