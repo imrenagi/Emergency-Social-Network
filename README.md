@@ -21,6 +21,8 @@ export DB_PASSWORD="<your_db_password>"
 npm install bower -g
 npm install forever -g
 npm install promise -g
+npm install db-migrate -g
+npm install db-migrate-mysql -g
 sudo npm install -g grunt-cli mocha istanbul
 ```
 

@@ -1,0 +1,26 @@
+{
+    "dev": {
+	    "host": "104.236.174.214",
+	    "user": "esnuser",
+	    "password" : "esnuser",
+	    "database": "esn_db_test",
+	    "driver": "mysql",
+	    "multipleStatements": true
+  	},
+  	"staging": {
+	    "host": { "ENV" : "DB_HOST" },
+	    "user": { "ENV" : "DB_USER" },
+	    "password" : { "ENV" : "DB_PASSWORD" },
+	    "database": { "ENV" : "DB_NAME" },
+	    "driver": "mysql",
+	    "multipleStatements": true
+  	},
+  	"prod": {
+	    "host": { "ENV" : "DB_HOST" },
+	    "user": { "ENV" : "DB_USER" },
+	    "password" : { "ENV" : "DB_PASSWORD" },
+	    "database": { "ENV" : "DB_NAME" },
+	    "driver": "mysql",
+	    "multipleStatements": true
+  	}
+}
