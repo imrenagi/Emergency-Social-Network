@@ -40,6 +40,8 @@ deployment:
     branch: feature/heroku
     commands:
       - heroku maintenance:on --app esn-f16-sa2-test
+      - heroku scale worker=0 --app esn-f16-sa2-test
       - db-migrate up --app esn-f16-sa2-test
+      - heroku scale worker=x --app esn-f16-sa2-test
       - heroku maintenance:off --app esn-f16-sa2-test
 
