@@ -45,3 +45,7 @@ exports.sendMessage = function(req, res, next) {
 		})
 }
 
+exports.retrieveAllPrivateMessages = function(req, res, next) {
+	var conversationID = req.params.conversation_id;
+}
+

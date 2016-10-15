@@ -11,6 +11,7 @@ router.use(function(req, res, next){
 })
 
 router.get('/public', messageController.retrieveAllPublicMessages);
-//router.post('/public', messageController.sendMessage);
+
+router.get('/private/conversation/:conversation_id', messageController.retrieveAllPrivateMessages);
 
 module.exports = router;
