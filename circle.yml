@@ -20,17 +20,6 @@ checkout:
 database:
   override:
     - mysql -u ubuntu circle_test < ./sql/V1__create_users_and_public_messages_table.sql
-#    - mysql -u ubuntu circle_test < ./sql/V2__interation2.sql
-
-# install dependencies
-# dependencies:
-#   override:
-#     - npm install bower -g
-#     - npm install forever -g
-#     - npm install promise -g
-#     - npm install -g grunt-cli mocha istanbul
-#     - npm install
-#     - bower install
 
 # run tests
 test:
