@@ -51,6 +51,6 @@ deployment:
     branch: feature/heroku
     commands:
       - heroku maintenance:on --app esn-f16-sa2-test
-      - run db-migrate up --app esn-f16-sa2-test
+      - db-migrate up --app esn-f16-sa2-test
       - heroku maintenance:off --app esn-f16-sa2-test
 
