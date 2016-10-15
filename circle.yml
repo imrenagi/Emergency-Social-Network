@@ -36,8 +36,6 @@ deployment:
       appname: esn-f16-sa2-staging
   testing:
     branch: feature/heroku
-    commands:
-      - heroku maintenance:on --app esn-f16-sa2-test
-      - db-migrate up --app esn-f16-sa2-test
-      - heroku maintenance:off --app esn-f16-sa2-test
-
+    heroku:
+      appname: esn-f16-sa2-test
+      
