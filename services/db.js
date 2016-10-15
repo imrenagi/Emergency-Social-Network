@@ -1,6 +1,6 @@
 var mysql = require('mysql');
 
-var DB = 'esn_db', TEST_DB = 'esn_test_db'
+var DB = process.env.DB_NAME , TEST_DB = 'esn_test_db'
 
 exports.MODE_TEST = 'mode_test'
 exports.MODE_PRODUCTION = 'mode_production'
@@ -12,9 +12,9 @@ var state = {
 
 exports.connect = function(mode, done) {
 	state.pool = mysql.createPool({
-		host: process.env.DB_HOST,
-		user: process.env.DB_USER,
-		password: process.env.DB_PASSWORD,
+		host: process.env.DB_HOST || 'localhost',
+		user: process.env.DB_USER || 'root',
+		password: process.env.DB_PASSWORD || '',
 		database: mode === exports.MODE_PRODUCTION ? DB : TEST_DB
 	})
 	state.mode = mode
