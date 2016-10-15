@@ -1,7 +1,8 @@
 var express = require('express')
   , PublicMessageServiceImpl = require('../services/publicMessageServiceImpl');
-
+var PrivateMessageServiceImpl = require('../services/privateMessageServiceImpl');
 var publicMessageService = new PublicMessageServiceImpl();
+var privateMessageService = new PrivateMessageServiceImpl();
 
 const MESSAGE_ERROR = {
         EMPTY_SENDER_OR_MESSAGE: 'MessageError.EmptySenderNameOrMessage',
