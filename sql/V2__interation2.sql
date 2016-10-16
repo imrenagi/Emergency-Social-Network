@@ -35,7 +35,7 @@ CREATE TABLE IF NOT EXISTS private_messages (
 	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
 	updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP,
 	deleted_at TIMESTAMP NULL,
-	FOREIGN KEY fk_conversation(conversation_id) REFERENCES users(id)
+	FOREIGN KEY fk_conversation(conversation_id) REFERENCES conversations(id)
 );
 
 alter table private_messages add read_flag TINYINT DEFAULT 0;

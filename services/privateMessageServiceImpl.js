@@ -78,8 +78,15 @@ class PrivateMessageServiceImpl extends PrivateMessageService {
 		});
 	}
 
-	storePrivateMessage(senderId, receiverId, conversationId, message, messageStatus, latitude, longitude) {
-		
+	createConversation(senderId, receiverId) {
+		return this.privateMessageDAO.createConversation(senderId, receiverId);
+	}
+
+
+	storePrivateMessage(senderId, senderName, receiverId, receiverName, conversationId, message, messageStatus, latitude, longitude) {
+		let values = [senderId, senderName, receiverId, receiverName, conversationId, message, messageStatus, latitude, longitude];
+		return this.privateMessageDAO.storePrivateMessage(values).then(function(result) { 
+		});
 	}
 }
 

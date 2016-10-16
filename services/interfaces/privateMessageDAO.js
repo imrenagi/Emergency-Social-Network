@@ -14,6 +14,9 @@ class PrivateMessageDAO {
 		if(this.createConversation === undefined) {
 			throw new Error('Must override!');
 		}
+		if(this.storePrivateMessage === undefined) {
+			throw new Error('Must override!');
+		}
 	}
 }
 

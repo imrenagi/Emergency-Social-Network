@@ -20,7 +20,8 @@ var users = new Map();
 const MESSAGE_ERROR = {
         EMPTY_SENDER_OR_MESSAGE: 'MessageError.EmptySenderNameOrMessage',
 		UNKNOWN_ERROR: 'MessageError.UnknownError',
-		MYSQL_EXCEPTION: 'MessageError.InvalidMessageData'
+		MYSQL_EXCEPTION: 'MessageError.InvalidMessageData',
+		EMPTY_SENDER_OR_RECEIVER_MESSAGE: 'MessageError.EmptySenderOrReceiverOrMessage'
     }
 
 const ANNOUNCEMENT_ERROR = {
@@ -28,11 +29,16 @@ const ANNOUNCEMENT_ERROR = {
 	UNKNOWN_ERROR: 'Announcement.Unknown'
 }
 
+var sendPrivateMessage = function(privateMessage) {
+	console.log(privateMessage);
+}
+
 
 exports.onListening = function(socket) {
 
-	socket.on('connect', function(data) {
+	socket.on('new socket', function(data) {
 		socket.userId = data.user_id;
+		socket.userName = data.user_name;
 		users.set(socket.userId, socket);
 	});
 
@@ -86,31 +92,34 @@ exports.onListening = function(socket) {
 
   	socket.on('send private message', function(data) {
   		var senderId = socket.userId;
+  		var senderName = socket.userName;
   		var receiverId = data.receiver_id;
-  		var conversationId = data.conversation_id || null;
+  		var receiverName = data.receiver_name;
+  		var conversationId = data.conversation_id;
   		var message = data.message;
   		var messageStatus = data.message_status || 0;
   		var latitude = data.latitude || null;
 		var longitude = data.longitude || null;
 
-		if (senderId === undefined || message === undefined || receiverId === undefined) {
+		if(senderId === undefined || message === undefined || receiverId === undefined) {
 			var err = new Error();
 	  		err.status = 400;
-	  		err.message = MESSAGE_ERROR.EMPTY_SENDER_OR_MESSAGE;
+	  		err.message = MESSAGE_ERROR.EMPTY_SENDER_OR_RECEIVER_MESSAGE;
 	  		return console.log(err);
 		}
 
-		privteMessageService.storePrivateMessage(senderId, receiverId, conversationId, message, messageStatus, latitude, longitude);
-
-
-  		if(users.has(receiverId)) {
-  			var receiverSocket = users.get(receiverId);
-  			receiverSocket.emit('receive private message', message);
-  		}
-
-
+		if(conversationId === undefined) {
+			privteMessageService.createConversation(senderId, receiverId).then(function(results) {
+				conversationId = results;
+				console.log(conversationId);
+				privteMessageService.storePrivateMessage(senderId, senderName, receiverId, receiverName, conversationId, message, messageStatus, latitude, longitude)
+				.then(sendPrivateMessage(privateMessage));
+			});
+		}
+		else {
+			privteMessageService.storePrivateMessage(senderId, receiverId, conversationId, message, messageStatus, latitude, longitude)
+			.then(sendPrivateMessage(results));
+		}  		
   	});
-
-
 
 }
