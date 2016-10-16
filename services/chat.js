@@ -29,11 +29,6 @@ const ANNOUNCEMENT_ERROR = {
 	UNKNOWN_ERROR: 'Announcement.Unknown'
 }
 
-var sendPrivateMessage = function(privateMessage) {
-	console.log(privateMessage);
-}
-
-
 exports.onListening = function(socket) {
 
 	socket.on('new socket', function(data) {
@@ -113,13 +108,29 @@ exports.onListening = function(socket) {
 				conversationId = results;
 				console.log(conversationId);
 				privteMessageService.storePrivateMessage(senderId, senderName, receiverId, receiverName, conversationId, message, messageStatus, latitude, longitude)
-				.then(sendPrivateMessage(privateMessage));
+				.then(function(privateMessage) {
+					console.log(privateMessage);
+					if(users.has(receiverId)) {
+						users.get(receiverId).emit('receive private message', privateMessage);
+					}
+				}).catch(function(err) {
+					return console.log(err);
+				});
+			}).catch(function(err) {
+				return console.log(err);
 			});
 		}
 		else {
-			privteMessageService.storePrivateMessage(senderId, receiverId, conversationId, message, messageStatus, latitude, longitude)
-			.then(sendPrivateMessage(results));
-		}  		
+			privteMessageService.storePrivateMessage(senderId, senderName, receiverId, receiverName, conversationId, message, messageStatus, latitude, longitude)
+			.then(function(privateMessage) {
+				console.log(privateMessage);
+				if(users.has(receiverId)) {
+					users.get(receiverId).emit('receive private message', privateMessage);
+				}
+			}).catch(function(err) {
+				return console.log(err);
+			});
+		} 		
   	});
 
 }

@@ -85,7 +85,23 @@ class PrivateMessageServiceImpl extends PrivateMessageService {
 
 	storePrivateMessage(senderId, senderName, receiverId, receiverName, conversationId, message, messageStatus, latitude, longitude) {
 		let values = [senderId, senderName, receiverId, receiverName, conversationId, message, messageStatus, latitude, longitude];
-		return this.privateMessageDAO.storePrivateMessage(values).then(function(result) { 
+		return this.privateMessageDAO.storePrivateMessage(values).then(function(result) {
+			var res = JSON.parse(JSON.stringify(result));
+			var privateMessage =  {	sender_id: result.sender_id,
+									sender_name: result.sender_name,
+    								receiver_id: result.receiver_id,
+    								created_at: dateHelper.convertDateToTimestamp(result.created_at),
+    								conversation_id: result.conversation_id,
+    								message: result.message,
+   							 		message_status: result.message_status,
+   							 		location: {
+   							 			lat: result.latitude,
+   							 			long: result.longitude
+   							 		}
+    							}
+			return privateMessage; 
+		}).catch(function(err) {
+			return console.log(err);
 		});
 	}
 }

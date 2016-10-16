@@ -68,21 +68,24 @@ class PrivateMessageDAOImpl extends PrivateMessageDAO {
 
 	storePrivateMessage(values) {
 		let query = 
-		'INSERT INTO private_messages (sender_id, sender_name, receiver_id, receiver_name, conversation_id, message, message_status, latitude, longitude) values (?, ?, ?, ?, ?, ?, ?, ?, ?)';
+		'INSERT INTO private_messages (sender_id, sender_name, receiver_id, receiver_name, conversation_id, message, message_status, latitude, longitude, read_flag) values (?, ?, ?, ?, ?, ?, ?, ?, ?, 0)';
 		return new Promise(function(resolve, reject) {
 			db.get().query(query, values, function(err, results) {
 				if(err) {
+					console.log(err);
 					reject(err);
 				}
 				else {
 					resolve(results.insertId);
 				}
 			});
-		}).then(function(id) {
+		}).then(function(result) {
 			return new Promise(function(resolve, reject) {
 				let query = 'SELECT * FROM private_messages WHERE id = ?';
-				db.get().query(query, id, function(err, results) {
+				console.log(result);
+				db.get().query(query, result, function(err, results) {
 					if(err) {
+						console.log(err);
 						reject(err);
 					}
 					else {
