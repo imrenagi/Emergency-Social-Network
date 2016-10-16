@@ -51,6 +51,10 @@ class PrivateMessageDAOImpl extends PrivateMessageDAO {
 			})
 		})
 	}
+
+	createConversation(user1, user2) {
+		
+	}
 }
 
 module.exports = PrivateMessageDAOImpl;

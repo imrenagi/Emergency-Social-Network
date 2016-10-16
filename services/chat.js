@@ -6,9 +6,16 @@ var AnnouncementDAOImpl = require('./announcementDAOImpl');
 var announcementDAO = new AnnouncementDAOImpl();
 var AnnouncementServiceImpl = require('./announcementServiceImpl');
 var announcementService = new AnnouncementServiceImpl(announcementDAO);
+var PrivateMessageDAOImpl = require('./privateMessageDAOImpl');
+var privateMessageDAO = new PrivateMessageDAOImpl();
+var PrivateMessageServiceImpl = require('./privateMessageServiceImpl');
+var privteMessageService = new PrivateMessageServiceImpl(privateMessageDAO);
 
 
 var io = require('../bin/www').io;
+
+//Store all online users' socket
+var users = new Map();
 
 const MESSAGE_ERROR = {
         EMPTY_SENDER_OR_MESSAGE: 'MessageError.EmptySenderNameOrMessage',
@@ -24,9 +31,14 @@ const ANNOUNCEMENT_ERROR = {
 
 exports.onListening = function(socket) {
 
-	socket.on('disconnect', function(){
+	socket.on('connect', function(data) {
+		socket.userId = data.user_id;
+		users.set(socket.userId, socket);
+	});
 
- 	 });
+	socket.on('disconnect', function(){
+		users.delete(socket.user_id);
+ 	});
 
   	socket.on('new login', function(username){
   		socket.username = username;
@@ -71,5 +83,34 @@ exports.onListening = function(socket) {
   			return console.log(err);
   		});
   	});
+
+  	socket.on('send private message', function(data) {
+  		var senderId = socket.userId;
+  		var receiverId = data.receiver_id;
+  		var conversationId = data.conversation_id || null;
+  		var message = data.message;
+  		var messageStatus = data.message_status || 0;
+  		var latitude = data.latitude || null;
+		var longitude = data.longitude || null;
+
+		if (senderId === undefined || message === undefined || receiverId === undefined) {
+			var err = new Error();
+	  		err.status = 400;
+	  		err.message = MESSAGE_ERROR.EMPTY_SENDER_OR_MESSAGE;
+	  		return console.log(err);
+		}
+
+		privteMessageService.storePrivateMessage(senderId, receiverId, conversationId, message, messageStatus, latitude, longitude);
+
+
+  		if(users.has(receiverId)) {
+  			var receiverSocket = users.get(receiverId);
+  			receiverSocket.emit('receive private message', message);
+  		}
+
+
+  	});
+
+
 
 }

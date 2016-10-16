@@ -77,6 +77,10 @@ class PrivateMessageServiceImpl extends PrivateMessageService {
 			return output;
 		});
 	}
+
+	storePrivateMessage(senderId, receiverId, conversationId, message, messageStatus, latitude, longitude) {
+		
+	}
 }
 
 module.exports = PrivateMessageServiceImpl;

@@ -11,6 +11,10 @@ class PrivateMessageService {
 	  	if(this.getAllPrivateMessages === undefined) {
 	  		throw Error("Must override!");
 	  	}
+
+	  	if(this.storePrivateMessage === undefined) {
+	  		throw Error("Must override!");
+	  	}
 	}
 
 }
