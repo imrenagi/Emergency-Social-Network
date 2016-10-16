@@ -53,7 +53,14 @@ exports.sendMessage = function(req, res, next) {
 
 exports.retrieveAllConversations = function(req, res, next) {
 	var userId = req.params.user_id;
-	privateMessageService.getAllConversations(userId);
+	privateMessageService.getAllConversations(userId).then(function(results) {
+			console.log(results);
+	      	res.send(JSON.stringify(results));
+	}).catch(function(err) {
+		console.log(err);
+		console.log('hello');
+	    res.send(err);
+	});
 }
 
 exports.retrieveAllPrivateMessages = function(req, res, next) {

@@ -8,6 +8,9 @@ class PrivateMessageDAO {
 		if(this.getPrivateMessagesByConversationId === undefined) {
 			throw new Error('Must override!');
 		}
+		if(this.getMessagesByConversations === undefined) {
+			throw new Error('Must override!');
+		}
 	}
 }
 

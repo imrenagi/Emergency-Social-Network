@@ -9,23 +9,26 @@ class PrivateMessageDAOImpl extends PrivateMessageDAO {
 	}
 
 	getAllConversatonsByUserId(userId) {
-		let query = 'SELECT id FROM conversations WHERE user2_id = ' + userId + ' OR user2_id = ' + userId;
+		let query = 'SELECT id FROM conversations WHERE user1_id = ' + userId + ' OR user2_id = ' + userId;
 		return new Promise(function(resolve, reject) {
 			db.get().query(query, function(err, results) {
 				if (err) reject(err);
-				else resolve(results);
-			})
-		})
+				else {
+					resolve(results);
+				}
+			});
+		});
 	}
 
-	getMessagesByConversations(conversations) {
-		var s = conversations.toString();
-		//let query = 'SELECT id, conversatoin_id, sender_id, receiver_id, read_flag, (SELECT COUNT(*) FROM private_messages ) FROM private_messages WHERE conversatoin_id in (?)';
-		let query = '';
+	getMessagesByConversations(userId, conversations) {
+		var values = [userId, conversations];
+		let query = 'SELECT id, conversation_id, sender_id, receiver_id, sender_name, receiver_name, COUNT(*) AS unread_count FROM private_messages WHERE conversation_id in (' + conversations+ ') AND read_flag = 0 group by conversation_id';
 		return new Promise(function(resolve, reject) {
-			db.get().query(query, s, function(err, results) {
+			db.get().query(query, userId, function(err, results) {
 				if (err) reject(err);
-				else resolve(results);
+				else {
+					resolve(results);
+				}
 			})
 		})
 	}
