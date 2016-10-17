@@ -6,14 +6,22 @@ var AnnouncementDAOImpl = require('./announcementDAOImpl');
 var announcementDAO = new AnnouncementDAOImpl();
 var AnnouncementServiceImpl = require('./announcementServiceImpl');
 var announcementService = new AnnouncementServiceImpl(announcementDAO);
+var PrivateMessageDAOImpl = require('./privateMessageDAOImpl');
+var privateMessageDAO = new PrivateMessageDAOImpl();
+var PrivateMessageServiceImpl = require('./privateMessageServiceImpl');
+var privteMessageService = new PrivateMessageServiceImpl(privateMessageDAO);
 
 
 var io = require('../bin/www').io;
 
+//Store all online users' socket
+var users = new Map();
+
 const MESSAGE_ERROR = {
         EMPTY_SENDER_OR_MESSAGE: 'MessageError.EmptySenderNameOrMessage',
 		UNKNOWN_ERROR: 'MessageError.UnknownError',
-		MYSQL_EXCEPTION: 'MessageError.InvalidMessageData'
+		MYSQL_EXCEPTION: 'MessageError.InvalidMessageData',
+		EMPTY_SENDER_OR_RECEIVER_MESSAGE: 'MessageError.EmptySenderOrReceiverOrMessage'
     }
 
 const ANNOUNCEMENT_ERROR = {
@@ -21,12 +29,17 @@ const ANNOUNCEMENT_ERROR = {
 	UNKNOWN_ERROR: 'Announcement.Unknown'
 }
 
-
 exports.onListening = function(socket) {
 
-	socket.on('disconnect', function(){
+	socket.on('new socket', function(data) {
+		socket.userId = data.user_id;
+		socket.userName = data.user_name;
+		users.set(socket.userId, socket);
+	});
 
- 	 });
+	socket.on('disconnect', function(){
+		users.delete(socket.user_id);
+ 	});
 
   	socket.on('new login', function(username){
   		socket.username = username;
@@ -70,6 +83,54 @@ exports.onListening = function(socket) {
   		}).catch(function(err) {
   			return console.log(err);
   		});
+  	});
+
+  	socket.on('send private message', function(data) {
+  		var senderId = socket.userId;
+  		var senderName = socket.userName;
+  		var receiverId = data.receiver_id;
+  		var receiverName = data.receiver_name;
+  		var conversationId = data.conversation_id;
+  		var message = data.message;
+  		var messageStatus = data.message_status || 0;
+  		var latitude = data.latitude || null;
+		var longitude = data.longitude || null;
+
+		if(senderId === undefined || message === undefined || receiverId === undefined) {
+			var err = new Error();
+	  		err.status = 400;
+	  		err.message = MESSAGE_ERROR.EMPTY_SENDER_OR_RECEIVER_MESSAGE;
+	  		return console.log(err);
+		}
+
+		if(conversationId === undefined) {
+			privteMessageService.createConversation(senderId, receiverId).then(function(results) {
+				conversationId = results;
+				console.log(conversationId);
+				privteMessageService.storePrivateMessage(senderId, senderName, receiverId, receiverName, conversationId, message, messageStatus, latitude, longitude)
+				.then(function(privateMessage) {
+					console.log(privateMessage);
+					if(users.has(receiverId)) {
+						users.get(receiverId).emit('receive private message', privateMessage);
+					}
+				}).catch(function(err) {
+					return console.log(err);
+				});
+			}).catch(function(err) {
+				return console.log(err);
+			});
+		}
+		else {
+			privteMessageService.storePrivateMessage(senderId, senderName, receiverId, receiverName, conversationId, message, messageStatus, latitude, longitude)
+			.then(function(privateMessage) {
+				console.log(privateMessage);
+				if(users.has(receiverId)) {
+					users.get(receiverId).emit('receive private message', privateMessage);
+				}
+			}).catch(function(err) {
+				return console.log(err);
+			});
+		} 		
   	});
 
 }
