@@ -48,7 +48,7 @@ $('#navbar-right').on('click', '#logout', function(event) {
      $.ajax({
         type: "DELETE",
         data: {},
-        url: "logout",
+        url: "/logout",
         dataType: "json",
         success: function() {
             localStorage.removeItem('STATUS');
