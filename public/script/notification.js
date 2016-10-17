@@ -1,6 +1,6 @@
 var inputArea = '<div id="textarea" class="input-group"><textarea rows="1" style="resize:none;" placeholder="Share something..." class="form-control custom-control"></textarea><span class="input-group-addon btn btn-default"><span class="glyphicon glyphicon-send"></span></span></div>';
 var panelHeading = document.getElementById('panel-heading');
-
+var lastId;
 var limit = 10;
 var btnCls = ['contact-normal', 'contact-ok', 'contact-warning', 'contact-danger']
 
@@ -71,7 +71,7 @@ function formatPrivateMessage(data) {
 }
 
 function retrievePreviousMsgHistory(convId, lastId, limit){
-    $.get('/messages/private/'+(convId)+'?last_id='+lastId+'&limit='+(limit), function(data) {
+    $.get('/message/private/'+(convId)+'?last_id='+lastId+'&limit='+(limit), function(data) {
             var messages = '';
             for (var i = 0; i < data.length; i++) {
                 messages += formatPrivateMessage(data[i]);
@@ -138,7 +138,8 @@ function getChatWindow() {
             case 2: color = '#fcd116'; icon = 'fa-exclamation-triangle'; break;
             case 3: color = '#ce4844'; icon = 'fa-plus-square';
         }
-        $('#win-header').replaceWith('<div id="win-header"><i class="fa fa-comments-o"></i><span> Chatting with ...</span><div class="float-right"><span style="color: ' + color + '">' + name + ' <i class="fa ' +  icon +'"></i></span></div></div>');
+        $('#win-header').replaceWith('<div id="win-header" recevierName="' + name + '"><i class="fa fa-comments-o"></i><span> Chatting with ...</span><div class="float-right"><span style="color: ' + color + '">' + name + ' <i class="fa ' +  icon +'"></i></span></div></div>');
+        retrievePreviousMsgHistory(panelHeading.getAttribute('convId'), lastId, limit);
     }
 }
 
@@ -166,7 +167,7 @@ $('#contacts').on('click', '#btn-announce', function() {
 
 $('#textarea').on('click', '#sendButton', function() { 
     var message = $('#text').val();
-    var convId = panelHeading.getAttribute('convId');
+    var tab = panelHeading.getAttribute('tab');
     if (message != '') {
         // Get location
         if (navigator.geolocation) {
@@ -177,24 +178,25 @@ $('#textarea').on('click', '#sendButton', function() {
         } else {
             console.log('Geolocation is not supported by this browser.');
         }
-        if (convId == '0') {
+        if (tab == '0') {
             socket.emit('post announcement', { 
                 sender_id: localStorage['ID'], 
                 message: message, 
-                latitude: localStorage['latitude'],
-                longitude: localStorage['longitude']
+                lat: localStorage['latitude'],
+                long: localStorage['longitude']
             });
         }
         else  {
-            socket.emit('send private chat', {
+            socket.emit('send private message', {
                 sender_id: localStorage['ID'],
-                receiver_id: panelHeading.getAttribute('tab'),
-                conversation_id: convId,
+                receiver_id: tab,
+                receiver_name: document.getElementById('win-header').getAttribute('recevierName'),
                 message: message,
                 status: localStorage['STATUS'],
-                lat: localStorage['latitude'],
-                long: longitude['longitude']
+                latitude: localStorage['latitude'],
+                longitude: localStorage['longitude']
             });
+
         }
         $('#text').val('');
     }
