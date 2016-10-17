@@ -19,7 +19,7 @@
 .float-right {
     float: right;
 }
-.ol-text {
+.ol-text, .stamp {
     color: #777;
 }
 .badge { 
@@ -43,4 +43,8 @@
 }
 .dropdown-menu {
   min-width:auto;
+}
+.stamp {
+    text-align: right;
+    font-size: 10px;
 }

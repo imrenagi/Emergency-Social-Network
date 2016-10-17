@@ -52,6 +52,7 @@ function getContacts() {
         async: false,
         statusCode: {
             200: function(data) {
+                console.log(data);
                 for (var i = 0; i < data.length; i++) {
                     if (data[i].target.id == tab) {
                         document.getElementById('btn-'+data[i].target.id).setAttribute('convId', data[i].id)
@@ -65,8 +66,9 @@ function getContacts() {
 }
 
 function formatPrivateMessage(data) {
-    var cls = (data.id.sender_id == localStorage['ID']) ? 'message-s' : 'message-r';
-    var html = '<div class="message ' + cls + '"><p>' + data.text + '</p></div>';
+    var cls = (data.sender_id == localStorage['ID']) ? 'message-s' : 'message-r';
+    var date = new Date(moment(data.created_at*1000).format('MM/DD/YYYY hh:mm:ss A') + ' UTC');
+    var html = '<div class="message ' + cls + '"><div class="stamp"><span class="fa fa-map-marker"></span> ('+ data.location.lat + ', ' + data.location.long + ')&nbsp | <span class="fa fa-clock-o"></span> ' + reformatTime(date) + '</div><p>' + data.message + '</p></div>';
     return html;
 }
 
@@ -152,6 +154,14 @@ socket.on('broadcast announcement', function(data) {
     if (panelHeading.getAttribute('tab') == '0') {
         $('#messages').prepend(formatAnnouncement(data));
         $('#chat-window').scrollTop(0);
+    }
+});
+
+socket.on('receive private message', function(data) {
+    console.log(data);
+    var tab = panelHeading.getAttribute('tab');
+    if (tab == data.sender_id || data.sender_id == localStorage['ID']) {
+        $('#messages').append(formatPrivateMessage(data));
     }
 });
 
