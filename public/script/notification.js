@@ -25,15 +25,12 @@ function getUsrInfo(id) {
 }
 
 function loadMoreMessages(convId){
-    if(convId == 0)
-    {
+    if (convId == 0) {
         retrieveAnnouncement();
     }
-    else
-    {
+    else {
         retrievePreviousMsgHistory(convId, lastId, limit);
     }
-
 }
 
 
@@ -172,6 +169,7 @@ $('#contacts').on('click', '#btn-announce', function() {
 
 $('#textarea').on('click', '#sendButton', function() { 
     var message = $('#text').val();
+    var convId = panelHeading.getAttribute('convId');
     if (message != '') {
         // Get location
         if (navigator.geolocation) {
@@ -182,12 +180,25 @@ $('#textarea').on('click', '#sendButton', function() {
         } else {
             console.log('Geolocation is not supported by this browser.');
         }
-        socket.emit('post announcement', { 
-                    sender_id: localStorage['ID'], 
-                    message: message, 
-                    latitude: localStorage['latitude'],
-                    longitude: localStorage['longitude']
-                });
+        if (convId == '0') {
+            socket.emit('post announcement', { 
+                sender_id: localStorage['ID'], 
+                message: message, 
+                latitude: localStorage['latitude'],
+                longitude: localStorage['longitude']
+            });
+        }
+        else  {
+            socket.emit('send private chat', {
+                sender_id: localStorage['ID'],
+                receiver_id: panelHeading.getAttribute('tab'),
+                conversation_id: convId,
+                message: message;
+                status: localStorage['STATUS'],
+                lat: localStorage['latitude'],
+                long: longitude['longitude']
+            });
+        }
         $('#text').val('');
     }
 });
