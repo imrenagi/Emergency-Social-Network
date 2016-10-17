@@ -33,22 +33,35 @@ function loadMoreMessages(convId){
     }
 }
 
-
 function getContacts() {
-    $.get('/messages/private/conversation/'+(localStorage['ID']), function(data){
-        var tab = panelHeading.getAttribute('tab');
-        if (tab != '0') {
-            var usrinfo = getUsrInfo(tab);
-            if (usrinfo && usrinfo.id != localStorage['ID']) {
-                $('#contacts').append('<button id="btn-' + usrinfo.id +'" user="' + usrinfo.user_name + '" onclick="tabClicked(' + usrinfo.id + ')" class="btn btn-default text-left"><div class="float-right"><div class="badge badge-contact">' + '' +  '</div></div><span> ' + usrinfo.user_name + '</span></button>');
+    var tab = panelHeading.getAttribute('tab');
+    if (tab != '0') {
+        var usrinfo = getUsrInfo(tab);
+        if (usrinfo && usrinfo.id != localStorage['ID']) {
+            $('#contacts').append('<button id="btn-' + usrinfo.id +'" user="' + usrinfo.user_name + '" convId="0" onclick="tabClicked(' + usrinfo.id + ')" class="btn btn-default text-left"><div class="float-right"><div class="badge badge-contact">' + '' +  '</div></div><span> ' + usrinfo.user_name + '</span></button>');
+        }
+        else {
+            tab = '0';
+        }
+    }
+    $.ajax({
+        type: 'GET',
+        data: {},
+        url: '/message/private/conversation/' + localStorage['ID'],
+        dataType: "json",
+        async: false,
+        statusCode: {
+            200: function(data) {
+                for (var i = 0; i < data.length; i++) {
+                    if (data[i].target.id == tab) {
+                        document.getElementById('btn-'+data[i].target.id).setAttribute('convId', data[i].id)
+                        continue;
+                    }
+                    $('#contacts').append('<button id="btn-' + data[i].target.id +'" user="' + data[i].target.user_name + '" convId="' + data[i].id + '" onclick="tabClicked(' + data[i].target.id + ')" class="btn btn-default text-left"><div class="float-right"><div class="badge badge-contact">' + ((data[i].unread_count > 0) ? data[i].unread_count : '') +  '</div></div><span> ' + data[i].target.user_name + '</span></button>');
+                }
             }
         }
-        for (var i = 0; i < data.length; i++) {
-            if (data[i].id == tab) 
-                continue;
-            $('#contacts').append('<button id="btn-' + data[i].id +'" user="' + data[i].target.user_name + '" onclick="tabClicked(' + data[i].id + ')" class="btn btn-default text-left"><div class="float-right"><div class="badge badge-contact">' + ((data[i].unread_count > 0) ? data[i].unread_count : '') +  '</div></div><span> ' + data[i].target.user_name + '</span></button>');
-        }
-    })
+    });
 }
 
 function formatPrivateMessage(data) {
@@ -177,7 +190,7 @@ $('#textarea').on('click', '#sendButton', function() {
                 sender_id: localStorage['ID'],
                 receiver_id: panelHeading.getAttribute('tab'),
                 conversation_id: convId,
-                message: message;
+                message: message,
                 status: localStorage['STATUS'],
                 lat: localStorage['latitude'],
                 long: longitude['longitude']
