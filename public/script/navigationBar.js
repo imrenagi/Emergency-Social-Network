@@ -32,6 +32,13 @@ function updateUserStatus(status) {
     })
 }
 
+var socket = io();
+
+socket.emit('new socket', {
+    user_id: localStorage['ID'],
+    user_name: localStorage['USER_NAME']
+});
+
 $('#navbar-right').on('click', '#status-ok', function(event){
     updateUserStatus(1);
 });

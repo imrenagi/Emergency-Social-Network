@@ -153,8 +153,6 @@ $(document).ready(function(){
     getChatWindow();
 });
 
-var socket = io();
-
 socket.on('broadcast announcement', function(data) {
     if (panelHeading.getAttribute('tab') == '0') {
         $('#messages').prepend(formatAnnouncement(data));
