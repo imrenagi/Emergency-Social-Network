@@ -9,14 +9,14 @@ function isCoordinator() {
 }
 
 
-function getUsrInfo(id) {
+function getUsrInfo(id, async) {
     var usrinfo = '';
     $.ajax({
         type: 'GET',
         data: {},
         url: '/directory/user/' + id,
         dataType: "json",
-        async: false,
+        async: async,
         success: function(data) {
             usrinfo = data;
         }
@@ -36,7 +36,7 @@ function loadMoreMessages(convId){
 function getContacts() {
     var tab = panelHeading.getAttribute('tab');
     if (tab != '0') {
-        var usrinfo = getUsrInfo(tab);
+        var usrinfo = getUsrInfo(tab, false);
         if (usrinfo && usrinfo.id != localStorage['ID']) {
             $('#contacts').append('<button id="btn-' + usrinfo.id +'" user="' + usrinfo.user_name + '" convId="0" onclick="tabClicked(' + usrinfo.id + ')" class="btn btn-default text-left"><div class="float-right"><div class="badge badge-contact">' + '' +  '</div></div><span> ' + usrinfo.user_name + '</span></button>');
         }
@@ -133,10 +133,10 @@ function getChatWindow() {
         var name = button.getAttribute('user');
         var color = '#';
         var icon = 'fa-minus';
-        switch(button.getAttribute('status')) {
-            case '1': color = '#9ccb19'; icon = 'fa-check-circle'; break;
-            case '2': color = '#fcd116'; icon = 'fa-exclamation-triangle'; break;
-            case '3': color = '#ce4844'; icon = 'fa-plus-square';
+        switch(getUsrInfo(tab, false).status) {
+            case 1: color = '#9ccb19'; icon = 'fa-check-circle'; break;
+            case 2: color = '#fcd116'; icon = 'fa-exclamation-triangle'; break;
+            case 3: color = '#ce4844'; icon = 'fa-plus-square';
         }
         $('#win-header').replaceWith('<div id="win-header"><i class="fa fa-comments-o"></i><span> Chatting with ...</span><div class="float-right"><span style="color: ' + color + '">' + name + ' <i class="fa ' +  icon +'"></i></span></div></div>');
     }
