@@ -25,37 +25,30 @@ function getUsrInfo(id) {
 }
 
 function loadMoreMessages(convId){
-    if(convId == 0)
-    {
+    if (convId == 0) {
         retrieveAnnouncement();
     }
-    else
-    {
+    else {
         retrievePreviousMsgHistory(convId, lastId, limit);
     }
-
 }
 
 
 function getContacts() {
-    data = [
-            {id: 1, user_name: 'Imre Nagi', unread: 6, status: 0}, 
-            {id: 2, user_name: 'Xiangtian Li', unread: 2, status: 1},
-            {id: 3, user_name: 'Ashutosh Tadkase', unread: 3, status: 2},
-            {id: 4, user_name: 'Binglei Du', unread: 0, status: 3}
-        ];
-    var tab = panelHeading.getAttribute('tab');
-    if (tab != '0') {
-        var usrinfo = getUsrInfo(tab);
-        if (usrinfo && usrinfo.id != localStorage['ID']) {
-            $('#contacts').append('<button id="btn-' + usrinfo.id + '" status="' + usrinfo.status +'" user="' + usrinfo.user_name + '" onclick="tabClicked(' + usrinfo.id + ')" class="btn btn-default ' + btnCls[usrinfo.status]+ ' text-left"><div class="float-right"><div class="badge badge-contact">' + '' +  '</div></div><span> ' + usrinfo.user_name + '</span></button>');
+    $.get('/messages/private/conversation/'+(localStorage['ID']), function(data){
+        var tab = panelHeading.getAttribute('tab');
+        if (tab != '0') {
+            var usrinfo = getUsrInfo(tab);
+            if (usrinfo && usrinfo.id != localStorage['ID']) {
+                $('#contacts').append('<button id="btn-' + usrinfo.id +'" user="' + usrinfo.user_name + '" onclick="tabClicked(' + usrinfo.id + ')" class="btn btn-default text-left"><div class="float-right"><div class="badge badge-contact">' + '' +  '</div></div><span> ' + usrinfo.user_name + '</span></button>');
+            }
         }
-    }
-    for (var i = 0; i < data.length; i++) {
-        if (data[i].id == tab) 
-            continue;
-        $('#contacts').append('<button id="btn-' + data[i].id + '" status="' + data[i].status +'" user="' + data[i].user_name + '" onclick="tabClicked(' + data[i].id + ')" class="btn btn-default ' + btnCls[data[i].status] + ' text-left"><div class="float-right"><div class="badge badge-contact">' + ((data[i].unread > 0) ? data[i].unread : '') +  '</div></div><span> ' + data[i].user_name + '</span></button>');
-    }
+        for (var i = 0; i < data.length; i++) {
+            if (data[i].id == tab) 
+                continue;
+            $('#contacts').append('<button id="btn-' + data[i].id +'" user="' + data[i].target.user_name + '" onclick="tabClicked(' + data[i].id + ')" class="btn btn-default text-left"><div class="float-right"><div class="badge badge-contact">' + ((data[i].unread_count > 0) ? data[i].unread_count : '') +  '</div></div><span> ' + data[i].target.user_name + '</span></button>');
+        }
+    })
 }
 
 function formatPrivateMessage(data) {
@@ -77,7 +70,7 @@ function retrievePreviousMsgHistory(convId, lastId, limit){
             } else {
                 loadMoreButton.remove();
             }
-        });
+        })
 }
 
 function formatAnnouncement(data) {
@@ -141,8 +134,6 @@ $(document).ready(function(){
     getChatWindow();
 });
 
-var socket = io();
-
 socket.on('broadcast announcement', function(data) {
     if (panelHeading.getAttribute('tab') == '0') {
         $('#messages').prepend(formatAnnouncement(data));
@@ -162,6 +153,7 @@ $('#contacts').on('click', '#btn-announce', function() {
 
 $('#textarea').on('click', '#sendButton', function() { 
     var message = $('#text').val();
+    var convId = panelHeading.getAttribute('convId');
     if (message != '') {
         // Get location
         if (navigator.geolocation) {
@@ -172,12 +164,25 @@ $('#textarea').on('click', '#sendButton', function() {
         } else {
             console.log('Geolocation is not supported by this browser.');
         }
-        socket.emit('post announcement', { 
-                    sender_id: localStorage['ID'], 
-                    message: message, 
-                    latitude: localStorage['latitude'],
-                    longitude: localStorage['longitude']
-                });
+        if (convId == '0') {
+            socket.emit('post announcement', { 
+                sender_id: localStorage['ID'], 
+                message: message, 
+                latitude: localStorage['latitude'],
+                longitude: localStorage['longitude']
+            });
+        }
+        else  {
+            socket.emit('send private chat', {
+                sender_id: localStorage['ID'],
+                receiver_id: panelHeading.getAttribute('tab'),
+                conversation_id: convId,
+                message: message;
+                status: localStorage['STATUS'],
+                lat: localStorage['latitude'],
+                long: longitude['longitude']
+            });
+        }
         $('#text').val('');
     }
 });

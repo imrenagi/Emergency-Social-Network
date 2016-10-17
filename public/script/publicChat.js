@@ -31,8 +31,6 @@ function updateMessage(data) {
     return pin;
 }
 
-var socket = io();
-
 window.onload = function() {
     loadMoreMessages();
     socket.on('broadcast message', function(data) {
