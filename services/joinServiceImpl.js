@@ -19,7 +19,7 @@ class JoinServiceImpl extends JoinService {
 			return false;
 		}
 		for (var i in RESERVED_USERNAMES) {
-  			if(userName == RESERVED_USERNAMES[i]) {
+  			if(userName.toLowerCase() == RESERVED_USERNAMES[i]) {
 				return false;
 			}
 		}
