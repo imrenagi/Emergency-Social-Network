@@ -39,22 +39,34 @@ function loadMoreMessages(convId){
 
 function getContacts() {
     data = [
-            {id: 1, user_name: 'Imre Nagi', unread: 6, status: 0}, 
-            {id: 2, user_name: 'Xiangtian Li', unread: 2, status: 1},
-            {id: 3, user_name: 'Ashutosh Tadkase', unread: 3, status: 2},
-            {id: 4, user_name: 'Binglei Du', unread: 0, status: 3}
-        ];
+        {
+            "id" : 123,
+            "target" : {
+                "id" : 123,
+                "user_name" : "imre"
+            },
+            "unread_count" : 10
+        },
+        {
+            "id" : 124,
+            "target" : {
+                "id" : 12123,
+                "user_name" : "jhon"
+            },
+            "unread_count" : 10
+        }
+    ];
     var tab = panelHeading.getAttribute('tab');
     if (tab != '0') {
         var usrinfo = getUsrInfo(tab);
         if (usrinfo && usrinfo.id != localStorage['ID']) {
-            $('#contacts').append('<button id="btn-' + usrinfo.id + '" status="' + usrinfo.status +'" user="' + usrinfo.user_name + '" onclick="tabClicked(' + usrinfo.id + ')" class="btn btn-default ' + btnCls[usrinfo.status]+ ' text-left"><div class="float-right"><div class="badge badge-contact">' + '' +  '</div></div><span> ' + usrinfo.user_name + '</span></button>');
+            $('#contacts').append('<button id="btn-' + usrinfo.id +'" user="' + usrinfo.user_name + '" onclick="tabClicked(' + usrinfo.id + ')" class="btn btn-default text-left"><div class="float-right"><div class="badge badge-contact">' + '' +  '</div></div><span> ' + usrinfo.user_name + '</span></button>');
         }
     }
     for (var i = 0; i < data.length; i++) {
         if (data[i].id == tab) 
             continue;
-        $('#contacts').append('<button id="btn-' + data[i].id + '" status="' + data[i].status +'" user="' + data[i].user_name + '" onclick="tabClicked(' + data[i].id + ')" class="btn btn-default ' + btnCls[data[i].status] + ' text-left"><div class="float-right"><div class="badge badge-contact">' + ((data[i].unread > 0) ? data[i].unread : '') +  '</div></div><span> ' + data[i].user_name + '</span></button>');
+        $('#contacts').append('<button id="btn-' + data[i].id +'" user="' + data[i].target.user_name + '" onclick="tabClicked(' + data[i].id + ')" class="btn btn-default text-left"><div class="float-right"><div class="badge badge-contact">' + ((data[i].unread_count > 0) ? data[i].unread_count : '') +  '</div></div><span> ' + data[i].target.user_name + '</span></button>');
     }
 }
 
