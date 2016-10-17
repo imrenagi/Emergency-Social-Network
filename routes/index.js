@@ -29,7 +29,7 @@ router.get('/welcome', function(req, res) {
 router.use('/join', require('./join'));
 router.use('/directory', require('./directory'));
 router.use('/logout', require('./logout'));
-router.use('/message', require('./message'));
+router.use('/messages', require('./messages'));
 router.use('/announcement', require('./announcement'));
 
 module.exports = router;
