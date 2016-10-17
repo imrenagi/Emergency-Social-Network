@@ -21,7 +21,7 @@ function loadMoreUsers(){
               		case 3: iconPath = '<i style="color: #ce4844" class="fa fa-plus-square"></i>'; break;
               		default: iconPath = '<i class="fa fa-minus"></i>';
                 }
-           		$('.directorytable').append($('<tr><th>' + count++ +'</th>  <td>' + element.user_name +'</td><td class="text-center statusTableIcon">'+  iconPath  + '</td><td class="text-center">' + (element.online? "Y":"N")+ '</td> <td class="text-center"> <a href="/privateChat/' + element.id + '"><i class="fa fa-comment-o"></i></a></td></tr>'));
+           		$('.directorytable').append($('<tr><th>' + count++ +'</th>  <td>' + element.user_name +'</td><td class="text-center statusTableIcon">'+  iconPath  + '</td><td class="text-center">' + (element.online? "Y":"N")+ '</td> <td class="text-center"> <a href="/privateChat/' + element.id + '">' + (element.id == localStorage['ID']? '' : '<i class="fa fa-comment-o"></i>') + '</a></td></tr>'));
             });
             lastPageId = data.meta.page;
             if (lastPageId >= data.meta.page_count) {
