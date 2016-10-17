@@ -36,6 +36,7 @@ function loadMoreMessages(convId){
 
 }
 
+
 function getContacts() {
     data = [
             {id: 1, user_name: 'Imre Nagi', unread: 6, status: 0}, 
@@ -131,7 +132,7 @@ function getChatWindow() {
             case '2': color = '#fcd116'; icon = 'fa-exclamation-triangle'; break;
             case '3': color = '#ce4844'; icon = 'fa-plus-square';
         }
-        $('#win-header').replaceWith('<div id="win-header"><i class="fa fa-comments-o"></i><span> Chatting with ...</span><div class="float-right"><span style="color: ' + color + '">' + name + ' <i class="fa ' +  icon +'"></i></span></div></div>')
+        $('#win-header').replaceWith('<div id="win-header"><i class="fa fa-comments-o"></i><span> Chatting with ...</span><div class="float-right"><span style="color: ' + color + '">' + name + ' <i class="fa ' +  icon +'"></i></span></div></div>');
     }
 }
 
