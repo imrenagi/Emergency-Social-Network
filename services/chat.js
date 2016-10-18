@@ -88,6 +88,7 @@ exports.onListening = function(socket) {
   	socket.on('send private message', function(data) {
   		var senderId = socket.userId;
   		var senderName = socket.userName;
+  		
   		var receiverId = data.receiver_id;
   		var receiverName = data.receiver_name;
   		var conversationId = data.conversation_id;

@@ -33,7 +33,7 @@ var formatConversation = function(userId, result) {
 		friendName = result.sender_name;
 	}
 	var conversation = {
-		id: result.id,
+		id: result.conversation_id,
 		target: {
 			id: friendId,
 			user_name: friendName
@@ -58,6 +58,7 @@ class PrivateMessageServiceImpl extends PrivateMessageService {
 			}
 			return that.privateMessageDAO.getMessagesByConversations(userId, conversations.toString()).then(function(rawMessages) {
 				var res = JSON.parse(JSON.stringify(rawMessages));
+				console.log(res);
 				var json = R.map(result => formatConversation(userId, result), res);
 				var output = {
 					conversations: json
