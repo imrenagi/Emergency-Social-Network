@@ -158,7 +158,6 @@ socket.on('broadcast announcement', function(data) {
 });
 
 socket.on('receive private message', function(data) {
-    console.log(data);
     var tab = panelHeading.getAttribute('tab');
     if (tab == data.sender_id || data.sender_id == localStorage['ID']) {
         $('#messages').append(formatPrivateMessage(data));
@@ -206,7 +205,15 @@ $('#textarea').on('click', '#sendButton', function() {
                 latitude: localStorage['latitude'],
                 longitude: localStorage['longitude']
             });
-
+            $('#messages').append(formatPrivateMessage({
+                sender_id: localStorage['ID'], 
+                message: message, 
+                location: {
+                    lat: Number(localStorage['latitude']).toPrecision(6), 
+                    long: Number(localStorage['longitude']).toPrecision(6)
+                }, 
+                created_at: new Date().getTime() / 1000
+            }));
         }
         $('#text').val('');
     }
