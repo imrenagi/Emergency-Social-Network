@@ -27,3 +27,4 @@ alter table private_messages add read_flag TINYINT DEFAULT 0;
 ALTER TABLE private_messages MODIFY message_status TINYINT DEFAULT 0;
 ALTER TABLE private_messages ADD sender_name VARCHAR(255) NOT NULL;
 ALTER TABLE private_messages ADD receiver_name VARCHAR(255) NOT NULL;
+SET GLOBAL sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''));	/* Bug Fix Added*/
