@@ -52,13 +52,13 @@ function getContacts() {
         async: false,
         statusCode: {
             200: function(data) {
-                console.log(data);
-                for (var i = 0; i < data.length; i++) {
-                    if (data[i].target.id == tab) {
-                        document.getElementById('btn-'+data[i].target.id).setAttribute('convId', data[i].id)
+               // console.log(data);
+                for (var i = 0; i < data.conversations.length; i++) {
+                    if (data.conversations[i].target.id == tab) {
+                        document.getElementById('btn-'+data.conversations[i].target.id).setAttribute('convId', data.conversations[i].id)
                         continue;
                     }
-                    $('#contacts').append('<button id="btn-' + data[i].target.id +'" user="' + data[i].target.user_name + '" convId="' + data[i].id + '" onclick="tabClicked(' + data[i].target.id + ')" class="btn btn-default text-left"><div class="float-right"><div class="badge badge-contact">' + ((data[i].unread_count > 0) ? data[i].unread_count : '') +  '</div></div><span> ' + data[i].target.user_name + '</span></button>');
+                    $('#contacts').append('<button id="btn-' + data.conversations[i].target.id +'" user="' + data.conversations[i].target.user_name + '" convId="' + data.conversations[i].id + '" onclick="tabClicked(' + data.conversations[i].target.id + ')" class="btn btn-default text-left"><div class="float-right"><div class="badge badge-contact">' + ((data.conversations[i].unread_count > 0) ? data.conversations[i].unread_count : '') +  '</div></div><span> ' + data.conversations[i].target.user_name + '</span></button>');
                 }
             }
         }
