@@ -1,7 +1,7 @@
 var inputArea = '<div id="textarea" class="input-group"><textarea rows="1" style="resize:none;" placeholder="Share something..." class="form-control custom-control"></textarea><span class="input-group-addon btn btn-default"><span class="glyphicon glyphicon-send"></span></span></div>';
 var panelHeading = document.getElementById('panel-heading');
 var lastId = '';
-var limit = 0;
+var limit = -1;
 var btnCls = ['contact-normal', 'contact-ok', 'contact-warning', 'contact-danger']
 
 function isCoordinator() {
@@ -89,7 +89,10 @@ function retrievePreviousMsgHistory(convId, limit){
         for (var i = 0; i < data.messages.length; i++) {
             messages += formatHistoryMessage(data.messages[i]);
             lastId = data.messages[i].id;
+            read.push(data.messages[i].id);
         }
+
+        socket.emit('update message read_flag', read);
 
         $('#messages').append(messages);
         var loadMoreButton = $('<button class="btn btn-default btn-block loadmore" id="loadMoreButton" onclick="loadMoreMessages('+convId+')"> Load More </button>');
@@ -182,6 +185,7 @@ socket.on('broadcast announcement', function(data) {
 socket.on('receive private message', function(data) {
     var tab = panelHeading.getAttribute('tab');
     if (tab == data.sender_id) {
+        panelHeading.setAttribute('convId', data.conversation_id);
         $('#messages').prepend(formatPrivateMessage(data));
         return;
     }
@@ -229,6 +233,7 @@ $('#textarea').on('click', '#sendButton', function() {
             });
         }
         else  {
+            console.log(tab)
             data = {
                 sender_id: localStorage['ID'],
                 receiver_id: tab,
@@ -242,7 +247,6 @@ $('#textarea').on('click', '#sendButton', function() {
                 data['conversation_id'] = convId;
             }
             socket.emit('send private message', data, function(conversation_id) {
-                console.log(conversation_id);
                 document.getElementById('btn-'+tab).setAttribute('convId', conversation_id)
                 panelHeading.setAttribute('convId', conversation_id);
             });
