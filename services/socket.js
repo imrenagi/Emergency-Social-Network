@@ -88,7 +88,7 @@ exports.onListening = function(socket) {
   	socket.on('send private message', function(data) {
   		var senderId = socket.userId;
   		var senderName = socket.userName;
-  		
+
   		var receiverId = data.receiver_id;
   		var receiverName = data.receiver_name;
   		var conversationId = data.conversation_id;
@@ -105,21 +105,39 @@ exports.onListening = function(socket) {
 		}
 
 		if(conversationId === undefined) {
-			privteMessageService.createConversation(senderId, receiverId).then(function(results) {
-				conversationId = results;
-				console.log(conversationId);
-				privteMessageService.storePrivateMessage(senderId, senderName, receiverId, receiverName, conversationId, message, messageStatus, latitude, longitude)
-				.then(function(privateMessage) {
-					console.log(privateMessage);
-					if(users.has(receiverId)) {
-						users.get(receiverId).emit('receive private message', privateMessage);
-					}
-				}).catch(function(err) {
-					return console.log(err);
-				});
-			}).catch(function(err) {
-				return console.log(err);
+			privteMessageService.getConversationId().then(function(result) {
+				if(result == null) {
+					privteMessageService.createConversation(senderId, receiverId).then(function(results) {
+						conversationId = results;
+						console.log(conversationId);
+						socket.emit('new conversation_id', {receive_id: receiverId,
+															conversation_id: conversationId});
+						privteMessageService.storePrivateMessage(senderId, senderName, receiverId, receiverName, conversationId, message, messageStatus, latitude, longitude)
+						.then(function(privateMessage) {
+							console.log(privateMessage);
+							if(users.has(receiverId)) {
+								users.get(receiverId).emit('receive private message', privateMessage);
+							}
+						}).catch(function(err) {
+							return console.log(err);
+						});
+					}).catch(function(err) {
+						return console.log(err); 
+					});
+				}
+				else {
+					privteMessageService.storePrivateMessage(senderId, senderName, receiverId, receiverName, conversationId, message, messageStatus, latitude, longitude)
+					.then(function(privateMessage) {
+						console.log(privateMessage);
+						if(users.has(receiverId)) {
+							users.get(receiverId).emit('receive private message', privateMessage);
+						}
+					}).catch(function(err) {
+						return console.log(err);
+					});
+				}
 			});
+
 		}
 		else {
 			privteMessageService.storePrivateMessage(senderId, senderName, receiverId, receiverName, conversationId, message, messageStatus, latitude, longitude)
