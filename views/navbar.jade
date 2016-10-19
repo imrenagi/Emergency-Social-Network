@@ -31,10 +31,13 @@ nav.navbar.navbar-default.navbar-static-top
               | Public Chat
           li
             a(href='/notification')
-              #notification.badge.badge-note
-              span.fa.fa-bell-o(style='font-size: 16px')
+              span.fa.fa-volume-up
               | 
-              | Notice
+              | Announcement
+          li
+            a(href='/privateChat/0')              
+              span.fa.fa-bell-o(style='font-size: 16px')
+                #notification.badge.badge-note
           li.dropdown
             a.dropdown-toggle(href='#', data-toggle='dropdown', role='button' aria-haspopup='true' aria-expanded='false')#user-setting
               span.glyphicon.glyphicon-user

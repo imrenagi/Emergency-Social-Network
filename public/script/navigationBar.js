@@ -41,6 +41,28 @@ socket.emit('new socket', {
     user_name: localStorage['USER_NAME']
 });
 
+socket.on('notification', function() {
+    var unread = notification.innerHTML;
+    notification.innerHTML = (unread == '' ? 0 : Number(unread)) + 1;
+})
+
+$.ajax({
+    type: 'GET',
+    data: {},
+    url: '/message/private/conversation/' + localStorage['ID'],
+    dataType: "json",
+    async: false,
+    statusCode: {
+        200: function(data) {
+            var cnt = 0;
+            for (var i = 0; i < data.conversations.length; i++) {
+                cnt += data.conversations[i].unread_count;
+            }
+            notification.innerHTML = (cnt == 0 ? '' : cnt);
+        }
+    }
+});
+
 $('#navbar-right').on('click', '#status-ok', function(event){
     updateUserStatus(1);
 });

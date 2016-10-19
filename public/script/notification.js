@@ -36,6 +36,10 @@ function loadMoreMessages(convId){
 
 function getContacts() {
     var tab = panelHeading.getAttribute('tab');
+    if (panelHeading.getAttribute('flag') == '1') {
+        $('.col-md-3').remove();
+        return;
+    }
     if (tab != '0') {
         var usrinfo = getUsrInfo(tab, false);
         if (usrinfo && usrinfo.id != localStorage['ID']) {
@@ -103,12 +107,18 @@ function retrievePreviousMsgHistory(convId, limit){
         }
         var badge = document.getElementById('badge-'+panelHeading.getAttribute('tab'));
         var unread = Number(badge.innerHTML);
+        var bell = notification.innerHTML;
+        if (bell != '') {
+            remained = Number(bell)-unread;
+            notification.innerHTML = (remained == 0 ? '' : remained);
+        }
         badge.innerHTML = ''
         // if (unread >= 0 && unread <= limit) {
         //     badge.innerHTML = '';
         // } else {
         //     badge.innerHTML = unread-limit;
         // }
+
     });
 }
 
@@ -182,11 +192,13 @@ socket.on('broadcast announcement', function(data) {
     }
 });
 
-socket.on('receive private message', function(data) {
+socket.on('receive private message', function(data, callback) {
     var tab = panelHeading.getAttribute('tab');
     if (tab == data.sender_id) {
         panelHeading.setAttribute('convId', data.conversation_id);
         $('#messages').prepend(formatPrivateMessage(data));
+        var read = [data.id];
+        callback(read);
         return;
     }
     var badge = document.getElementById('badge-'+data.sender_id);

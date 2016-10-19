@@ -10,12 +10,12 @@ router.get('/userDirectory', function(req, res) {
 });
 
 router.get('/notification', function(req, res) {
-  res.render('privateChat', {title: 'Notification - Emergency Social Network', tab: 0});
+  res.render('privateChat', {title: 'Notification - Emergency Social Network', tab: 0, announce: 1});
 });
 
 router.get('/privateChat/:id', function(req, res) {
   var title = 'Chat - Emergency Social Network';
-  res.render('privateChat', {title: title, tab: req.params.id});
+  res.render('privateChat', {title: title, tab: req.params.id, announce: 0 });
 });
 
 router.get('/publicChat', function(req, res) {
