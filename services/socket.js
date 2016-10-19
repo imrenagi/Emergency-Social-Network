@@ -105,16 +105,14 @@ exports.onListening = function(socket) {
 		}
 
 		if(conversationId === undefined) {
-			privteMessageService.getConversationId().then(function(result) {
-				if(result == null) {
+			privteMessageService.getConversationId(senderId, receiverId).then(function(result) {
+				if(result.length == 0) {
 					privteMessageService.createConversation(senderId, receiverId).then(function(results) {
 						conversationId = results;
-						console.log(conversationId);
 						socket.emit('new conversation_id', {receive_id: receiverId,
 															conversation_id: conversationId});
 						privteMessageService.storePrivateMessage(senderId, senderName, receiverId, receiverName, conversationId, message, messageStatus, latitude, longitude)
 						.then(function(privateMessage) {
-							console.log(privateMessage);
 							if(users.has(receiverId)) {
 								users.get(receiverId).emit('receive private message', privateMessage);
 							}
@@ -126,9 +124,9 @@ exports.onListening = function(socket) {
 					});
 				}
 				else {
+					conversationId = result[0];
 					privteMessageService.storePrivateMessage(senderId, senderName, receiverId, receiverName, conversationId, message, messageStatus, latitude, longitude)
 					.then(function(privateMessage) {
-						console.log(privateMessage);
 						if(users.has(receiverId)) {
 							users.get(receiverId).emit('receive private message', privateMessage);
 						}

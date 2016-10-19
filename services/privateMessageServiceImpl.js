@@ -107,6 +107,13 @@ class PrivateMessageServiceImpl extends PrivateMessageService {
 			return console.log(err);
 		});
 	}
+
+	getConversationId(senderId, receiverId) {
+		return this.privateMessageDAO.getConversationId(senderId, receiverId).then(function(result) {
+			var res = JSON.parse(JSON.stringify(result));
+			return res;
+		});
+	}
 }
 
 module.exports = PrivateMessageServiceImpl;

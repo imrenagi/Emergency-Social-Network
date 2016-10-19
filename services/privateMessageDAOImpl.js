@@ -27,7 +27,7 @@ class PrivateMessageDAOImpl extends PrivateMessageDAO {
 		let query = 'SELECT conversation_id, sender_id, receiver_id, sender_name, receiver_name, COUNT(*) AS unread_count FROM private_messages WHERE conversation_id in (' + conversations+ ') AND read_flag = 0 group by conversation_id';
 		console.log(query);
 		return new Promise(function(resolve, reject) {
-			db.get().query(query, function(err, results) {
+			db.get().query(query, function(err, results) {s
 				if (err) reject(err);
 				else {
 					resolve(results);
@@ -71,6 +71,7 @@ class PrivateMessageDAOImpl extends PrivateMessageDAO {
 	}
 
 	storePrivateMessage(values) {
+		console.log(values);
 		let query = 
 		'INSERT INTO private_messages (sender_id, sender_name, receiver_id, receiver_name, conversation_id, message, message_status, latitude, longitude, read_flag) values (?, ?, ?, ?, ?, ?, ?, ?, ?, 0)';
 		return new Promise(function(resolve, reject) {
@@ -99,6 +100,23 @@ class PrivateMessageDAOImpl extends PrivateMessageDAO {
 			});
 			
 		});
+	}
+
+	getConversationId(senderId, receiverId) {
+		return new Promise(function(resolve, reject) {
+			let query = 'SELECT id FROM conversations WHERE (user1_id = ' + senderId + ' AND user2_id = ' + receiverId + 
+			') OR (user1_id = ' + receiverId + ' AND user2_id = ' + senderId + ')';
+			console.log(query);
+			db.get().query(query, function(err, results) {
+				if(err) {
+					console.log(err);
+					reject(err);
+				}
+				else {
+					resolve(results);
+				}
+			});
+		})
 	}
 
 }
