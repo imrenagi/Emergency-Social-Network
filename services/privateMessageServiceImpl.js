@@ -12,7 +12,6 @@ class PrivateMessageServiceImpl extends PrivateMessageService {
 	formatMessage(result) {
 		var message = {
 			id: result.id,
-			message_id: result.message_id,
 			sender: {
 				id: result.sender_id,
 				user_name: result.user_name
@@ -74,6 +73,7 @@ class PrivateMessageServiceImpl extends PrivateMessageService {
 		var that = this;
 		return this.privateMessageDAO.getPrivateMessagesByConversationId(conversationId, lastId, limit).then(function(results) {
 			var res = JSON.parse(JSON.stringify(results));
+			console.log(res);
 			var json = R.map(result => that.formatMessage(result), res);
 			var output = {
 				messages : json
