@@ -4,6 +4,11 @@ var db = require('../services/db');
 var User = require('../models/user');
 var Meta = require('../models/meta');
 var directoryService = require('./interfaces/directoryService');
+var userDAOImpl = require('./userDAOImpl');
+var userDAO = new userDAOImpl();
+var dateHelper = require('../helpers/date');
+
+
 
 class directoryServiceImpl extends directoryService {
 
@@ -67,6 +72,25 @@ class directoryServiceImpl extends directoryService {
 				}
 			})
 		})
+	}
+
+	updateUserStatus(id, status, lat, long) {
+		return userDAO.updateStatus(id, status, lat, long).then(function(results) {
+			return userDAO.getUser(id).then(function(result) {
+				var user = {
+					id: result.id,
+					user_name: result.user_name,
+					online: result.online,
+					status: result.status,
+					location: {
+						lat: result.latitude,
+						long: result.longitude
+					},
+					status_updated_at: dateHelper.convertDateToTimestamp(result.status_updated_at)
+				}
+				return user;
+			})
+		});
 	}
 }
 

@@ -1,5 +1,5 @@
 .wrapper {
-    margin-top: 4%;
+    margin: 4%;
     align-items: top;
     display: flex;
     justify-content: center;
@@ -7,6 +7,44 @@
 .text-center {
     text-align: center;
 }
-.ol-text {
+.text-left {
+    text-align: left;
+}
+.text-right {
+    text-align: right;
+}
+.float-left {
+    float: left;
+}
+.float-right {
+    float: right;
+}
+.ol-text, .stamp {
     color: #777;
+}
+.badge { 
+    padding-top: 0px;
+    padding-bottom: 0px;
+    min-width: 10px;
+    display: inline-block;
+    text-align: center;
+    vertical-align: middle;
+    border-radius: 8px;
+    white-space: nowrap;
+}
+.badge-note {
+    font-family: sans-serif;
+    position: absolute;
+    right: 2px;
+    top: 8px;
+    background: #1ABB9C !important;
+    border: 1px solid #1ABB9C !important;
+    color: #fff;
+}
+.dropdown-menu {
+  min-width:auto;
+}
+.stamp {
+    text-align: right;
+    font-size: 10px;
 }

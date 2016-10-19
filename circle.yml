@@ -1,0 +1,36 @@
+# setup node environment
+machine:
+  node:
+    version: 4.1.2
+  environment:
+    DB_HOST: localhost
+    DB_NAME: circle_test
+    DB_USER: ubuntu
+
+# merge master before testing to make sure all tests pass
+# with the updated version of master
+checkout:
+   post:
+   # Sometimes git might ask for your identity and block the build. Add one valid account here:
+    - git config user.email "inagi@andrew.cmu.edu" 
+    - git config user.name "Imre Nagi"
+
+database:
+  override:
+    - mysql -u ubuntu circle_test < ./sql/V1__create_users_and_public_messages_table.sql
+
+# run tests
+test:
+  override:
+    - mkdir -p $CIRCLE_TEST_REPORTS/mocha
+    - grunt circleci
+
+deployment:
+  production:
+    branch: master
+    heroku:
+      appname: esn-f16-sa2
+  development:
+    branch: develop
+    heroku:
+      appname: esn-f16-sa2-staging

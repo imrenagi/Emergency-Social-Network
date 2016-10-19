@@ -10,7 +10,7 @@ var server = http.createServer(app);
 var io = require('socket.io')(server);
 exports.io = io;
 var db = require('../services/db');
-var chat = require('../services/chat');
+var chat = require('../services/socket');
 var Config = require('../utils/config');
 var conf = new Config();
 

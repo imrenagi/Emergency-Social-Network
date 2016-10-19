@@ -1,11 +1,14 @@
 {
   "name": "ESN_SA2",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Emergency Social Network",
   "private": true,
   "scripts": {
+    "preinstall": "./scripts/preinstall.sh",
+    "postinstall": "./scripts/postinstall.sh",
     "start": "forever -w bin/www",
-    "test": "./node_modules/.bin/mocha --recursive --reporter spec"
+    "test": "grunt test",
+    "prestart": "db-migrate up"
   },
   "author": "Imre Nagi <inagi@andrew.cmu.edu>, Ashutosh T <atadkase@andrew.cmu.edu>, Binglei Du <bdu@andrew.cmu.edu>, Xiangtian Li <xiangti1@andrew.cmu.edu>",
   "dependencies": {
@@ -22,13 +25,16 @@
     "promise": "^7.1.1",
     "ramda": "^0.22.1",
     "serve-favicon": "~2.3.0",
-    "socket.io": "^1.4.6"
+    "socket.io": "^1.4.6",
+    "expect.js": "^0.3.1",
+    "istanbul": "^0.4.0"
   },
   "devDependencies": {
-    "chai": "^3.5.0",
-    "mocha": "^2.2.4",
-    "should": "^6.0.1",
     "sinon": "^1.17.5",
-    "supertest": "^2.0.0"
+    "grunt": "^0.4.5",
+    "grunt-mocha-test": "^0.13.2",
+    "mocha": "^3.1.0",
+    "grunt-mocha-istanbul": "^3.0.1",
+    "mocha-junit-reporter": "^1.8.0"
   }
 }

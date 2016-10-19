@@ -16,17 +16,24 @@ export DB_USER="<your_user_name>"
 export DB_PASSWORD="<your_db_password>"
 ```    
 
-* Install several dependencies below:
+* Run this command to install all of dependencies
 ```
-npm install bower -g
-npm install forever -g
-npm install promise -g
+./scripts/preinstall.sh
+npm install
+./scripts/postinstall.sh
 ```
-
-* Run `npm install` to install all node modules
-* Run `bower install` to install all bower modules
 
 * Run the application by `npm start`
 
 
 ### Ground Rules
+
+#### Adding new database schema
+
+If you are writing a new schema, please use `db-migrate` to create a new migration script. The steps are described below:
+
+* `db-migrate create <migration script name> --sql-file`
+* Put the sql migration script into `<timestamp>-<migration script name>-up.sql` files
+* Save it
+* to run the migration script, simply call `db-migrate up`
+* In case you want to roll it back, simply put the migration script for rolling back to `<timestamp>-<migration script name>-down.sql` and run `db-migrate down`.

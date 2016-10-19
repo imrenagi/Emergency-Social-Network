@@ -1,0 +1,36 @@
+extends base
+block append stylesheet
+  link(rel='stylesheet', href='/css/chat.css')
+  link(rel='stylesheet', href='/css/main.css')
+block append content
+  include navbar.jade
+  .container
+    .wrapper
+      .row
+        .col-md-4.col-sm-4.col-xs-12
+          #contacts.contact-list.btn-group-vertical(role='group', aria-label='Vertical button group')
+            button.btn.btn-primary.text-left#btn-announce
+              i.fa.fa-volume-up
+              span  Announcement
+        .col-md-8.col-sm-8.col-xs-12
+          .panel.panel-default
+            #panel-heading.panel-heading.bg-white(tab=tab, convId=0, flag=announce)
+              #win-header
+            .panel-body
+              #chat-window.chat-window
+                #messages
+                span.loadmore
+              br
+              #textarea.input-group
+                textarea.form-control.custom-control(rows="1", style='resize:none;' placeholder='Share something...')#text
+                span.input-group-addon.btn.btn-default#sendButton
+                  span.glyphicon.glyphicon-send
+
+block append script
+  script(src='https://code.jquery.com/jquery-1.10.2.min.js')
+  script(src='http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js')
+  script(src='/socket.io/socket.io.js')
+  script(src='/libs/moment.min.js')
+  script(src='/script/main.js')
+  script(src='/script/navigationBar.js')
+  script(src='/script/notification.js')

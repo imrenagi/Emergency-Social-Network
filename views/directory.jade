@@ -15,12 +15,13 @@ block append content
                 th Name
                 th.text-center Status
                 th.text-center Online
-                th.text-center options
+                th.text-center Chat
             tbody
         span.loadMoreSpan
 
 block append script
   script(src='https://code.jquery.com/jquery-1.10.2.min.js')
   script(src='http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js')
+  script(src='/socket.io/socket.io.js')
   script(src='/script/showUserDirectory.js')
   script(src='/script/navigationBar.js')

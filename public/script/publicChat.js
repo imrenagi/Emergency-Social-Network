@@ -1,22 +1,6 @@
-var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 var lastMessageId = 0;
 var loadMoreButton = $('<button class="btn btn-default btn-block loadmore" id="loadMoreButton" onclick="loadMoreMessages()"> Load More </button>');
 var limit = 30;
-function reformatTime(date) {
-    // multiplied by 1000 so that the argument is in milliseconds, not seconds.
-    var date = new Date(date);
-    // Hours part from the timestamp
-    var hours = date.getHours();
-    // Minutes part from the timestamp
-    var minutes = '0' + date.getMinutes();
-    // Seconds part from the timestamp
-    var seconds = '0' + date.getSeconds();
-    // Will display time in 10:30:23 format
-    var formattedTime = months[date.getMonth()] + '. ' + date.getDate() + ' '
-                        + date.getFullYear() + ' '
-                        + hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
-    return formattedTime;
-};
 
 function updateMessage(data) {
     var color = 'normal';
@@ -42,12 +26,10 @@ function updateMessage(data) {
             icon = 'fa-plus-square';
         }
     }
-    var pin = '<div class="pin pin-' + color + '"><div class="info pin-heading-' + color + '"> <span class="fa fa-clock-o"></span> '+ time + '  | <span class="fa fa-map-marker"></span> ('+ lat + ', ' + long + ')</div><div class="pin-heading pin-heading-' + color + '"> <i class="fa ' + icon + '"></i> ' + user + ' </div><p>' + text + '</p></div>';
+    var pin = '<div class="pin pin-' + color + '"><div class="info pin-heading-' + color + '"> <span class="fa fa-clock-o"></span> '+ time + '  &nbsp &nbsp <span class="fa fa-map-marker"></span> ('+ lat + ', ' + long + ') &nbsp &nbsp <a href="/privateChat/' + data.sender.id + '">' + (data.sender.id == localStorage['ID'] ? '' : '<i class="fa fa-comment-o"></i>') + '</a> </div><div class="pin-heading pin-heading-' + color + '"> <i class="fa ' + icon + '"></i> ' + user + ' </div><p>' + text + '</p></div>';
     lastMessageId = data.id;
     return pin;
 }
-
-var socket = io();
 
 window.onload = function() {
     loadMoreMessages();
@@ -78,8 +60,6 @@ $('#input').on('click', '#sendButton', function() {
                 });
         $('#text').val('');
     }
-
-    
 });
 
 function loadMoreMessages() {
