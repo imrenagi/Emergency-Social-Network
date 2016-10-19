@@ -20,6 +20,13 @@ $(document).ready(function(){
     showStatus();
 });
 
+function updateBell(n, increase) {
+    var bell = notification.innerHTML;
+    bell = (bell == '' ? 0 : Number(bell));
+    bell = (increase ? bell+n : bell-n);
+    notification.innerHTML = (bell == 0 ? '' : bell);
+}
+
 function updateUserStatus(status) {
     $.ajax({
         type: "PUT",
@@ -42,8 +49,10 @@ socket.emit('new socket', {
 });
 
 socket.on('notification', function() {
-    var unread = notification.innerHTML;
-    notification.innerHTML = (unread == '' ? 0 : Number(unread)) + 1;
+    if (document.getElementById('contacts') == undefined) {
+        var unread = notification.innerHTML;
+        notification.innerHTML = (unread == '' ? 0 : Number(unread)) + 1;
+    }
 })
 
 $.ajax({
@@ -58,7 +67,7 @@ $.ajax({
             for (var i = 0; i < data.conversations.length; i++) {
                 cnt += data.conversations[i].unread_count;
             }
-            notification.innerHTML = (cnt == 0 ? '' : cnt);
+            updateBell(cnt, true);
         }
     }
 });

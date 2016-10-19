@@ -107,11 +107,7 @@ function retrievePreviousMsgHistory(convId, limit){
         }
         var badge = document.getElementById('badge-'+panelHeading.getAttribute('tab'));
         var unread = Number(badge.innerHTML);
-        var bell = notification.innerHTML;
-        if (bell != '') {
-            remained = Number(bell)-unread;
-            notification.innerHTML = (remained == 0 ? '' : remained);
-        }
+        updateBell(unread, false);
         badge.innerHTML = ''
         // if (unread >= 0 && unread <= limit) {
         //     badge.innerHTML = '';
@@ -201,6 +197,7 @@ socket.on('receive private message', function(data, callback) {
         callback(read);
         return;
     }
+    updateBell(1, true);
     var badge = document.getElementById('badge-'+data.sender_id);
     if (badge == undefined) {
         $('#contacts').append('<button id="btn-' + data.sender_id +'" user="' + data.sender_name + '" convId="' + data.conversation_id + '" onclick="tabClicked(' + data.sender_id + ')" class="btn btn-default text-left"><div class="float-right"><div id="badge-' + data.sender_id +'" class="badge badge-contact">1</div></div><span> ' + data.sender_name + '</span></button>');
