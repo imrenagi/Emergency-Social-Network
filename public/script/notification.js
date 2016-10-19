@@ -1,7 +1,7 @@
 var inputArea = '<div id="textarea" class="input-group"><textarea rows="1" style="resize:none;" placeholder="Share something..." class="form-control custom-control"></textarea><span class="input-group-addon btn btn-default"><span class="glyphicon glyphicon-send"></span></span></div>';
 var panelHeading = document.getElementById('panel-heading');
 var lastId = '';
-var limit = 10;
+var limit = 0;
 var btnCls = ['contact-normal', 'contact-ok', 'contact-warning', 'contact-danger']
 
 function isCoordinator() {
@@ -25,11 +25,12 @@ function getUsrInfo(id, async) {
 }
 
 function loadMoreMessages(convId){
+    $('#loadMoreButton').remove();
     if (convId == 0) {
         retrieveAnnouncement();
     }
     else {
-        retrievePreviousMsgHistory(convId, lastId, limit);
+        retrievePreviousMsgHistory(convId, limit);
     }
 }
 
@@ -60,7 +61,7 @@ function getContacts() {
                         document.getElementById('badge-'+data.conversations[i].target.id).innerHTML=((data.conversations[i].unread_count > 0) ? data.conversations[i].unread_count : '');
                         continue;
                     }
-                    $('#contacts').append('<button id="btn-' + data.conversations[i].target.id +'" user="' + data.conversations[i].target.user_name + '" convId="' + data.conversations[i].id + '" onclick="tabClicked(' + data.conversations[i].target.id + ')" class="btn btn-default text-left"><div class="float-right"><div id="badge-' + data.conversations[i].id +'" class="badge badge-contact">' + ((data.conversations[i].unread_count > 0) ? data.conversations[i].unread_count : '') +  '</div></div><span> ' + data.conversations[i].target.user_name + '</span></button>');
+                    $('#contacts').append('<button id="btn-' + data.conversations[i].target.id +'" user="' + data.conversations[i].target.user_name + '" convId="' + data.conversations[i].id + '" onclick="tabClicked(' + data.conversations[i].target.id + ')" class="btn btn-default text-left"><div class="float-right"><div id="badge-' + data.conversations[i].target.id +'" class="badge badge-contact">' + ((data.conversations[i].unread_count > 0) ? data.conversations[i].unread_count : '') +  '</div></div><span> ' + data.conversations[i].target.user_name + '</span></button>');
                 }
             }
         }
@@ -81,22 +82,31 @@ function formatPrivateMessage(data) {
     return html;
 }
 
-function retrievePreviousMsgHistory(convId, lastId, limit){
-    $.get('/message/private/'+(convId)+'?last_id='+lastId+'&limit='+(limit), function(data) {
-        console.log(data);
+function retrievePreviousMsgHistory(convId, limit){
+    $.get('/message/private/'+(convId)+'?last_id='+'&limit='+(limit), function(data) {
         var messages = '';
-        lastId += data.length;
-        for (var i = data.messages.length-1; i >= 0 ; i--) {
+        var read = [];
+        for (var i = 0; i < data.messages.length; i++) {
             messages += formatHistoryMessage(data.messages[i]);
+            lastId = data.messages[i].id;
         }
+
         $('#messages').append(messages);
         var loadMoreButton = $('<button class="btn btn-default btn-block loadmore" id="loadMoreButton" onclick="loadMoreMessages('+convId+')"> Load More </button>');
-        if (data.length == limit) {
+        if (data.messages.length == limit) {
             $('.loadmore').append(loadMoreButton);
         } else {
             loadMoreButton.remove();
         }
-    })
+        var badge = document.getElementById('badge-'+panelHeading.getAttribute('tab'));
+        var unread = Number(badge.innerHTML);
+        badge.innerHTML = ''
+        // if (unread >= 0 && unread <= limit) {
+        //     badge.innerHTML = '';
+        // } else {
+        //     badge.innerHTML = unread-limit;
+        // }
+    });
 }
 
 function formatAnnouncement(data) {
@@ -134,6 +144,7 @@ function getChatWindow() {
     // remove all items
     document.getElementById('messages').textContent = '';
     tab = panelHeading.getAttribute('tab');
+    $('#loadMoreButton').remove();
     if (tab == '0') {
         isCoordinator() ? $('#textarea').show() : $('#textarea').hide();
         $('#win-header').replaceWith('<div id="win-header" class="text-center"># Announcement</div>')
@@ -152,7 +163,7 @@ function getChatWindow() {
             case 3: color = '#ce4844'; icon = 'fa-plus-square';
         }
         $('#win-header').replaceWith('<div id="win-header" recevierName="' + name + '"><i class="fa fa-comments-o"></i><span> Chatting with ...</span><div class="float-right"><span style="color: ' + color + '">' + name + ' <i class="fa ' +  icon +'"></i></span></div></div>');
-        retrievePreviousMsgHistory(panelHeading.getAttribute('convId'), lastId, limit);
+        retrievePreviousMsgHistory(panelHeading.getAttribute('convId'), limit);
     }
 }
 
@@ -170,8 +181,16 @@ socket.on('broadcast announcement', function(data) {
 
 socket.on('receive private message', function(data) {
     var tab = panelHeading.getAttribute('tab');
-    if (tab == data.sender_id || data.sender_id == localStorage['ID']) {
-        $('#messages').append(formatPrivateMessage(data));
+    if (tab == data.sender_id) {
+        $('#messages').prepend(formatPrivateMessage(data));
+        return;
+    }
+    var badge = document.getElementById('badge-'+data.sender_id);
+    if (badge == undefined) {
+        $('#contacts').append('<button id="btn-' + data.sender_id +'" user="' + data.sender_name + '" convId="' + data.conversation_id + '" onclick="tabClicked(' + data.sender_id + ')" class="btn btn-default text-left"><div class="float-right"><div id="badge-' + data.sender_id +'" class="badge badge-contact">1</div></div><span> ' + data.sender_name + '</span></button>');
+    } else { 
+        var unread = 1 + (badge.innerHTML == '' ? 0 : Number(badge.innerHTML));
+        badge.innerHTML = unread;
     }
 });
 
@@ -227,7 +246,7 @@ $('#textarea').on('click', '#sendButton', function() {
                 document.getElementById('btn-'+tab).setAttribute('convId', conversation_id)
                 panelHeading.setAttribute('convId', conversation_id);
             });
-            $('#messages').append(formatPrivateMessage({
+            $('#messages').prepend(formatPrivateMessage({
                 sender_id: localStorage['ID'], 
                 message: message, 
                 location: {
