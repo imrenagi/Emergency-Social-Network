@@ -6,25 +6,25 @@ block append content
   include navbar.jade
   .container
     .wrapper
-      navbar
-      .col-md-3
-        #contacts.contact-list.btn-group-vertical(role='group', aria-label='Vertical button group')
-          button.btn.btn-primary.text-left#btn-announce
-            i.fa.fa-volume-up
-            span  Announcement
-      .col-md-7
-        .panel.panel-default
-          #panel-heading.panel-heading.bg-white(tab=tab, convId=0, flag=announce)
-            #win-header
-          .panel-body
-            #chat-window.chat-window
-              #messages
-              span.loadmore
-            br
-            #textarea.input-group
-              textarea.form-control.custom-control(rows="1", style='resize:none;' placeholder='Share something...')#text
-              span.input-group-addon.btn.btn-default#sendButton
-                span.glyphicon.glyphicon-send
+      .row
+        .col-md-4.col-sm-4.col-xs-12
+          #contacts.contact-list.btn-group-vertical(role='group', aria-label='Vertical button group')
+            button.btn.btn-primary.text-left#btn-announce
+              i.fa.fa-volume-up
+              span  Announcement
+        .col-md-8.col-sm-8.col-xs-12
+          .panel.panel-default
+            #panel-heading.panel-heading.bg-white(tab=tab, convId=0, flag=announce)
+              #win-header
+            .panel-body
+              #chat-window.chat-window
+                #messages
+                span.loadmore
+              br
+              #textarea.input-group
+                textarea.form-control.custom-control(rows="1", style='resize:none;' placeholder='Share something...')#text
+                span.input-group-addon.btn.btn-default#sendButton
+                  span.glyphicon.glyphicon-send
 
 block append script
   script(src='https://code.jquery.com/jquery-1.10.2.min.js')
