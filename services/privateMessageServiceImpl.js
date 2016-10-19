@@ -11,7 +11,8 @@ class PrivateMessageServiceImpl extends PrivateMessageService {
 
 	formatMessage(result) {
 		var message = {
-			id: result.conversation_id,
+			id: result.id,
+			message_id: result.message_id,
 			sender: {
 				id: result.sender_id,
 				user_name: result.user_name
