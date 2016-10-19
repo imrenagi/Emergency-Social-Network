@@ -11,7 +11,6 @@ var privateMessageDAO = new PrivateMessageDAOImpl();
 var PrivateMessageServiceImpl = require('./privateMessageServiceImpl');
 var privteMessageService = new PrivateMessageServiceImpl(privateMessageDAO);
 
-
 var io = require('../bin/www').io;
 
 //Store all online users' socket
