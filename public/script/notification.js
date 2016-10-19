@@ -1,6 +1,6 @@
 var inputArea = '<div id="textarea" class="input-group"><textarea rows="1" style="resize:none;" placeholder="Share something..." class="form-control custom-control"></textarea><span class="input-group-addon btn btn-default"><span class="glyphicon glyphicon-send"></span></span></div>';
 var panelHeading = document.getElementById('panel-heading');
-var lastId;
+var lastId = '';
 var limit = 10;
 var btnCls = ['contact-normal', 'contact-ok', 'contact-warning', 'contact-danger']
 
@@ -56,6 +56,7 @@ function getContacts() {
                 for (var i = 0; i < data.conversations.length; i++) {
                     if (data.conversations[i].target.id == tab) {
                         document.getElementById('btn-'+data.conversations[i].target.id).setAttribute('convId', data.conversations[i].id)
+                        panelHeading.setAttribute('convId', data.conversations[i].id);
                         document.getElementById('badge-'+data.conversations[i].target.id).innerHTML=((data.conversations[i].unread_count > 0) ? data.conversations[i].unread_count : '');
                         continue;
                     }
@@ -64,6 +65,13 @@ function getContacts() {
             }
         }
     });
+}
+
+function formatHistoryMessage(data) {
+    var cls = (data.sender.id == localStorage['ID']) ? 'message-s' : 'message-r';
+    var date = new Date(moment(data.timestamp*1000).format('MM/DD/YYYY hh:mm:ss A') + ' UTC');
+    var html = '<div class="message ' + cls + '"><div class="stamp"><span class="fa fa-map-marker"></span> ('+ data.location.lat + ', ' + data.location.long + ')&nbsp | <span class="fa fa-clock-o"></span> ' + reformatTime(date) + '</div><p>' + data.text + '</p></div>';
+    return html;
 }
 
 function formatPrivateMessage(data) {
@@ -75,18 +83,20 @@ function formatPrivateMessage(data) {
 
 function retrievePreviousMsgHistory(convId, lastId, limit){
     $.get('/message/private/'+(convId)+'?last_id='+lastId+'&limit='+(limit), function(data) {
-            var messages = '';
-            for (var i = 0; i < data.length; i++) {
-                messages += formatPrivateMessage(data[i]);
-            }
-            $('#messages').append(messages);
-            var loadMoreButton = $('<button class="btn btn-default btn-block loadmore" id="loadMoreButton" onclick="loadMoreMessages('+convId+')"> Load More </button>');
-            if (data.length == limit) {
-                $('.loadmore').append(loadMoreButton);
-            } else {
-                loadMoreButton.remove();
-            }
-        })
+        console.log(data);
+        var messages = '';
+        lastId += data.length;
+        for (var i = data.messages.length-1; i >= 0 ; i--) {
+            messages += formatHistoryMessage(data.messages[i]);
+        }
+        $('#messages').append(messages);
+        var loadMoreButton = $('<button class="btn btn-default btn-block loadmore" id="loadMoreButton" onclick="loadMoreMessages('+convId+')"> Load More </button>');
+        if (data.length == limit) {
+            $('.loadmore').append(loadMoreButton);
+        } else {
+            loadMoreButton.remove();
+        }
+    })
 }
 
 function formatAnnouncement(data) {
@@ -167,6 +177,8 @@ socket.on('receive private message', function(data) {
 
 function tabClicked(id) {
     panelHeading.setAttribute('tab', id);
+    convId = document.getElementById('btn-'+id).getAttribute('convId');
+    panelHeading.setAttribute('convId', convId);
     getChatWindow();
 }
 
@@ -210,9 +222,10 @@ $('#textarea').on('click', '#sendButton', function() {
             if (convId != '0') {
                 data['conversation_id'] = convId;
             }
-            socket.emit('send private message', data, function(convId) {
-                console.log(convId);
-                panelHeading.setAttribute('convId', convId);
+            socket.emit('send private message', data, function(conversation_id) {
+                console.log(conversation_id);
+                document.getElementById('btn-'+tab).setAttribute('convId', conversation_id)
+                panelHeading.setAttribute('convId', conversation_id);
             });
             $('#messages').append(formatPrivateMessage({
                 sender_id: localStorage['ID'], 
