@@ -38,7 +38,7 @@ function getContacts() {
     if (tab != '0') {
         var usrinfo = getUsrInfo(tab, false);
         if (usrinfo && usrinfo.id != localStorage['ID']) {
-            $('#contacts').append('<button id="btn-' + usrinfo.id +'" user="' + usrinfo.user_name + '" convId="0" onclick="tabClicked(' + usrinfo.id + ')" class="btn btn-default text-left"><div class="float-right"><div class="badge badge-contact">' + '' +  '</div></div><span> ' + usrinfo.user_name + '</span></button>');
+            $('#contacts').append('<button id="btn-' + usrinfo.id +'" user="' + usrinfo.user_name + '" convId="0" onclick="tabClicked(' + usrinfo.id + ')" class="btn btn-default text-left"><div class="float-right"><div id="badge-' + tab +'" class="badge badge-contact">' + '' +  '</div></div><span> ' + usrinfo.user_name + '</span></button>');
         }
         else {
             tab = '0';
@@ -52,13 +52,14 @@ function getContacts() {
         async: false,
         statusCode: {
             200: function(data) {
-               // console.log(data);
+                console.log(data);
                 for (var i = 0; i < data.conversations.length; i++) {
                     if (data.conversations[i].target.id == tab) {
                         document.getElementById('btn-'+data.conversations[i].target.id).setAttribute('convId', data.conversations[i].id)
+                        document.getElementById('badge-'+data.conversations[i].target.id).innerHTML=((data.conversations[i].unread_count > 0) ? data.conversations[i].unread_count : '');
                         continue;
                     }
-                    $('#contacts').append('<button id="btn-' + data.conversations[i].target.id +'" user="' + data.conversations[i].target.user_name + '" convId="' + data.conversations[i].id + '" onclick="tabClicked(' + data.conversations[i].target.id + ')" class="btn btn-default text-left"><div class="float-right"><div class="badge badge-contact">' + ((data.conversations[i].unread_count > 0) ? data.conversations[i].unread_count : '') +  '</div></div><span> ' + data.conversations[i].target.user_name + '</span></button>');
+                    $('#contacts').append('<button id="btn-' + data.conversations[i].target.id +'" user="' + data.conversations[i].target.user_name + '" convId="' + data.conversations[i].id + '" onclick="tabClicked(' + data.conversations[i].target.id + ')" class="btn btn-default text-left"><div class="float-right"><div id="badge-' + data.conversations[i].id +'" class="badge badge-contact">' + ((data.conversations[i].unread_count > 0) ? data.conversations[i].unread_count : '') +  '</div></div><span> ' + data.conversations[i].target.user_name + '</span></button>');
                 }
             }
         }
@@ -177,6 +178,7 @@ $('#contacts').on('click', '#btn-announce', function() {
 $('#textarea').on('click', '#sendButton', function() { 
     var message = $('#text').val();
     var tab = panelHeading.getAttribute('tab');
+    var convId = panelHeading.getAttribute('convId');
     if (message != '') {
         // Get location
         if (navigator.geolocation) {
@@ -196,7 +198,7 @@ $('#textarea').on('click', '#sendButton', function() {
             });
         }
         else  {
-            socket.emit('send private message', {
+            data = {
                 sender_id: localStorage['ID'],
                 receiver_id: tab,
                 receiver_name: document.getElementById('win-header').getAttribute('recevierName'),
@@ -204,6 +206,13 @@ $('#textarea').on('click', '#sendButton', function() {
                 status: localStorage['STATUS'],
                 latitude: localStorage['latitude'],
                 longitude: localStorage['longitude']
+            }
+            if (convId != '0') {
+                data['conversation_id'] = convId;
+            }
+            socket.emit('send private message', data, function(convId) {
+                console.log(convId);
+                panelHeading.setAttribute('convId', convId);
             });
             $('#messages').append(formatPrivateMessage({
                 sender_id: localStorage['ID'], 

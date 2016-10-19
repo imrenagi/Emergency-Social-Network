@@ -85,7 +85,7 @@ exports.onListening = function(socket) {
   		});
   	});
 
-  	socket.on('send private message', function(data) {
+  	socket.on('send private message', function(data, callback) {
   		var senderId = socket.userId;
   		var senderName = socket.userName;
   		
@@ -108,6 +108,7 @@ exports.onListening = function(socket) {
 			privteMessageService.createConversation(senderId, receiverId).then(function(results) {
 				conversationId = results;
 				console.log(conversationId);
+                callback(conversationId);
 				privteMessageService.storePrivateMessage(senderId, senderName, receiverId, receiverName, conversationId, message, messageStatus, latitude, longitude)
 				.then(function(privateMessage) {
 					console.log(privateMessage);
