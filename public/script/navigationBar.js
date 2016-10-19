@@ -1,3 +1,5 @@
+var notification = document.getElementById('notification')
+
 function showStatus() {
     var status = '<i id="status" style="color: #000" class="fa fa-minus"></i>';
     switch(localStorage['STATUS']) {

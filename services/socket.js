@@ -85,7 +85,7 @@ exports.onListening = function(socket) {
   		});
   	});
 
-  	socket.on('send private message', function(data) {
+  	socket.on('send private message', function(data, callback) {
   		var senderId = socket.userId;
   		var senderName = socket.userName;
 
@@ -109,8 +109,7 @@ exports.onListening = function(socket) {
 				if(result.length == 0) {
 					privteMessageService.createConversation(senderId, receiverId).then(function(results) {
 						conversationId = results;
-						socket.emit('new conversation_id', {receive_id: receiverId,
-															conversation_id: conversationId});
+						callback(conversationId);
 						privteMessageService.storePrivateMessage(senderId, senderName, receiverId, receiverName, conversationId, message, messageStatus, latitude, longitude)
 						.then(function(privateMessage) {
 							if(users.has(receiverId)) {
@@ -135,7 +134,6 @@ exports.onListening = function(socket) {
 					});
 				}
 			});
-
 		}
 		else {
 			privteMessageService.storePrivateMessage(senderId, senderName, receiverId, receiverName, conversationId, message, messageStatus, latitude, longitude)
