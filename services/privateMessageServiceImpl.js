@@ -71,7 +71,7 @@ class PrivateMessageServiceImpl extends PrivateMessageService {
 	}
 
 	getAllPrivateMessages(conversationId, lastId, limit) {
-		var that = this
+		var that = this;
 		return this.privateMessageDAO.getPrivateMessagesByConversationId(conversationId, lastId, limit).then(function(results) {
 			var res = JSON.parse(JSON.stringify(results));
 			var json = R.map(result => that.formatMessage(result), res);
@@ -114,6 +114,11 @@ class PrivateMessageServiceImpl extends PrivateMessageService {
 			var res = JSON.parse(JSON.stringify(result));
 			return res;
 		});
+	}
+
+	updateMessageReadFlag(messageIds) {
+		let ids = messageIds.toString();
+		return this.privateMessageDAO.updateMessageReadFlagByIds(ids);
 	}
 }
 

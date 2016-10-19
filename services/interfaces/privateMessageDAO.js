@@ -20,6 +20,9 @@ class PrivateMessageDAO {
 		if(this.getConversationId === undefined) {
 			throw new Error('Must override!');
 		}
+		if(this.updateMessageReadFlagByIds === undefined) {
+			throw new Error('Must override!');
+		}	
 	}
 }
 

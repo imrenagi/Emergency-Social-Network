@@ -85,6 +85,10 @@ exports.onListening = function(socket) {
   		});
   	});
 
+  	socket.on('update message read_flag', function(data) {
+  		privteMessageService.updateMessageReadFlag(data);
+  	});
+
   	socket.on('send private message', function(data, callback) {
   		var senderId = socket.userId;
   		var senderName = socket.userName;
@@ -96,6 +100,8 @@ exports.onListening = function(socket) {
   		var messageStatus = data.message_status || 0;
   		var latitude = data.latitude || null;
 		var longitude = data.longitude || null;
+
+		console.log(receiverName);
 
 		if(senderId === undefined || message === undefined || receiverId === undefined) {
 			var err = new Error();
@@ -128,6 +134,7 @@ exports.onListening = function(socket) {
 					.then(function(privateMessage) {
 						if(users.has(receiverId)) {
 							users.get(receiverId).emit('receive private message', privateMessage);
+							console.log("here2");
 						}
 					}).catch(function(err) {
 						return console.log(err);

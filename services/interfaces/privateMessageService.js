@@ -21,6 +21,9 @@ class PrivateMessageService {
 	  	if(this.getConversationId === undefined) {
 	  		throw Error("Must override!");
 	  	}
+	  	if(this.updateMessageReadFlag === undefined) {
+	  		throw Error("Must override!");
+	  	}
 	}
 
 }

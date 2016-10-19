@@ -41,9 +41,11 @@ class PrivateMessageDAOImpl extends PrivateMessageDAO {
 		return new Promise(function(resolve, reject) {
 			db.get().query(query, function(err, results) {
 				if (err) {
+					console.log(err);
 					reject(err);
 				}
 				else {
+					console.log(results);
 					resolve(results);
 				}
 			})
@@ -112,6 +114,22 @@ class PrivateMessageDAOImpl extends PrivateMessageDAO {
 				}
 			});
 		})
+	}
+
+	updateMessageReadFlagByIds(ids) {
+		return new Promise(function(resolve, reject) {
+			let query = 'UPDATE private_messages SET read_flag = 1 WHERE id in (' + ids + ')';
+			db.get().query(query, function(err, result) {
+				if(err) {
+					console.log(err);
+					reject(err);
+				}
+				else {
+					console.log(result);
+					resolve(result);
+				}
+			});
+		});
 	}
 
 }
