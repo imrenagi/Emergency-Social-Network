@@ -77,6 +77,7 @@ exports.onListening = function(socket) {
   		announcementService.post(data.sender_id, data.message, data.lat, data.long).then(function(id) {
   			announcementService.getByAnnouncementId(id).then(function(result) {
   				io.emit('broadcast announcement', result);
+  				io.emit('notification');
   			}).catch(function(err){
   				return console.log(err)
   			});
@@ -117,7 +118,10 @@ exports.onListening = function(socket) {
 						privteMessageService.storePrivateMessage(senderId, senderName, receiverId, receiverName, conversationId, message, messageStatus, latitude, longitude)
 						.then(function(privateMessage) {
 							if(users.has(receiverId)) {
-								users.get(receiverId).emit('receive private message', privateMessage);
+								users.get(receiverId).emit('receive private message', privateMessage, function(data) {
+									privteMessageService.updateMessageReadFlag(data);
+								});
+								users.get(receiverId).emit('notification');
 							}
 						}).catch(function(err) {
 							return console.log(err);
@@ -131,7 +135,10 @@ exports.onListening = function(socket) {
 					privteMessageService.storePrivateMessage(senderId, senderName, receiverId, receiverName, conversationId, message, messageStatus, latitude, longitude)
 					.then(function(privateMessage) {
 						if(users.has(receiverId)) {
-							users.get(receiverId).emit('receive private message', privateMessage);
+							users.get(receiverId).emit('receive private message', privateMessage, function(data) {
+								privteMessageService.updateMessageReadFlag(data);
+							});
+							users.get(receiverId).emit('notification');
 						}
 					}).catch(function(err) {
 						return console.log(err);
@@ -144,7 +151,10 @@ exports.onListening = function(socket) {
 			.then(function(privateMessage) {
 				console.log(privateMessage);
 				if(users.has(receiverId)) {
-					users.get(receiverId).emit('receive private message', privateMessage);
+					users.get(receiverId).emit('receive private message', privateMessage, function(data) {
+						privteMessageService.updateMessageReadFlag(data);
+					});
+					users.get(receiverId).emit('notification');
 				}
 			}).catch(function(err) {
 				return console.log(err);
