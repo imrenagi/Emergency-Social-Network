@@ -37,12 +37,7 @@ class PrivateMessageDAOImpl extends PrivateMessageDAO {
 	}
 
 	getPrivateMessagesByConversationId(conversationId, lastId, limit) {
-		var query = '';
-		if (lastId === -1) {
-			query = 'SELECT p.*, u.user_name from private_messages p left join users u on u.id = p.sender_id WHERE p.conversation_id = ' + conversationId + ' order by p.id desc limit ' + limit;
-		} else {
-			query = 'SELECT p.*, u.user_name from private_messages p left join users u on u.id = p.sender_id WHERE p.conversation_id = ' + conversationId + ' AND where p.id >='+ (lastId-limit) + ' AND p.id < ' + lastId + ' order by p.id desc';
-		}
+		var query = 'SELECT p.*, u.user_name from private_messages p left join users u on u.id = p.sender_id WHERE p.conversation_id = ' + conversationId + ' order by p.id desc';
 		return new Promise(function(resolve, reject) {
 			db.get().query(query, function(err, results) {
 				if (err) {
