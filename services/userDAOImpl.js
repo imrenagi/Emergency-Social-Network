@@ -18,7 +18,7 @@ class userDAOImpl extends userDAO {
 	// 	});
 	// }
 
-
+	//Add a comment
 	updateOnline(user, isOnline) {
 		var query = 'UPDATE users SET online = ' + isOnline + ' WHERE id = ' + user.getId();
 		return new Promise(function(resolve, reject) {
