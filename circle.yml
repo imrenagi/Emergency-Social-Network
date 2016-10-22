@@ -15,6 +15,11 @@ checkout:
     - git config user.email "inagi@andrew.cmu.edu" 
     - git config user.name "Imre Nagi"
 
+dependencies:
+  override:
+    - bash scripts/preinstall.sh
+    - bash scripts/postinstall.sh
+
 database:
   override:
     - db-migrate up -e circleci
@@ -23,9 +28,9 @@ database:
 test:
   override:
     - mkdir -p $CIRCLE_TEST_REPORTS/mocha
-    - NODE_ENV=test npm start:
+    - NODE_ENV=circle npm start:
         background: true
-    - NODE_ENV=test grunt circleci
+    - NODE_ENV=circle grunt circleci
 
 deployment:
   production:
