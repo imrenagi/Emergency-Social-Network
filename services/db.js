@@ -1,6 +1,6 @@
 var mysql = require('mysql');
 
-var DB = process.env.DB_NAME , TEST_DB = 'esn_test_db'
+var DB = process.env.DB_NAME , TEST_DB = 'esn_db_test'
 
 exports.MODE_TEST = 'mode_test'
 exports.MODE_PRODUCTION = 'mode_production'

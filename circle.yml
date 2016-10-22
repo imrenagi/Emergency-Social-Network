@@ -17,13 +17,15 @@ checkout:
 
 database:
   override:
-    - mysql -u ubuntu circle_test < ./sql/V1__create_users_and_public_messages_table.sql
+    - db-migrate up -e circleci
 
 # run tests
 test:
   override:
     - mkdir -p $CIRCLE_TEST_REPORTS/mocha
-    - grunt circleci
+    - NODE_ENV=test npm start:
+        background: true
+    - NODE_ENV=test grunt circleci
 
 deployment:
   production:
