@@ -33,7 +33,7 @@ router.use('/logout', require('./logout'));
 router.use('/message', require('./message'));
 router.use('/announcement', require('./announcement'));
 
-if (app.get('env') === 'test') {
+if (app.get('env') === 'test' || app.get('env') === 'circle') {
 	router.use('/testing', require('./test'));
 }
 
