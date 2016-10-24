@@ -129,7 +129,7 @@ exports.onListening = function(socket) {
 					});
 				}
 				else {
-					cognversationId = result[0];
+					conversationId = result[0];
 					privteMessageService.storePrivateMessage(senderId, senderName, receiverId, receiverName, conversationId, message, messageStatus, latitude, longitude)
 					.then(function(privateMessage) {
 						if(users.has(receiverId)) {
