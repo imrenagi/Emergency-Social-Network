@@ -19,6 +19,7 @@ database:
   override:
     - bash scripts/preinstall.sh
     - bash scripts/postinstall.sh
+    #error.
     - db-migrate up -e circleci
 
 # run tests

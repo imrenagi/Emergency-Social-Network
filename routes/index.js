@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var app = express();
 
 router.get('/', function(req, res) {
   res.render('join', {title: 'Emergency Social Network'});
@@ -31,5 +32,9 @@ router.use('/directory', require('./directory'));
 router.use('/logout', require('./logout'));
 router.use('/message', require('./message'));
 router.use('/announcement', require('./announcement'));
+
+if (app.get('env') === 'test') {
+	router.use('/testing', require('./test'));
+}
 
 module.exports = router;
