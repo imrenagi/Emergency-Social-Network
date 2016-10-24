@@ -7,6 +7,12 @@ machine:
     DB_NAME: circle_test
     DB_USER: ubuntu
 
+general:
+  branches:
+    only:
+      - master
+      - develop
+
 # merge master before testing to make sure all tests pass
 # with the updated version of master
 checkout:
