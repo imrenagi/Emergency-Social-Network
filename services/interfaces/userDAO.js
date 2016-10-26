@@ -9,6 +9,11 @@ class userDAO {
 		if(this.updateStatus === undefined) {
 			throw Error("Must override!");
 		}
+
+		if(this.searchByUserName === undefined) {
+			throw Error("Must override!");	
+		}
+
 	}
 }
 
