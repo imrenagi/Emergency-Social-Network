@@ -14,6 +14,10 @@ class userDAO {
 			throw Error("Must override!");	
 		}
 
+		if(this.searchByStatus === undefined) {
+			throw Error("Must override!");	
+		}
+
 	}
 }
 

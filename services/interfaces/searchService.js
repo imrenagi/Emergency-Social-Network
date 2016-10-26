@@ -8,6 +8,10 @@ class SearchService {
 	    if (this.userByName === undefined) {
 	    	throw Error("Must override!");	
 	    }
+
+	    if (this.userByStatus === undefined) {
+	    	throw Error("Must override!");	
+	    }
 	}
 }
 

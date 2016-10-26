@@ -6,7 +6,7 @@ var searchService = new SearchServiceImpl(userDAO);
 
 exports.search = function(req, res, next) {
 	var search_type = req.param('search_type')
-	var query = req.param('query') || ''
+	var query = req.param('query') || 0
 	var page = req.param('page') || 1;
   	var limit = req.param('limit') || 30;
 	
@@ -20,6 +20,9 @@ exports.search = function(req, res, next) {
 	switch (search_type) {
 		case 'user_name':
 			searchByUserName(req, res, next, query, page, limit);
+			break;
+		case 'user_status':
+			searchByUserStatus(req, res, next, query, page, limit);
 			break;
 	}
 }
@@ -39,6 +42,14 @@ function isValidSeachType(type) {
 
 function searchByUserName(req, res, next, userName, page, limit) {
 	searchService.userByName(userName, page, limit).then(function(result) {
+		res.send(JSON.stringify(result));
+	}).catch(function(err){
+		res.send(err)
+	})
+}
+
+function searchByUserStatus(req, res, next, status, page, limit) {
+	searchService.userByStatus(status, page, limit).then(function(result) {
 		res.send(JSON.stringify(result));
 	}).catch(function(err){
 		res.send(err)
