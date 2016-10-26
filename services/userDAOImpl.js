@@ -8,16 +8,6 @@ class userDAOImpl extends userDAO {
 		super();
 	}
 
-	// updateStatus(user, status) {
-	// 	var query = 'UPDATE users SET status = ' + status + ', status_updated_at = now() WHERE id = ' + user.getId();
-	// 	return new Promise(function(resolve, reject) {
-	// 			db.get().query(query, function(err, result) {
-	// 				if (err) reject(err)
-	// 				else resolve(result)
-	// 		})
-	// 	});
-	// }
-
 	//Add a comment
 	updateOnline(user, isOnline) {
 		var query = 'UPDATE users SET online = ' + isOnline + ' WHERE id = ' + user.getId();
@@ -61,5 +51,20 @@ class userDAOImpl extends userDAO {
 		});
 	}
 
+	searchByUserName(userName) {
+		var query = 'select u.id, u.user_name, u.online, u.status from users u where u.user_name like \'%' + userName + '%\' order by online desc, user_name asc;'
+		return new Promise(function(resolve, reject) {
+				db.get().query(query, function(err, result) {
+					if (err) {						
+						reject(err)
+					}
+					else {
+						var results = JSON.parse(JSON.stringify(result));
+						resolve(results);
+					}
+			})
+		});
+	}
+	
 }
 module.exports = userDAOImpl;
