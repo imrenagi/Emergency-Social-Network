@@ -1,0 +1,36 @@
+extends base
+block append stylesheet
+  link(rel='stylesheet', href='/css/main.css')
+  link(rel='stylesheet', href='/css/search.css')
+block append content
+  include navbar.jade
+  .container
+    .wrapper
+      .row.search-area
+        .col-md-12.col-sm-12.col-xs-12
+          .input-group#search-area
+            input.form-control()#search-textarea
+            .input-group-btn#search-btn-group
+              button.btn.btn-default(id='search-button', type='button')
+                i.fa.fa-search
+              button.btn.btn-default.dropdown-toggle(data-toggle='dropdown', aria-haspopup='true',  aria-expanded='false')
+                span.caret#dropdown-icon
+                span.sr-only
+              ul.dropdown-menu.dropdown-menu-right#dropdown-list
+                li
+                  a(href='#') User
+                li
+                  a(href='#') Status
+                li
+                  a(href='#') Announcement
+                li
+                  a(href='#') Public Message
+                li
+                  a(href='#') Private Message
+block append script
+  script(src='https://code.jquery.com/jquery-1.10.2.min.js')
+  script(src='http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js')
+  script(src='/socket.io/socket.io.js')
+  script(src='/libs/moment.min.js')
+  script(src='/script/main.js')
+  script(src='/script/navigationBar.js')

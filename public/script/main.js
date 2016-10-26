@@ -2,7 +2,9 @@ months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec
 
 var textarea = document.querySelector('textarea');
 
-textarea.addEventListener('keydown', autosize);
+if (textarea) {
+    textarea.addEventListener('keydown', autosize);
+}
              
 function autosize(){
   var el = this;

@@ -27,6 +27,10 @@ router.get('/welcome', function(req, res) {
   res.render('welcome', {title: 'Welcome - Emergency Social Network'});
 });
 
+router.get('/searchInfo', function(req, res) {
+  res.render('search', { title: 'Search - Emergency Social Network'});
+});
+
 router.use('/join', require('./join'));
 router.use('/directory', require('./directory'));
 router.use('/logout', require('./logout'));
