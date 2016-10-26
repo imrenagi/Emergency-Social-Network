@@ -3,7 +3,7 @@
 var R = require('ramda');
 var dateHelper = require('../helpers/date');
 var SearchService = require('./interfaces/searchService');
-var Meta = require('../models/Meta')
+var Meta = require('../models/meta')
 
 class SearchServiceImpl extends SearchService {
 	constructor(userDAO) {
