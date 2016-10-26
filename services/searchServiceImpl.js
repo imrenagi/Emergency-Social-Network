@@ -45,6 +45,23 @@ class SearchServiceImpl extends SearchService {
 			return err
 		})
 	}
+
+	userByStatus(status, page, limit) {
+		let offset = this.offset(page, limit);
+		let currentPage = this.currentPage(page);
+		return this.userDAO.searchByStatus(status, offset, limit).then(result => {
+			var meta = new Meta(parseInt(currentPage), parseInt(limit), Math.ceil(result.total/limit), result.total)
+			var results = result.data
+			var output = {
+				results: results,
+				meta: meta
+			}		
+			return output
+		}).catch(err => {
+			return err
+		})
+	}
+	
 }
 
 module.exports = SearchServiceImpl;

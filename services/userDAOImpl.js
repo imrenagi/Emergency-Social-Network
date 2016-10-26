@@ -52,9 +52,20 @@ class userDAOImpl extends userDAO {
 	}
 
 	searchByUserName(userName, offset, limit) {
-		var query = 'select count(*) total from users u where u.user_name like \'%' + userName + '%\''
+		var paginationQuery = 'select count(*) total from users u where u.user_name like \'%' + userName + '%\''
+		var itemQuery = 'select u.id, u.user_name, u.online, u.status from users u where u.user_name like \'%' + userName + '%\' order by online desc, user_name asc limit '+offset +','+limit+';'
+		return this.searchByQuery(paginationQuery, itemQuery)
+	}
+
+	searchByStatus(status, offset, limit) {
+		var paginationQuery = 'select count(*) total from users u where u.status = ' + status + ';'
+		var itemQuery = 'select u.id, u.user_name, u.online, u.status from users u where u.status = ' + status + ' order by online desc, user_name asc limit '+offset +','+limit+';'
+		return this.searchByQuery(paginationQuery, itemQuery, offset, limit);
+	}
+
+	searchByQuery(paginationQuery, itemQuery, offset, limit) {
 		return new Promise(function(resolve, reject) {
-			db.get().query(query, function(err, result) {
+			db.get().query(paginationQuery, function(err, result) {
 				if (err) {
 					reject(err);
 				}
@@ -64,9 +75,8 @@ class userDAOImpl extends userDAO {
 				}
 			})
 		}).then(total_result => {
-			var query2 = 'select u.id, u.user_name, u.online, u.status from users u where u.user_name like \'%' + userName + '%\' order by online desc, user_name asc limit '+offset +','+limit+';'
 			return new Promise(function(resolve, reject) {
-					db.get().query(query2, function(err, result) {
+					db.get().query(itemQuery, function(err, result) {
 						if (err) {					
 							reject(err)
 						}
@@ -75,12 +85,13 @@ class userDAOImpl extends userDAO {
 								data: JSON.parse(JSON.stringify(result)),
 								total: total_result
 							}
+							console.log(results)
 							resolve(results);
 						}
 				})
 			})
 		});
 	}
-
 }
+
 module.exports = userDAOImpl;
