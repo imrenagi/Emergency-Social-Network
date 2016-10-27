@@ -5,6 +5,8 @@ var dateHelper = require('../helpers/date');
 var SearchService = require('./interfaces/searchService');
 var Meta = require('../models/meta')
 
+const STOPWORDS = require('../utils/stopwords');
+
 class SearchServiceImpl extends SearchService {
 	constructor(userDAO, announcementDAO) {
 		super(userDAO, announcementDAO);
@@ -83,6 +85,12 @@ class SearchServiceImpl extends SearchService {
 		let offset = this.offset(page, limit);
 		let currentPage = this.currentPage(page);
 		var that = this;
+		if (this.doesContainOnlyStopWord(query)) {
+			return Promise.resolve({
+				results: [],
+				meta: new Meta(parseInt(currentPage), parseInt(limit), 0, 0)
+			})
+		}
 		return this.announcementDAO.searchByQuery(query, offset, limit).then(result => {
 			var meta = new Meta(parseInt(currentPage), parseInt(limit), Math.ceil(result.total/limit), result.total)
 			var results = R.map(result => that.formatAnnouncement(result), result.data);
@@ -94,6 +102,11 @@ class SearchServiceImpl extends SearchService {
 		}).catch(err => {
 			return err
 		})
+	}
+
+	doesContainOnlyStopWord(query) {
+		//TODO implement this function!
+		return false;
 	}
 	
 }

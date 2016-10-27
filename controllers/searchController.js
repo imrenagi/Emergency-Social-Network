@@ -8,7 +8,7 @@ var searchService = new SearchServiceImpl(userDAO, announcementDAO);
 
 exports.search = function(req, res, next) {
 	var search_type = req.param('search_type')
-	var query = req.param('query') || 0
+	var query = req.param('query').toLowerCase() || ''
 	var page = req.param('page') || 1;
   	var limit = req.param('limit') || 30;
 	
