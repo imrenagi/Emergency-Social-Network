@@ -1,8 +1,10 @@
 var userDAOImpl = require('../services/userDAOImpl');
+var AnnouncementDAOImpl = require('../services/announcementDAOImpl');
 var SearchServiceImpl = require('../services/searchServiceImpl');
 
+var announcementDAO = new AnnouncementDAOImpl();
 var userDAO = new userDAOImpl();
-var searchService = new SearchServiceImpl(userDAO);
+var searchService = new SearchServiceImpl(userDAO, announcementDAO);
 
 exports.search = function(req, res, next) {
 	var search_type = req.param('search_type')
@@ -23,6 +25,9 @@ exports.search = function(req, res, next) {
 			break;
 		case 'user_status':
 			searchByUserStatus(req, res, next, query, page, limit);
+			break;
+		case 'announcement':
+			searchByAnnouncement(req, res, next, query, page, limit);
 			break;
 	}
 }
@@ -50,6 +55,14 @@ function searchByUserName(req, res, next, userName, page, limit) {
 
 function searchByUserStatus(req, res, next, status, page, limit) {
 	searchService.userByStatus(status, page, limit).then(function(result) {
+		res.send(JSON.stringify(result));
+	}).catch(function(err){
+		res.send(err)
+	})
+}
+
+function searchByAnnouncement(req, res, next, query, page, limit) {
+	searchService.announcementByQuery(query, page, limit).then(function(result) {
 		res.send(JSON.stringify(result));
 	}).catch(function(err){
 		res.send(err)

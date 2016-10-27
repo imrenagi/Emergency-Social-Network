@@ -6,8 +6,8 @@ var SearchService = require('./interfaces/searchService');
 var Meta = require('../models/meta')
 
 class SearchServiceImpl extends SearchService {
-	constructor(userDAO) {
-		super(userDAO);
+	constructor(userDAO, announcementDAO) {
+		super(userDAO, announcementDAO);
 	}
 
 	currentPage(page) {
@@ -52,6 +52,40 @@ class SearchServiceImpl extends SearchService {
 		return this.userDAO.searchByStatus(status, offset, limit).then(result => {
 			var meta = new Meta(parseInt(currentPage), parseInt(limit), Math.ceil(result.total/limit), result.total)
 			var results = result.data
+			var output = {
+				results: results,
+				meta: meta
+			}		
+			return output
+		}).catch(err => {
+			return err
+		})
+	}
+
+	formatAnnouncement(result) {
+		var announcement = {
+			id: result.id,
+			sender: {
+				id: result.sender_id,
+				user_name: result.user_name
+			},
+			text: result.message,
+			timestamp: dateHelper.convertDateToTimestamp(result.created_at),
+			location: {
+				lat: result.latitude,
+				long: result.longitude
+			}
+		}
+		return announcement;
+	}
+
+	announcementByQuery(query, page, limit) {
+		let offset = this.offset(page, limit);
+		let currentPage = this.currentPage(page);
+		var that = this;
+		return this.announcementDAO.searchByQuery(query, offset, limit).then(result => {
+			var meta = new Meta(parseInt(currentPage), parseInt(limit), Math.ceil(result.total/limit), result.total)
+			var results = R.map(result => that.formatAnnouncement(result), result.data);
 			var output = {
 				results: results,
 				meta: meta

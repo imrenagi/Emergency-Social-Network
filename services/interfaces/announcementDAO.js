@@ -11,6 +11,9 @@ class AnnouncementDAO {
 		if(this.findAll === undefined) {
 			throw Error("Must override!");
 		}
+		if(this.searchByQuery === undefined) {
+			throw Error("Must override!");
+		}
 		
 	}
 }
