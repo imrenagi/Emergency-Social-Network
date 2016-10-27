@@ -22,8 +22,8 @@ function searchInfo(type, query, pn) {
             $('#query-data').attr('pn', pn);
             $('#search-textarea').val('');
             var list = $('#result-list');
+            list.html('');
             var result = data.results;
-            console.log(result);
             switch(type) {
                 case 'user_name': {
                     var noColCls = 'col-md-1', nameColCls = 'col-md-4', onlineColCls='col-md-3', statusColCls='col-md-4';
