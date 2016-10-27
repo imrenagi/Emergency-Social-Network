@@ -5,7 +5,9 @@ queryType = {
     'opt-pri-msg': 'private_message',
     'opt-pub-msg': 'public_message'
 };
+
 var limit = 10;
+
 function searchInfo(type, query, pn) {
     $.ajax({
         type: 'GET',
@@ -17,13 +19,15 @@ function searchInfo(type, query, pn) {
         url: '/search/' + type,
         dataType: "json",
         success: function(data) {
+            var result = data.results,
+                meta = data.meta;
             $('#query-data').attr('type', type);
             $('#query-data').attr('query', query);
-            $('#query-data').attr('pn', pn);
+            $('#query-data').attr('pn', meta.page);
+            $('#query-data').attr('tpn', meta.page_count);
             $('#search-textarea').val('');
             var list = $('#result-list');
             list.html('');
-            var result = data.results;
             switch(type) {
                 case 'user_name': {
                     var noColCls = 'col-md-1', nameColCls = 'col-md-4', onlineColCls='col-md-3', statusColCls='col-md-4';
@@ -50,15 +54,58 @@ function searchInfo(type, query, pn) {
                     break;
                 }
             }
+            addPagination(pn, meta.page_count);
         }
     });
 }
+
+function addPagination(curPN, totalPN) {
+    if (totalPN == 1) {
+        return;
+    }
+
+    var startPN, endPN;
+    if (curPN - 4 <= 0) {
+        startPN = 1;
+        endPN = Math.min(10, totalPN);
+    }
+    else if (curPN + 5 > totalPN) {
+        startPN = Math.max(1, totalPN-9);
+        endPN = totalPN;
+    }
+    else {
+        startPN = curPN - 4;
+        endPN = Math.min(curPN + 5, totalPN);
+    }
+
+    $('.pagination').html('');
+
+    var html = (curPN == 1 ? '' : '<li><a href="#" aria-label="Previous"><span aria-hidden="true">«</span></a></li>');
+    for (var i = startPN; i <= endPN; i++)
+        html += '<li' + (curPN == i ? ' class="active">' : '>') + '<a href="#" aria-label="' + i + '">' + i + (curPN == i ? ' <span class="sr-only">(current)</span>' : '') + '</a></li>';
+    html += (curPN == totalPN ? '' : '<li><a href="#" aria-label="Next"><span aria-hidden="true">»</span></a></li>');
+    $('.pagination').append(html);
+}
+
 $('#search-btn').click(function() {
     var option = $('#search-option').attr('option')
     query = $('#search-textarea').val();
     if (query && query != '') {
         searchInfo(queryType[option], query, 1);
     }
+});
+
+$('.pagination').on('click', 'a', function() {
+    var label = this.getAttribute('aria-label');
+    var pn = Number($('#query-data').attr('pn'));
+    if (label == 'Previous') {
+        pn--;
+    } else if (label == 'Next') {
+        pn++;
+    } else {
+        pn = Number(label);
+    }
+    searchInfo($('#query-data').attr('type'), $('#query-data').attr('query'), pn);
 });
 
 $('#dropdown-list a').click(function() {
