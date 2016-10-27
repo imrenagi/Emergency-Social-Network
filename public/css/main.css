@@ -4,6 +4,9 @@
     display: flex;
     justify-content: center;
 }
+.text-bold {
+    font-weight: bold;
+}
 .text-center {
     text-align: center;
 }
