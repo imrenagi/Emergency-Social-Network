@@ -74,6 +74,10 @@ function searchByAnnouncement(req, res, next, query, page, limit) {
 	})
 }
 
-function searchByPublicMessage() {
-	
+function searchByPublicMessage(req, res, next, query, page, limit) {
+	searchService.publicMessageByQuery(query, page, limit).then(function(result) {
+		res.send(JSON.stringify(result));
+	}).catch(function(err) {
+		res.send(err);
+	});
 }

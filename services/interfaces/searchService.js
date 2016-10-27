@@ -15,7 +15,11 @@ class SearchService {
 	    }
 
 	    if (this.announcementByQuery === undefined) {
-	    	throw Error("Must override");
+	    	throw Error("Must override!");
+	    }
+	    
+	    if (this.publicMessageByQuery === undefined) {
+	    	throw Error("Must override!");
 	    }
 	}
 }

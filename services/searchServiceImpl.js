@@ -104,6 +104,10 @@ class SearchServiceImpl extends SearchService {
 		})
 	}
 
+	publicMessageByQuery(query, page, limit) {
+		
+	}
+
 	doesContainOnlyStopWord(query) {
 		//TODO implement this function!
 		return false;
