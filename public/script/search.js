@@ -30,7 +30,8 @@ function searchInfo(type, query, pn) {
             var list = $('#result-list');
             list.html('');
             switch(type) {
-                case 'user_name': {
+                case 'user_name':
+                case 'user_status': {
                     var noColCls = 'col-md-1', nameColCls = 'col-md-4', onlineColCls='col-md-3', statusColCls='col-md-4';
                     list.append('<li class="list-group-item text-center text-bold"><div class="row"><div class="' + noColCls + '">#</div><div class="' + nameColCls + '">Name</div><div class="' +  onlineColCls + '">Online</div><div class="' + statusColCls + '">Status</div></div></li>')
                     for (var i = 0; i < results.length; i++) {
@@ -55,9 +56,6 @@ function searchInfo(type, query, pn) {
                         html += '</li>';
                         list.append(html);
                     }
-                    break;
-                }
-                case 'user_status': {
                     break;
                 }
                 case 'private_message': {
