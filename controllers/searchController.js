@@ -29,6 +29,11 @@ exports.search = function(req, res, next) {
 		case 'announcement':
 			searchByAnnouncement(req, res, next, query, page, limit);
 			break;
+		case 'public_message':
+			searchByPublicMessage(req, res, next, query, page, limit);
+			break;
+		default:
+			break;
 	}
 }
 
@@ -67,4 +72,8 @@ function searchByAnnouncement(req, res, next, query, page, limit) {
 	}).catch(function(err){
 		res.send(err)
 	})
+}
+
+function searchByPublicMessage() {
+	
 }
