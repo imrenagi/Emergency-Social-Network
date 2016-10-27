@@ -19,7 +19,8 @@ function searchInfo(type, query, pn) {
         url: '/search/' + type,
         dataType: "json",
         success: function(data) {
-            var result = data.results,
+            console.log(data);
+            var results = data.results,
                 meta = data.meta;
             $('#query-data').attr('type', type);
             $('#query-data').attr('query', query);
@@ -32,16 +33,28 @@ function searchInfo(type, query, pn) {
                 case 'user_name': {
                     var noColCls = 'col-md-1', nameColCls = 'col-md-4', onlineColCls='col-md-3', statusColCls='col-md-4';
                     list.append('<li class="list-group-item text-center text-bold"><div class="row"><div class="' + noColCls + '">#</div><div class="' + nameColCls + '">Name</div><div class="' +  onlineColCls + '">Online</div><div class="' + statusColCls + '">Status</div></div></li>')
-                    for (var i = 0; i < result.length; i++) {
-                        var id = result[i].id;
-                        var name = result[i].user_name;
-                        var online=result[i].online;
-                        var status = statusType[result[i].status];
+                    for (var i = 0; i < results.length; i++) {
+                        var id = results[i].id,
+                            name = results[i].user_name,
+                            online=results[i].online,
+                            status = statusType[results[i].status];
                         list.append('<li class="list-group-item text-center"><div class="row"><div class="' + noColCls + ' text-bold">' + (i+1) + '</div><div class="' + nameColCls + '">' + name + '</div><div class="' +  onlineColCls + '">' + (online == 1 ? 'Y' : 'N') + '</div><div class="' + statusColCls + '">' + status.html + '</div></div></li>');
                     }
                     break;
                 }
                 case 'announcement': {
+                    for (var i = 0; i < results.length; i++) {
+                        var text = results[i].text,
+                            sender = results[i].sender.user_name,
+                            location = '(' + results[i].location.lat + ', ' + results[i].location.long + ')',
+                            time = reformatTime(new Date(moment(results[i].timestamp*1000).format('MM/DD/YYYY hh:mm:ss A') + ' UTC')),
+                            html = '<li class="list-group-item">';
+                        html += '<div class="float-right"><span class="fa fa-clock-o"></span> ' + time + '  | <span class="fa fa-map-marker"></span> ' + location + '</div></div>';
+                        html += '<div class="message-header"><span class="glyphicon glyphicon-user"></span> ' + sender + '</div>';
+                        html += '<p>' + text + '</p>';
+                        html += '</li>';
+                        list.append(html);
+                    }
                     break;
                 }
                 case 'user_status': {
@@ -60,7 +73,7 @@ function searchInfo(type, query, pn) {
 }
 
 function addPagination(curPN, totalPN) {
-    if (totalPN == 1) {
+    if (totalPN <= 1) {
         return;
     }
 

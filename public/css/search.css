@@ -9,6 +9,10 @@
     justify-content: center;
 }
 
+.message-header {
+    margin: 5px 0;
+}
+
 h1 {
     text-align: center;
 }
