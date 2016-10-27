@@ -1,5 +1,22 @@
 months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-
+statusType = [
+    {
+        text: 'Undefined',
+        html: '<i class="fa fa-minus"> </i>'
+    },
+    {
+        text: 'OK',
+        html: '<i style="color: #9ccb19" class="fa fa-check-circle"></i>'
+    },
+    {
+        text: 'Help',
+        html: '<i style="color: #fcd116" class="fa fa-exclamation-triangle"></i>'
+    },
+    {
+        text: 'Emergency',
+        html: '<i style="color: #ce4844" class="fa fa-plus-square"></i>'
+    }
+]
 var textarea = document.querySelector('textarea');
 
 if (textarea) {

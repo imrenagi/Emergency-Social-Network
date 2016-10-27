@@ -1,5 +1,5 @@
-.search-area {
-    width: 60%;
+.search-area, .result-area {
+    width: 70%;
 }
 
 h1 {

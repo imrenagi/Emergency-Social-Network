@@ -28,6 +28,12 @@ block append content
                   a(href='#', id='opt-pub-msg') Public Message
                 li
                   a(href='#', id='opt-pri-msg') Private Message
+    .wrapper
+      .row.result-area
+        .col-md-12.col-sm-12.col-xs-12
+          div(hidden='true', type='user_name', query='', pn='')#query-data
+          ul.list-group#result-list
+      #pagination
 block append script
   script(src='https://code.jquery.com/jquery-1.10.2.min.js')
   script(src='http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js')
