@@ -13,6 +13,10 @@
     margin: 5px 0;
 }
 
+.border {
+    border-left-width: 5px;
+}
+
 h1 {
     text-align: center;
 }
