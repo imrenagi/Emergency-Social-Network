@@ -36,6 +36,9 @@ exports.search = function(req, res, next) {
 		case 'public_message':
 			searchByPublicMessage(req, res, next, query, page, limit);
 			break;
+		case 'private_message':
+			searchByPrivateMessage(req, res, next, query, page, limit);
+			break;
 		default:
 			break;
 	}
@@ -84,4 +87,8 @@ function searchByPublicMessage(req, res, next, query, page, limit) {
 	}).catch(function(err) {
 		res.send(err);
 	});
+}
+
+function searchByPrivateMessage(req, res, next, query, page, limit) {
+	
 }
