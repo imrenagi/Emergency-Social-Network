@@ -13,6 +13,29 @@
     margin: 5px 0;
 }
 
+.border {
+    border-left-width: 5px;
+}
+
 h1 {
     text-align: center;
+}
+
+.message, .message-r, .message-s {
+    margin: 5px;
+    border-radius: 4px;
+    padding-top: 5px;
+    padding-left: 8px;
+    padding-right: 8px; 
+    box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.1), 0 5px 5px 0 rgba(0, 0, 0, 0.1);
+}
+
+.message-r {
+    background-color: #d9edf7;
+    border-color: #bce8f1;
+}
+
+.message-s {
+    background-color: #dff0d8;
+    border-color: #d6e9c6;
 }
