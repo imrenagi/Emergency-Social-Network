@@ -61,6 +61,23 @@ function searchInfo(type, query, pn) {
                 case 'private_message': {
                     for (var i = 0; i < results.length; i++) {
                         var text = results[i].text,
+                            senderId = results[i].sender.id,
+                            sender = results[i].sender.user_name,
+                            status = statusType[results[i].status],
+                            location = '(' + results[i].location.lat + ', ' + results[i].location.long + ')',
+                            time = reformatTime(new Date(moment(results[i].timestamp*1000).format('MM/DD/YYYY hh:mm:ss A') + ' UTC')),
+                            html = '<li class="list-group-item ' + (localStorage['ID'] == senderId ? 'message-s' : 'message-r') + '">';
+                        html += '<div class="float-right"><span class="fa fa-clock-o"></span> ' + time + '  | <span class="fa fa-map-marker"></span> ' + location + '</div></div>';
+                        html += '<div class="message-header">' + status.html + ' ' + sender + '</div>';
+                        html += '<p>' + text + '</p>';
+                        html += '</li>';
+                        list.append(html);
+                    }
+                    break;
+                }
+                case 'public_message': {
+                    for (var i = 0; i < results.length; i++) {
+                        var text = results[i].text,
                             sender = results[i].sender.user_name,
                             status = statusType[results[i].status],
                             location = '(' + results[i].location.lat + ', ' + results[i].location.long + ')',
@@ -72,9 +89,6 @@ function searchInfo(type, query, pn) {
                         html += '</li>';
                         list.append(html);
                     }
-                    break;
-                }
-                case 'public_message': {
                     break;
                 }
             }
