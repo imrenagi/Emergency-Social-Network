@@ -129,6 +129,20 @@ class SearchServiceImpl extends SearchService {
 
 	}
 
+	privateMessageByQuery(query, page, limit) {
+		let offset = this.offset(page, limit);
+		let currentPage = this.currentPage(page);
+		if (this.doesContainOnlyStopWord(query)) {
+			return Promise.resolve({
+				results: [],
+				meta: new Meta(parseInt(currentPage), parseInt(limit), 0, 0)
+			})
+		}
+
+		var querys = this.searchQueryFilter(query);
+		
+	}
+
 	searchQueryFilter(query) {
 		var querys = [query];
 		return querys;

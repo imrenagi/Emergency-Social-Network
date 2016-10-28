@@ -22,6 +22,10 @@ class SearchService {
 	    if (this.publicMessageByQuery === undefined) {
 	    	throw Error("Must override!");
 	    }
+
+	    if (this.privateMessageByQuery === undefined) {
+	    	throw Error("Must override!");
+	    }
 	}
 }
 

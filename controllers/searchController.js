@@ -90,5 +90,9 @@ function searchByPublicMessage(req, res, next, query, page, limit) {
 }
 
 function searchByPrivateMessage(req, res, next, query, page, limit) {
-	
+	searchService.privateMessageByQuery().then(function(result) {
+		res.send(JSON.stringify(result));
+	}).catch(function(err) {
+		res.send(err);
+	});
 }
