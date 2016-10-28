@@ -3,7 +3,7 @@
 var R = require('ramda');
 var dateHelper = require('../helpers/date');
 var SearchService = require('./interfaces/searchService');
-var Meta = require('../models/meta')
+var Meta = require('../models/meta');
 
 const STOPWORDS = require('../utils/stopwords');
 
@@ -116,7 +116,12 @@ class SearchServiceImpl extends SearchService {
 
 		var querys = this.searchQueryFilter(query);
 		return this.publicMessageDAO.searchByQuery(querys, offset, limit).then(function(results) {
-			
+			var res = JSON.parse(JSON.stringify(results));
+			var count = res.length;
+			var output = { results: res,
+						   total_count: count
+						 };
+			return output;
 		}).catch(function(err) {
 			console.log(err);
 			return err;
@@ -125,7 +130,7 @@ class SearchServiceImpl extends SearchService {
 	}
 
 	searchQueryFilter(query) {
-		var querys[] = {query};
+		var querys = [query];
 		return querys;
 	}
 

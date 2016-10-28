@@ -1,6 +1,6 @@
 var userDAOImpl = require('../services/userDAOImpl');
 var AnnouncementDAOImpl = require('../services/announcementDAOImpl');
-var PublicMessageDAOImpl = require('../services/publicMessageImpl');
+var PublicMessageDAOImpl = require('../services/publicMessageDAOImpl');
 var SearchServiceImpl = require('../services/searchServiceImpl');
 
 
