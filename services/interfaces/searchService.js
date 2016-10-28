@@ -1,10 +1,11 @@
 "use strict";
 
 class SearchService {
-	constructor(userDAO, announcementDAO) {
+	constructor(userDAO, announcementDAO, publicMessageDAO) {
 		
-		this.userDAO = userDAO
-		this.announcementDAO = announcementDAO
+		this.userDAO = userDAO;
+		this.announcementDAO = announcementDAO;
+		this.publicMessageDAO = publicMessageDAO;
 
 	    if (this.userByName === undefined) {
 	    	throw Error("Must override!");	
@@ -17,7 +18,7 @@ class SearchService {
 	    if (this.announcementByQuery === undefined) {
 	    	throw Error("Must override!");
 	    }
-	    
+
 	    if (this.publicMessageByQuery === undefined) {
 	    	throw Error("Must override!");
 	    }

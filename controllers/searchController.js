@@ -1,10 +1,14 @@
 var userDAOImpl = require('../services/userDAOImpl');
 var AnnouncementDAOImpl = require('../services/announcementDAOImpl');
+var PublicMessageDAOImpl = require('../services/publicMessageImpl');
 var SearchServiceImpl = require('../services/searchServiceImpl');
+
 
 var announcementDAO = new AnnouncementDAOImpl();
 var userDAO = new userDAOImpl();
-var searchService = new SearchServiceImpl(userDAO, announcementDAO);
+var publicMessageDAO = new PublicMessageDAOImpl();
+var searchService = new SearchServiceImpl(userDAO, announcementDAO, publicMessageDAO);
+
 
 exports.search = function(req, res, next) {
 	var search_type = req.param('search_type')

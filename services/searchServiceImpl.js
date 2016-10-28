@@ -8,8 +8,8 @@ var Meta = require('../models/meta')
 const STOPWORDS = require('../utils/stopwords');
 
 class SearchServiceImpl extends SearchService {
-	constructor(userDAO, announcementDAO) {
-		super(userDAO, announcementDAO);
+	constructor(userDAO, announcementDAO, publicMessageDAO) {
+		super(userDAO, announcementDAO, publicMessageDAO);
 	}
 
 	currentPage(page) {
@@ -105,7 +105,28 @@ class SearchServiceImpl extends SearchService {
 	}
 
 	publicMessageByQuery(query, page, limit) {
-		
+		let offset = this.offset(page, limit);
+		let currentPage = this.currentPage(page);
+		if (this.doesContainOnlyStopWord(query)) {
+			return Promise.resolve({
+				results: [],
+				meta: new Meta(parseInt(currentPage), parseInt(limit), 0, 0)
+			})
+		}
+
+		var querys = this.searchQueryFilter(query);
+		return this.publicMessageDAO.searchByQuery(querys, offset, limit).then(function(results) {
+			
+		}).catch(function(err) {
+			console.log(err);
+			return err;
+		});
+
+	}
+
+	searchQueryFilter(query) {
+		var querys[] = {query};
+		return querys;
 	}
 
 	doesContainOnlyStopWord(query) {
