@@ -102,17 +102,41 @@ suite('Private Message Service Implementation Test', function() {
 		done()
 	})
 
-test('Get all conversations should get all conversations by UserId', function(done) {
-		var userid = 1;
-		privateMessageDAOMock.expects('getAllConversatonsByUserId').once().withExactArgs(1).returns(
+test('Get all conversations should get no conversations for invalid UserId', function(done) {
+		var userid = -1;
+		privateMessageDAOMock.expects('getAllConversatonsByUserId').once().withExactArgs(-1).returns(
 			Promise.resolve({})
 		);
-		privateMessageService.getAllConversations(1);
+		privateMessageService.getAllConversations(userid);
 		privateMessageDAOMock.verify()
 		privateMessageDAOMock.restore()
 		done()
 	})
 
+test('Get conversation ID should return empty result for same sending and recieving user', function(done) {
+		var senderid = 1;
+		var receiverid = 1;
+		privateMessageDAOMock.expects('getConversationId').once().withExactArgs(senderid,receiverid).returns(
+			Promise.resolve({})
+		);
+		privateMessageService.getConversationId(senderid,receiverid);
+		privateMessageDAOMock.verify()
+		privateMessageDAOMock.restore()
+		done()
+	})
+
+
+
+test('Update Message Read flags should call DAO for updating message ids', function(done) {
+		var messageid = 123;
+		privateMessageDAOMock.expects('updateMessageReadFlagByIds').once().withExactArgs('123').returns(
+			Promise.resolve({})
+		);
+		privateMessageService.updateMessageReadFlag(messageid);
+		privateMessageDAOMock.verify()
+		privateMessageDAOMock.restore()
+		done()
+	})
 
 
  
