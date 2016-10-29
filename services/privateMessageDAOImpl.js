@@ -22,7 +22,7 @@ class PrivateMessageDAOImpl extends PrivateMessageDAO {
 
 	getMessagesByConversations(userId, conversations) {
 		console.log(conversations);
-		if(conversations.length == 0) {
+		if(conversations.length === 0) {
 			return Promise.resolve([]);
 		}
 		let query = 'SELECT conversation_id, sender_id, receiver_id, sender_name, receiver_name, COUNT(IF (read_flag = 0, read_flag, null) ) AS unread_count FROM private_messages where conversation_id in (' + conversations +') group by conversation_id';
@@ -139,7 +139,7 @@ class PrivateMessageDAOImpl extends PrivateMessageDAO {
 		var keyword;
 		console.log(keywords);
 		for(var i in keywords) {
-			if(i == 0) {
+			if(i === 0) {
 				keyword = '\'%' + keywords[i] + '%\' ';
 			}
 			else {
