@@ -17,7 +17,7 @@ class PublicMessageDAOImpl extends PublicMessageDAO {
 				keyword = '\'%' + keywords[i] + '%\' ';
 			}
 			else {
-				keyword = 'OR \'%' + keywords[i] + '%\' ';
+				keyword = 'OR p.message like \'%' + keywords[i] + '%\' ';
 			}
 			query = query + keyword;
 		}
