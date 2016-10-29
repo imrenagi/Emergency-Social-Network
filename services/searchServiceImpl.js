@@ -94,12 +94,17 @@ class SearchServiceImpl extends SearchService {
 				count: 0
 			});
 		}
-
+		var that = this;
 		return this.announcementDAO.searchByQuery(querys, offset, limit).then(function(results) {
+			console.log(limit);
+			console.log(results);
+			console.log(results.total);
+			var meta = new Meta(parseInt(currentPage), parseInt(limit), Math.ceil(results.total/limit), results.total);
+			console.log(meta);
 			var res = JSON.parse(JSON.stringify(results));
-			var count = res.length;
-			var output = { results: res,
-						   total_count: count
+			var json = R.map(result => that.formatAnnouncement(result), results.data);
+			var output = { results: json,
+						   meta: meta
 						 };
 			return output;
 		}).catch(function(err) {
@@ -151,8 +156,6 @@ class SearchServiceImpl extends SearchService {
 		var that = this;
 		return this.privateMessageDAO.searchByQuery(userId, querys, offset, limit).then(function(results) {
 			var meta = new Meta(parseInt(currentPage), parseInt(limit), Math.ceil(results.total/limit), results.total)
-			//var res = JSON.parse(JSON.stringify(results));
-			//var count = res.length;
 			var json = R.map(result => that.formatMessage(result), results.data);
 			var output = {
 				results : json,
