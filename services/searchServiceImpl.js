@@ -85,23 +85,28 @@ class SearchServiceImpl extends SearchService {
 		let offset = this.offset(page, limit);
 		let currentPage = this.currentPage(page);
 		var that = this;
+
+
 		if (this.doesContainOnlyStopWord(query)) {
 			return Promise.resolve({
 				results: [],
 				meta: new Meta(parseInt(currentPage), parseInt(limit), 0, 0)
 			})
 		}
-		return this.announcementDAO.searchByQuery(query, offset, limit).then(result => {
-			var meta = new Meta(parseInt(currentPage), parseInt(limit), Math.ceil(result.total/limit), result.total)
-			var results = R.map(result => that.formatAnnouncement(result), result.data);
-			var output = {
-				results: results,
-				meta: meta
-			}		
-			return output
-		}).catch(err => {
-			return err
-		})
+
+		var querys = this.searchQueryFilter(query);
+
+		return this.announcementDAO.searchByQuery(querys, offset, limit).then(function(results) {
+			var res = JSON.parse(JSON.stringify(results));
+			var count = res.length;
+			var output = { results: res,
+						   total_count: count
+						 };
+			return output;
+		}).catch(function(err) {
+			console.log(err);
+			return err;
+		});
 	}
 
 	publicMessageByQuery(query, page, limit) {
@@ -154,6 +159,7 @@ class SearchServiceImpl extends SearchService {
 	}
 
 	searchQueryFilter(query) {
+		console.log(query);
 		query = query.replace(/\W+/g, ' ');
 		var querys = query.split(" ");
 		for(var i in STOPWORDS) {

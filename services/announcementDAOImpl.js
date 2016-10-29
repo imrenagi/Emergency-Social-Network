@@ -61,35 +61,30 @@ class AnnouncementDAOImpl extends AnnouncementDAO {
 		})
 	}
 
-	searchByQuery(query, offset, limit) {
-		var paginationQuery = 'select count(*) total from announcements a where a.message like \'%' + query + '%\''
-		var itemQuery = 'SELECT a.*, u.user_name from announcements a left join users u on u.id = a.sender_id where a.message like \'%' + query + '%\' order by a.id desc limit '+offset +','+limit+';'
-		return new Promise(function(resolve, reject) {
-			db.get().query(paginationQuery, function(err, result) {
-				if (err) {
+	searchByQuery(keywords, offset, limit) {
+		var query = 'SELECT a.*, u.user_name from announcements a left join users u on u.id = a.sender_id WHERE a.message like '; 
+		var keyword;
+		console.log(keywords);
+		for(var i in keywords) {
+			if(i == 0) {
+				keyword = '\'%' + keywords[i] + '%\' ';
+			}
+			else {
+				keyword = 'OR a.message like \'%' + keywords[i] + '%\' ';
+			}
+			query = query + keyword;
+		}
+		query = query + 'order by a.id desc limit ' + offset + ' , '+ limit;
+		console.log(query);
+		return new Promise(function(resovle, reject) {
+			db.get().query(query, function(err, results) {
+				if(err) {
 					reject(err);
 				}
 				else {
-					let total_results = JSON.parse(JSON.stringify(result[0])).total;
-					resolve(total_results);
+					resovle(results);
 				}
-			})
-		}).then(total_result => {
-			return new Promise(function(resolve, reject) {
-					db.get().query(itemQuery, function(err, result) {
-						if (err) {					
-							reject(err)
-						}
-						else {
-							var results = {
-								data: JSON.parse(JSON.stringify(result)),
-								total: total_result
-							}
-							console.log(results)
-							resolve(results);
-						}
-				})
-			})
+			});
 		});
 	}
 
