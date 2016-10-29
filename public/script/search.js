@@ -148,6 +148,11 @@ $('.pagination').on('click', 'a', function() {
 
 $('#dropdown-list a').click(function() {
     var option = $('#search-option');
+       
     option.text(' ' + $(this).text());
     option.attr('option', this.id);
+
+    if(option.attr('option') == 'opt-stat'){
+        $('#search-textarea').replaceWith('<div id ="stat-search" class = "dropdown"><button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Emergency<span class="caret"></span></button><ul class="dropdown-menu"><li><a href="#">Emergency</a></li><li><a href="#">Help</a></li><li><a href="#">OK</a></li></ul></div>');
+    }
 });
