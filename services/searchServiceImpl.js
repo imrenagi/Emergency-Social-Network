@@ -86,15 +86,14 @@ class SearchServiceImpl extends SearchService {
 		let currentPage = this.currentPage(page);
 		var that = this;
 
+		var querys = this.searchQueryFilter(query);
 
-		if (this.doesContainOnlyStopWord(query)) {
+		if(querys.length == 0) {
 			return Promise.resolve({
 				results: [],
-				meta: new Meta(parseInt(currentPage), parseInt(limit), 0, 0)
-			})
+				count: 0
+			});
 		}
-
-		var querys = this.searchQueryFilter(query);
 
 		return this.announcementDAO.searchByQuery(querys, offset, limit).then(function(results) {
 			var res = JSON.parse(JSON.stringify(results));
@@ -112,20 +111,24 @@ class SearchServiceImpl extends SearchService {
 	publicMessageByQuery(query, page, limit) {
 		let offset = this.offset(page, limit);
 		let currentPage = this.currentPage(page);
-		if (this.doesContainOnlyStopWord(query)) {
-			return Promise.resolve({
-				results: [],
-				meta: new Meta(parseInt(currentPage), parseInt(limit), 0, 0)
-			})
-		}
 
 		var querys = this.searchQueryFilter(query);
+		if(querys.length == 0) {
+			return Promise.resolve({
+				results: [],
+				count: 0
+			});
+		}
+		var that = this;
 		return this.publicMessageDAO.searchByQuery(querys, offset, limit).then(function(results) {
-			var res = JSON.parse(JSON.stringify(results));
-			var count = res.length;
-			var output = { results: res,
-						   total_count: count
+			var meta = new Meta(parseInt(currentPage), parseInt(limit), Math.ceil(results.total/limit), results.total)
+			console.log(results);
+			var json = R.map(result => that.formatMessage(result), results.data);
+			console.log(json);
+			var output = { results: json,
+						   meta: meta
 						 };
+			console.log(output);
 			return output;
 		}).catch(function(err) {
 			console.log(err);
@@ -137,20 +140,24 @@ class SearchServiceImpl extends SearchService {
 	privateMessageByQuery(userId, query, page, limit) {
 		let offset = this.offset(page, limit);
 		let currentPage = this.currentPage(page);
-		if (this.doesContainOnlyStopWord(query)) {
-			return Promise.resolve({
-				results: [],
-				meta: new Meta(parseInt(currentPage), parseInt(limit), 0, 0)
-			})
-		}
 
 		var querys = this.searchQueryFilter(query);	
+		if(querys.length == 0) {
+			return Promise.resolve({
+				results: [],
+				count: 0
+			});
+		}
+		var that = this;
 		return this.privateMessageDAO.searchByQuery(userId, querys, offset, limit).then(function(results) {
+			var meta = new Meta(parseInt(currentPage), parseInt(limit), Math.ceil(results.total/limit), results.total)
 			var res = JSON.parse(JSON.stringify(results));
 			var count = res.length;
-			var output = { results: res,
-						   total_count: count
-						 };
+			var json = R.map(result => that.formatMessage(result), res);
+			var output = {
+				results : json,
+				meta: meta
+			}
 			return output;
 		}).catch(function(err) {
 			console.log(err);
@@ -175,6 +182,24 @@ class SearchServiceImpl extends SearchService {
 	doesContainOnlyStopWord(query) {
 		//TODO implement this function!
 		return false;
+	}
+
+	formatMessage(result) {
+		var message = {
+			id: result.id,
+			sender: {
+				id: result.sender_id,
+				user_name: result.user_name
+			},
+			text: result.message,
+			timestamp: dateHelper.convertDateToTimestamp(result.created_at),
+			status: result.message_status,
+			location: {
+				lat: result.latitude,
+				long: result.longitude
+			}
+		}
+		return message;
 	}
 	
 }
