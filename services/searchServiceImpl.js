@@ -88,9 +88,10 @@ class SearchServiceImpl extends SearchService {
 		var querys = this.searchQueryFilter(query);
 
 		if(querys.length == 0) {
+			var meta = new Meta(parseInt(currentPage), parseInt(limit), Math.ceil(0/limit), 0);
 			return Promise.resolve({
 				results: [],
-				count: 0
+				meta: meta
 			});
 		}
 		var that = this;
@@ -113,9 +114,10 @@ class SearchServiceImpl extends SearchService {
 
 		var querys = this.searchQueryFilter(query);
 		if(querys.length == 0) {
+			var meta = new Meta(parseInt(currentPage), parseInt(limit), Math.ceil(0/limit), 0);
 			return Promise.resolve({
 				results: [],
-				count: 0
+				meta: meta
 			});
 		}
 		var that = this;
@@ -138,9 +140,10 @@ class SearchServiceImpl extends SearchService {
 
 		var querys = this.searchQueryFilter(query);	
 		if(querys.length == 0) {
+			var meta = new Meta(parseInt(currentPage), parseInt(limit), Math.ceil(0/limit), 0);
 			return Promise.resolve({
 				results: [],
-				count: 0
+				meta: meta
 			});
 		}
 		var that = this;
