@@ -134,6 +134,7 @@ class PrivateMessageDAOImpl extends PrivateMessageDAO {
 	}
 
 	searchByQuery(userId, keywords, offset, limit) {
+		var paginationQuery = 'SELECT count(*) total from private_messages p WHERE ( p.message like ';
 		var query = 'SELECT p.* from private_messages p WHERE ( p.message like '; 
 		var keyword;
 		console.log(keywords);
@@ -144,20 +145,51 @@ class PrivateMessageDAOImpl extends PrivateMessageDAO {
 			else {
 				keyword = 'OR p.message like \'%' + keywords[i] + '%\' ';
 			}
+			paginationQuery = paginationQuery + keyword;
 			query = query + keyword;
 		}
+		paginationQuery = paginationQuery + ') AND (sender_id = ' + userId + ' OR  receiver_id = ' + userId + ' )';
 		query = query + ') AND (sender_id = ' + userId + ' OR  receiver_id = ' + userId + ' ) order by p.id desc limit ' + offset + ' , '+ limit;
 		console.log(query);
+
 		return new Promise(function(resovle, reject) {
-			db.get().query(query, function(err, results) {
+			db.get().query(paginationQuery, function(err, result) {
 				if(err) {
 					reject(err);
 				}
 				else {
-					resovle(results);
+					let total_count = JSON.parse(JSON.stringify(result[0])).total;
+					resovle(total_count);
 				}
 			});
+		}).then(function(total_count) {
+			return new Promise(function(resovle, reject) {
+				db.get().query(query, function(err, results) {
+					if(err) {
+						reject(err);
+					}
+					else {
+						var json = {
+							data: JSON.parse(JSON.stringify(results)),
+							total: total_count
+						};
+						resovle(json);
+					}
+				});
+			});
 		});
+
+
+		// return new Promise(function(resovle, reject) {
+		// 	db.get().query(query, function(err, results) {
+		// 		if(err) {
+		// 			reject(err);
+		// 		}
+		// 		else {
+		// 			resovle(results);
+		// 		}
+		// 	});
+		// });
 	}
 
 }

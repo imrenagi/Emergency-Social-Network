@@ -43,11 +43,11 @@ class PublicMessageDAOImpl extends PublicMessageDAO {
 						reject(err);
 					}
 					else {
-						var results = {
+						var json = {
 							data: JSON.parse(JSON.stringify(results)),
 							total: total_count
 						};
-						resolve(results);
+						resolve(json);
 					}
 				});
 			});

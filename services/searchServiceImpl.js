@@ -151,9 +151,9 @@ class SearchServiceImpl extends SearchService {
 		var that = this;
 		return this.privateMessageDAO.searchByQuery(userId, querys, offset, limit).then(function(results) {
 			var meta = new Meta(parseInt(currentPage), parseInt(limit), Math.ceil(results.total/limit), results.total)
-			var res = JSON.parse(JSON.stringify(results));
-			var count = res.length;
-			var json = R.map(result => that.formatMessage(result), res);
+			//var res = JSON.parse(JSON.stringify(results));
+			//var count = res.length;
+			var json = R.map(result => that.formatMessage(result), results.data);
 			var output = {
 				results : json,
 				meta: meta
