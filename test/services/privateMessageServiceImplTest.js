@@ -10,7 +10,7 @@ var privateMessageDAOMock = sinon.mock(privateMessageDAO);
 
 suite('Private Message Service Implementation Test', function() {
 
-	test('Get All Private Message should called dao for private message', function() {
+	test('Get All Private Message should call dao for private message', function() {
 		privateMessageDAOMock.expects('getPrivateMessagesByConversationId').once().withExactArgs(1,1,1).returns(
 			Promise.resolve({})
 		);
@@ -101,6 +101,19 @@ suite('Private Message Service Implementation Test', function() {
 		expect(expectedConversation).to.be.eql(formattedConversation)
 		done()
 	})
+
+test('Get all conversations should get all conversations by UserId', function(done) {
+		var userid = 1;
+		privateMessageDAOMock.expects('getAllConversatonsByUserId').once().withExactArgs(1).returns(
+			Promise.resolve({})
+		);
+		privateMessageService.getAllConversations(1);
+		privateMessageDAOMock.verify()
+		privateMessageDAOMock.restore()
+		done()
+	})
+
+
 
  
 })
