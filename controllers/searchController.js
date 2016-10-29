@@ -1,13 +1,15 @@
 var userDAOImpl = require('../services/userDAOImpl');
 var AnnouncementDAOImpl = require('../services/announcementDAOImpl');
 var PublicMessageDAOImpl = require('../services/publicMessageDAOImpl');
+var PrivateMessageDAOImpl = require('../services/privateMessageDAOImpl');
 var SearchServiceImpl = require('../services/searchServiceImpl');
 
 
 var announcementDAO = new AnnouncementDAOImpl();
 var userDAO = new userDAOImpl();
 var publicMessageDAO = new PublicMessageDAOImpl();
-var searchService = new SearchServiceImpl(userDAO, announcementDAO, publicMessageDAO);
+var privateMessageDAO = new PrivateMessageDAOImpl();
+var searchService = new SearchServiceImpl(userDAO, announcementDAO, publicMessageDAO, privateMessageDAO);
 
 
 exports.search = function(req, res, next) {
@@ -90,7 +92,8 @@ function searchByPublicMessage(req, res, next, query, page, limit) {
 }
 
 function searchByPrivateMessage(req, res, next, query, page, limit) {
-	searchService.privateMessageByQuery().then(function(result) {
+	var userId = req.session.user.id;
+	searchService.privateMessageByQuery(userId, query, page, limit).then(function(result) {
 		res.send(JSON.stringify(result));
 	}).catch(function(err) {
 		res.send(err);

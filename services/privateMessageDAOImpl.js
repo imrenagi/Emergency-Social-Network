@@ -133,6 +133,33 @@ class PrivateMessageDAOImpl extends PrivateMessageDAO {
 		});
 	}
 
+	searchByQuery(userId, keywords, offset, limit) {
+		var query = 'SELECT p.* from private_messages p WHERE ( p.message like '; 
+		var keyword;
+		console.log(keywords);
+		for(var i in keywords) {
+			if(i == 0) {
+				keyword = '\'%' + keywords[i] + '%\' ';
+			}
+			else {
+				keyword = 'OR \'%' + keywords[i] + '%\' ';
+			}
+			query = query + keyword;
+		}
+		query = query + ') AND (sender_id = ' + userId + ' OR  receiver_id = ' + userId + ' ) order by p.id desc limit ' + offset + ' , '+ limit;
+		console.log(query);
+		return new Promise(function(resovle, reject) {
+			db.get().query(query, function(err, results) {
+				if(err) {
+					reject(err);
+				}
+				else {
+					resovle(results);
+				}
+			});
+		});
+	}
+
 }
 
 module.exports = PrivateMessageDAOImpl;
