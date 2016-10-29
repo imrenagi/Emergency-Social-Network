@@ -128,6 +128,9 @@ function addPagination(curPN, totalPN) {
 $('#search-btn').click(function() {
     var option = $('#search-option').attr('option')
     query = $('#search-textarea').val();
+    if(option == 'opt-stat'){
+        query = $('#stat-option').attr('option');
+    }
     if (query && query != '') {
         searchInfo(queryType[option], query, 1);
     }
@@ -153,6 +156,9 @@ $('#dropdown-list a').click(function() {
     if(option.attr('option') == 'opt-stat'){
         $('#search-textarea').replaceWith('<div id ="stat-search" class = "dropdown"><button id="status-button" class="btn btn-default btn-block dropdown-toggle" type="button" data-toggle="dropdown"><span id = "stat-option" option = "3">Emergency</span><span class="caret"></span></button><ul class="dropdown-menu" id ="stat-dropdown"><li><a href="#" id="3">Emergency</a></li><li><a href="#" id="2">Help</a></li><li><a href="#" id="1">OK</a></li><li><a href="#" id="0">Undefined</a></li></ul></div>');
         
+    }
+    if(option.attr('option') != 'opt-stat'){
+        $('#stat-search').replaceWith('<input id="search-textarea" class="form-control">');        
     }
 });
 
