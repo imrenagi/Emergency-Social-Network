@@ -153,6 +153,6 @@ $('#dropdown-list a').click(function() {
     option.attr('option', this.id);
 
     if(option.attr('option') == 'opt-stat'){
-        $('#search-textarea').replaceWith('<div id ="stat-search" class = "dropdown"><button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Emergency<span class="caret"></span></button><ul class="dropdown-menu"><li><a href="#">Emergency</a></li><li><a href="#">Help</a></li><li><a href="#">OK</a></li></ul></div>');
+        $('#search-textarea').replaceWith('<div id ="stat-search" class = "dropdown stat-search-drop"><button class="btn btn-default btn-block dropdown-toggle" type="button" data-toggle="dropdown">Emergency<span class="caret"></span></button><ul class="dropdown-menu"><li><a href="#">Emergency</a></li><li><a href="#">Help</a></li><li><a href="#">OK</a></li></ul></div>');
     }
 });
