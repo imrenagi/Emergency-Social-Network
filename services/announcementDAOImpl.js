@@ -77,7 +77,6 @@ class AnnouncementDAOImpl extends AnnouncementDAO {
 			query = query + keyword;
 		}
 		query = query + 'order by a.id desc limit ' + offset + ' , '+ limit;
-		console.log(query);
 
 		return new Promise(function(resolve, reject) {
 			db.get().query(paginationQuery, function(err, result) {
@@ -105,19 +104,6 @@ class AnnouncementDAOImpl extends AnnouncementDAO {
 				});
 			});
 		});
-
-
-
-		// return new Promise(function(resovle, reject) {
-		// 	db.get().query(query, function(err, results) {
-		// 		if(err) {
-		// 			reject(err);
-		// 		}
-		// 		else {
-		// 			resovle(results);
-		// 		}
-		// 	});
-		// });
 	}
 
 

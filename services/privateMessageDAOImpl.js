@@ -150,7 +150,6 @@ class PrivateMessageDAOImpl extends PrivateMessageDAO {
 		}
 		paginationQuery = paginationQuery + ') AND (sender_id = ' + userId + ' OR  receiver_id = ' + userId + ' )';
 		query = query + ') AND (sender_id = ' + userId + ' OR  receiver_id = ' + userId + ' ) order by p.id desc limit ' + offset + ' , '+ limit;
-		console.log(query);
 
 		return new Promise(function(resovle, reject) {
 			db.get().query(paginationQuery, function(err, result) {
@@ -178,18 +177,6 @@ class PrivateMessageDAOImpl extends PrivateMessageDAO {
 				});
 			});
 		});
-
-
-		// return new Promise(function(resovle, reject) {
-		// 	db.get().query(query, function(err, results) {
-		// 		if(err) {
-		// 			reject(err);
-		// 		}
-		// 		else {
-		// 			resovle(results);
-		// 		}
-		// 	});
-		// });
 	}
 
 }

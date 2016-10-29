@@ -85,7 +85,6 @@ class SearchServiceImpl extends SearchService {
 		let offset = this.offset(page, limit);
 		let currentPage = this.currentPage(page);
 		var that = this;
-
 		var querys = this.searchQueryFilter(query);
 
 		if(querys.length == 0) {
@@ -96,11 +95,7 @@ class SearchServiceImpl extends SearchService {
 		}
 		var that = this;
 		return this.announcementDAO.searchByQuery(querys, offset, limit).then(function(results) {
-			console.log(limit);
-			console.log(results);
-			console.log(results.total);
 			var meta = new Meta(parseInt(currentPage), parseInt(limit), Math.ceil(results.total/limit), results.total);
-			console.log(meta);
 			var res = JSON.parse(JSON.stringify(results));
 			var json = R.map(result => that.formatAnnouncement(result), results.data);
 			var output = { results: json,
@@ -108,7 +103,6 @@ class SearchServiceImpl extends SearchService {
 						 };
 			return output;
 		}).catch(function(err) {
-			console.log(err);
 			return err;
 		});
 	}
@@ -127,16 +121,12 @@ class SearchServiceImpl extends SearchService {
 		var that = this;
 		return this.publicMessageDAO.searchByQuery(querys, offset, limit).then(function(results) {
 			var meta = new Meta(parseInt(currentPage), parseInt(limit), Math.ceil(results.total/limit), results.total)
-			console.log(results);
 			var json = R.map(result => that.formatMessage(result), results.data);
-			console.log(json);
 			var output = { results: json,
 						   meta: meta
 						 };
-			console.log(output);
 			return output;
 		}).catch(function(err) {
-			console.log(err);
 			return err;
 		});
 
@@ -163,13 +153,11 @@ class SearchServiceImpl extends SearchService {
 			}
 			return output;
 		}).catch(function(err) {
-			console.log(err);
 			return err;
 		});
 	}
 
 	searchQueryFilter(query) {
-		console.log(query);
 		query = query.replace(/\W+/g, ' ');
 		var querys = query.split(" ");
 		for(var i in STOPWORDS) {

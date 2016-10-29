@@ -23,8 +23,6 @@ class PublicMessageDAOImpl extends PublicMessageDAO {
 			paginationQuery = paginationQuery + keyword;
 		}
 		query = query + 'order by p.id desc limit ' + offset + ' , '+ limit;
-		console.log(paginationQuery);
-		console.log(query);
 		return new Promise(function(resovle, reject) {
 			db.get().query(paginationQuery, function(err, result) {
 				if(err) {
@@ -52,17 +50,6 @@ class PublicMessageDAOImpl extends PublicMessageDAO {
 				});
 			});
 		});
-
-		// return new Promise(function(resovle, reject) {
-		// 	db.get().query(query, function(err, results) {
-		// 		if(err) {
-		// 			reject(err);
-		// 		}
-		// 		else {
-		// 			resovle(results);
-		// 		}
-		// 	});
-		// });
 	}
 
 }
