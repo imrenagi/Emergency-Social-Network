@@ -26,6 +26,16 @@ npm install
 * Run the application by `npm start`
 
 
+### Testing
+
+Do the following action prior running the test:
+```
+CREATE DATABASE IF NOT EXISTS esn_db_test;
+```
+
+* To run the application in the test mode, do the following command : `NODE_ENV=test npm start`
+* To run the test in the local mode, use `npm test`
+
 ### Ground Rules
 
 #### Adding new database schema
