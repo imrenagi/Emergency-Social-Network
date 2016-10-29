@@ -156,6 +156,13 @@ class SearchServiceImpl extends SearchService {
 	searchQueryFilter(query) {
 		query = query.replace(/\W+/g, ' ');
 		var querys = query.split(" ");
+		for(var i in STOPWORDS) {
+			for(var j in querys) {
+				if(querys[j] == STOPWORDS[i]) {
+					querys.splice(j, 1);
+				}
+			}
+		}
 		return querys;
 	}
 
