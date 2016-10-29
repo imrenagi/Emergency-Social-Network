@@ -158,7 +158,7 @@ class SearchServiceImpl extends SearchService {
 		var querys = query.split(" ");
 		for(var i in STOPWORDS) {
 			for(var j in querys) {
-				if(querys[j] == STOPWORDS[i]) {
+				if(querys[j] == STOPWORDS[i] || querys[j] == '') {
 					querys.splice(j, 1);
 				}
 			}
