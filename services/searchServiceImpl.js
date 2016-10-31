@@ -173,11 +173,6 @@ class SearchServiceImpl extends SearchService {
 		return querys;
 	}
 
-	doesContainOnlyStopWord(query) {
-		//TODO implement this function!
-		return false;
-	}
-
 	formatMessage(result) {
 		var message = {
 			id: result.id,
