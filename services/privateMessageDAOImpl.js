@@ -135,10 +135,10 @@ class PrivateMessageDAOImpl extends PrivateMessageDAO {
 
 	searchByQuery(userId, keywords, offset, limit) {
 		var paginationQuery = 'SELECT count(*) total from private_messages p WHERE ( p.message like ';
-		var query = 'SELECT p.* from private_messages p WHERE ( p.message like '; 
+		var query = 'SELECT p.*, p.sender_name as user_name from private_messages p WHERE ( p.message like '; 
 		var keyword;
 		console.log(keywords);
-		for(var i in keywords) {
+		for(var i = 0; i < keywords.length; i++) {
 			if(i === 0) {
 				keyword = '\'%' + keywords[i] + '%\' ';
 			}
@@ -172,6 +172,7 @@ class PrivateMessageDAOImpl extends PrivateMessageDAO {
 							data: JSON.parse(JSON.stringify(results)),
 							total: total_count
 						};
+						console.log(json)
 						resovle(json);
 					}
 				});
