@@ -117,6 +117,32 @@ suite('Search Service Implementation Test', function() {
 		done();
 	})
 
+	test('empty string to query filter should return empty arr', function(done) {
+		var query = '';
+		expect(0).to.be.eql(searchService.searchQueryFilter(query).length);
+		done();
+	})
+
+	test('all word in query is using stopword, the query filter should be empty', function(done) {
+		var query = 'about across after all';
+		expect(0).to.be.eql(searchService.searchQueryFilter(query).length);
+		done();
+	})
+
+	test('all word in query is using stopword incase sensitive, the query filter should be empty', function(done) {
+		var query = 'about acRoss after All';
+		expect(0).to.be.eql(searchService.searchQueryFilter(query).length);
+		done();
+	})
+
+	test('all word used in query are only non-stopword', function(done) {
+		var query = 'about Imre All nagi';
+		expect(2).to.be.eql(searchService.searchQueryFilter(query).length);
+		expect(['Imre','nagi']).to.be.eql(searchService.searchQueryFilter(query));
+		done();
+	})
+
 
 
 })
+
