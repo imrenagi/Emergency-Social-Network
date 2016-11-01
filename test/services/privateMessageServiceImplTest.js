@@ -3,12 +3,34 @@ var sinon = require('sinon');
 
 var PrivateMessageDAOImpl = require('../../services/privateMessageDAOImpl');
 var PrivateMessageServiceImpl = require('../../services/privateMessageServiceImpl');
+var PrivateMessageDAOInterface = require('../../services/interfaces/privateMessageDAO');
+var PrivateMessageServiceInterface = require('../../services/interfaces/privateMessageService');
 
 var privateMessageDAO = new PrivateMessageDAOImpl();
 var privateMessageService = new PrivateMessageServiceImpl(privateMessageDAO);
 var privateMessageDAOMock = sinon.mock(privateMessageDAO);
 
 suite('Private Message Service Implementation Test', function() {
+
+	test('interface should return override error', function() {
+		var dao = new PrivateMessageDAOInterface();
+		expect(Error("Must override!")).to.be.eql(dao.getAllConversatonsByUserId());
+		expect(Error("Must override!")).to.be.eql(dao.getPrivateMessagesByConversationId())
+		expect(Error("Must override!")).to.be.eql(dao.getMessagesByConversations())
+		expect(Error("Must override!")).to.be.eql(dao.createConversation())
+		expect(Error("Must override!")).to.be.eql(dao.storePrivateMessage())
+		expect(Error("Must override!")).to.be.eql(dao.getConversationId())
+		expect(Error("Must override!")).to.be.eql(dao.updateMessageReadFlagByIds())
+		expect(Error("Must override!")).to.be.eql(dao.searchByQuery())
+
+		var service = new PrivateMessageServiceInterface();
+			expect(Error("Must override!")).to.be.eql(service.getAllConversations());
+			expect(Error("Must override!")).to.be.eql(service.getAllPrivateMessages());
+			expect(Error("Must override!")).to.be.eql(service.storePrivateMessage());
+			expect(Error("Must override!")).to.be.eql(service.createConversation());
+			expect(Error("Must override!")).to.be.eql(service.getConversationId());
+			expect(Error("Must override!")).to.be.eql(service.updateMessageReadFlag());
+	})
 
 	test('Get All Private Message should call dao for private message', function() {
 		privateMessageDAOMock.expects('getPrivateMessagesByConversationId').once().withExactArgs(1,1,1).returns(
