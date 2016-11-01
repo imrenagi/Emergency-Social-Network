@@ -24,7 +24,6 @@ function getDB(mode) {
 }
 
 exports.connect = function(mode, done) {
-	console.log(getDB(mode));
 	state.pool = mysql.createPool({
 		host: process.env.DB_HOST || 'localhost',
 		user: process.env.DB_USER || 'root',

@@ -23,7 +23,6 @@ suite('Search Controller Test', function() {
 
 		db.connect(getDbEnvironment(), function(err){
  			if (err) {
-    			console.log('Unable to connect to MySQL')
     			process.exit(1)
   			} 
 		});
@@ -45,7 +44,6 @@ suite('Search Controller Test', function() {
 	    		server
 	    			.get("/search/user_name?query=Xiangtian")
 	    			.end(function(err, result) {
-	    				console.log(result.body);
 						expect(result.body.results[0].user_name).to.be.eql('Xiangtian');
 						done();
 					});
@@ -80,7 +78,6 @@ suite('Search Controller Test', function() {
 	    		server
 	    			.get("/search/user_status?query=0")
 	    			.end(function(err, result) {
-	    				console.log(result.body.results);
 						expect(result.body.results[0].user_name).to.be.eql('Xiangtian');
 						done();
 					});
@@ -91,14 +88,12 @@ suite('Search Controller Test', function() {
 		db.get().query('INSERT INTO users (id, user_name, password, online, status) VALUES (1, "Sam", "12345", 0, 1)', function(err, result) {
 			if (err) {
 				//Fail
-				console.log(err);
 				done()
 			}
 			else {
 				db.get().query('INSERT INTO announcements (sender_id, message, latitude, longitude) VALUES (?, "test announcement", 100, 100)', result.insertId, function(err, result) {
 					if (err) {
 						//Fail
-						console.log(err);
 						done()
 					}
 					else {
@@ -126,14 +121,12 @@ suite('Search Controller Test', function() {
 		db.get().query('INSERT INTO users (id, user_name, password, online, status) VALUES (1, "Sam", "12345", 0, 1)', function(err, result) {
 			if (err) {
 				//
-				console.log(err);
 				done()
 			}
 			else {
 				db.get().query('INSERT INTO public_messages (sender_id, message, message_status, latitude, longitude) VALUES (?, "test message", 0, 100, 100)', result.insertId, function(err, result) {
 					if (err) {
 						//Fail
-						console.log(err);
 						done()
 					}
 					else {
