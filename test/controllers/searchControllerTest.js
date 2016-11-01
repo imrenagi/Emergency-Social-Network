@@ -91,11 +91,15 @@ suite('Search Controller Test', function() {
 		db.get().query('INSERT INTO users (id, user_name, password, online, status) VALUES (1, "Sam", "12345", 0, 1)', function(err, result) {
 			if (err) {
 				//Fail
+				console.log(err);
+				done()
 			}
 			else {
 				db.get().query('INSERT INTO announcements (sender_id, message, latitude, longitude) VALUES (?, "test announcement", 100, 100)', result.insertId, function(err, result) {
 					if (err) {
 						//Fail
+						console.log(err);
+						done()
 					}
 					else {
 						server
@@ -121,12 +125,16 @@ suite('Search Controller Test', function() {
 	test('search public messages', function(done) {
 		db.get().query('INSERT INTO users (id, user_name, password, online, status) VALUES (1, "Sam", "12345", 0, 1)', function(err, result) {
 			if (err) {
-				//Fail
+				//
+				console.log(err);
+				done()
 			}
 			else {
 				db.get().query('INSERT INTO public_messages (sender_id, message, message_status, latitude, longitude) VALUES (?, "test message", 0, 100, 100)', result.insertId, function(err, result) {
 					if (err) {
 						//Fail
+						console.log(err);
+						done()
 					}
 					else {
 						server
