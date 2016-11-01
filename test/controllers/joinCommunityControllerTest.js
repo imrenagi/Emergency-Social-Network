@@ -3,14 +3,34 @@ var sinon = require('sinon');
 var request = require('supertest');
 var server = request.agent("http://localhost:3000");
 
+var db = require('../../services/db');
+
+var express = require('express');
+var app = express();
+
+function getDbEnvironment() {
+  if (app.get('env') === 'test') {
+    return db.MODE_TEST;
+  } else if (app.get('env') === 'circle') {
+    return db.MODE_CIRCLE_TEST;
+  }  else {
+    return db.MODE_PRODUCTION;
+  }
+} 
+
+db.connect(getDbEnvironment(), function(err){
+	if (err) {} 
+	else {}
+});
+
 suite('Join community Controller Test', function() {
 
-	setup(function(done) {
-		server.get("/testing/users").expect(200, done)
+	setup(function() {
+		db.get().query('delete from users;')
 	})
 
-	teardown(function(done) {
-		server.get("/testing/users").expect(200, done)
+	teardown(function() {
+		db.get().query('delete from users;')
 	})
 
 	test('new join to community must return 204', function(done) {
