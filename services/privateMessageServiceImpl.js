@@ -59,7 +59,6 @@ class PrivateMessageServiceImpl extends PrivateMessageService {
 			var it = that
 			return that.privateMessageDAO.getMessagesByConversations(userId, conversations.toString()).then(function(rawMessages) {
 				var res = JSON.parse(JSON.stringify(rawMessages));
-				console.log(res);
 				var json = R.map(result => it.formatConversation(userId, result), res);
 				var output = {
 					conversations: json
