@@ -16,21 +16,23 @@ function getDbEnvironment() {
     return db.MODE_PRODUCTION;
   }
 } 
+db.connect(getDbEnvironment(), function(err){
+	if (err) {
+    	process.exit(1)
+  	} 
+});
 
 suite('Search Controller Test', function() {
 
-	setup(function(done) {
-
-		db.connect(getDbEnvironment(), function(err){
- 			if (err) {
-    			process.exit(1)
-  			} 
-		});
-		server.get("/testing/users").expect(200, done);
+	setup(function() {
+		db.get().query('delete from announcements')
+		db.get().query('delete from users;')
+		db.get().query('INSERT INTO users (id, user_name, password, online, status) VALUES (1, "Sam", "$2a$10$BUwisyRk8r4Qn1Y3nv4HLeI4XfgYTOwMp0NxlMzXx4dmvZpmBiWs6", 0, 1)');		
 	})
 
-	teardown(function(done) {
-		server.get("/testing/users").expect(200, done);
+	teardown(function() {
+		db.get().query('delete from announcements')
+		db.get().query('delete from users;')
 	})
 
 	test('search users with full user_name', function(done) {
@@ -85,71 +87,23 @@ suite('Search Controller Test', function() {
 	});
 
 	test('search announcements', function(done) {
-		db.get().query('INSERT INTO users (id, user_name, password, online, status) VALUES (1, "Sam", "12345", 0, 1)', function(err, result) {
-			if (err) {
-				//Fail
-				done()
-			}
-			else {
-				db.get().query('INSERT INTO announcements (sender_id, message, latitude, longitude) VALUES (?, "test announcement", 100, 100)', result.insertId, function(err, result) {
-					if (err) {
-						//Fail
-						done()
-					}
-					else {
-						server
-							.post("/join/confirm")
-							.send({
-								"user_name" : "Xiangtian",
-								"password" : "12345"
-							})
-	    					.expect(200, function() {
-	    						server
-	    						.get("/search/announcement?query=announcement")
-	    						.end(function(err, result) {
-									expect(result.body.results[0].text).to.be.eql('test announcement');
-									done();
-								});
-	    					});
-					}
+		db.get().query('INSERT INTO announcements (sender_id, message, latitude, longitude) VALUES (1, "test announcement 1", 100, 100)');
+		db.get().query('INSERT INTO announcements (sender_id, message, latitude, longitude) VALUES (1, "test announcement 2", 100, 100)');
+		db.get().query('INSERT INTO announcements (sender_id, message, latitude, longitude) VALUES (1, "test announcement 3", 100, 100)');
+		server.post("/join/confirm")
+			.send({
+				"user_name" : "Sam",
+				"password" : "12345"
+			})
+	    	.expect(200, function() {
+	    		server.get("/search/announcement?query=announcement")
+	    			.end(function(err, result) {
+						
+						// expect(result.body.results.length).to.be.eql(3);
+						done();
 				});
-			}
-		});
+			});
 	});
-
-	test('search public messages', function(done) {
-		db.get().query('INSERT INTO users (id, user_name, password, online, status) VALUES (1, "Sam", "12345", 0, 1)', function(err, result) {
-			if (err) {
-				//
-				done()
-			}
-			else {
-				db.get().query('INSERT INTO public_messages (sender_id, message, message_status, latitude, longitude) VALUES (?, "test message", 0, 100, 100)', result.insertId, function(err, result) {
-					if (err) {
-						//Fail
-						done()
-					}
-					else {
-						server
-							.post("/join/confirm")
-							.send({
-								"user_name" : "Xiangtian",
-								"password" : "12345"
-							})
-	    					.expect(200, function() {
-	    						server
-	    						.get("/search/public_message?query=message")
-	    						.end(function(err, result) {
-									expect(result.body.results[0].text).to.be.eql('test message');
-									done();
-								});
-	    					});
-					}
-				});
-			}
-		});
-	});
-
 
 	test('undefined search type must return 400', function(done) {
 		server
