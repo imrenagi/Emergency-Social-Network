@@ -2,6 +2,7 @@ var expect = require('expect.js');
 var sinon = require('sinon');
 
 var dateHelper = require('../../helpers/date');
+var Meta = require('../../models/meta');
 
 var userDAOImpl = require('../../services/userDAOImpl');
 var AnnouncementDAOImpl = require('../../services/announcementDAOImpl');
@@ -142,7 +143,56 @@ suite('Search Service Implementation Test', function() {
 		done();
 	})
 
+	test('Search by user name must return correct first page meta data, if there is two page results', function(done) {
+		var query = 'imre';
+		var page = 0;
+		var limit = 10;
 
+		userDAOMock.expects('searchByUserName').once().withExactArgs(query, 0, 10).returns(
+			Promise.resolve({
+				data: [],
+				total: 20
+			})
+		)
+
+		searchService.userByName(query, page, limit).then(function(res) {
+			var meta = new Meta(1, 10, Math.ceil(20/limit), 20);
+			expect(meta).to.be.eql(res.meta);
+			userDAOMock.verify();
+			userDAOMock.restore();
+			done();
+		}).catch(function(err){
+			done(err);
+		})
+	})
+
+	test('Search by status should return correct metadata', function(done) {
+		var query = '1';
+		var page = 0;
+		var limit = 10;
+
+		userDAOMock.expects('searchByStatus').once().withExactArgs(query, 0, 10).returns(
+			Promise.resolve({
+				data: [
+					{ id: 6, user_name: 'imre5', online: 1, status: 1 },
+     				{ id: 3, user_name: 'imre2', online: 0, status: 1 }
+     			],
+				total: 2
+			})
+		)
+
+		searchService.userByStatus(query, page, limit).then(function(res) {
+			var meta = new Meta(1, 10, 1, 2);
+			expect(meta).to.be.eql(res.meta);
+			expect(2).to.be.eql(res.results.length);
+			userDAOMock.verify();
+			userDAOMock.restore();
+			done();
+		}).catch(function(err){
+			done(err);
+		})
+	})
+
+	
 
 })
-
