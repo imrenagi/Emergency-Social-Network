@@ -21,6 +21,8 @@ var userDAOMock = sinon.mock(userDAO);
 var publicMessageDAOMock = sinon.mock(publicMessageDAO);
 var privateMessageDAOMock = sinon.mock(privateMessageDAO);
 
+
+
 suite('Search Service Implementation Test', function() {
 
 	setup(function() {

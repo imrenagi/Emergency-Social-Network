@@ -3,27 +3,30 @@
 class PrivateMessageService {
 	constructor(privateMessageDAO) {
 	    this.privateMessageDAO = privateMessageDAO;
+	}
 
-	    if(this.getAllConversations === undefined) {
-	    	throw Error("Must override!");
-	    }
+	getAllConversations() {
+	    return new Error("Must override!");
+	}
 
-	  	if(this.getAllPrivateMessages === undefined) {
-	  		throw Error("Must override!");
-	  	}
+	getAllPrivateMessages(){
+	  	return new Error("Must override!");
+	}
 
-	  	if(this.storePrivateMessage === undefined) {
-	  		throw Error("Must override!");
-	  	}
-	  	if(this.createConversation === undefined) {
-	  		throw Error("Must override!");
-	  	}
-	  	if(this.getConversationId === undefined) {
-	  		throw Error("Must override!");
-	  	}
-	  	if(this.updateMessageReadFlag === undefined) {
-	  		throw Error("Must override!");
-	  	}
+	storePrivateMessage() {
+	  	return new Error("Must override!");
+	}
+
+	createConversation(){
+	  	return new Error("Must override!");
+	}
+	 
+	getConversationId() {
+	  	return new Error("Must override!");
+	}
+
+	updateMessageReadFlag() {
+	 	return new Error("Must override!");
 	}
 
 }
