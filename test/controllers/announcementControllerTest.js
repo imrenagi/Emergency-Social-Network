@@ -25,28 +25,24 @@ db.connect(getDbEnvironment(), function(err){
 
 suite('Announcement Controller Test', function() {
 
-	setup(function() {
-		db.get().query('truncate table announcements;')
-		db.get().query('truncate table users;')
+	setup(function(done) {
+		server.get('/testing/users').expect(200, done)
 	})
 
-	teardown(function() {
-		db.get().query('truncate table announcements;')
-		db.get().query('truncate table users;')
+	teardown(function(done) {
+		server.get('/testing/users').expect(200, done)
 	})
 
 	test('Unauthrozed user should get 401', function(done) {
-		db.get().query('INSERT INTO users (id, user_name, password, online, status) VALUES ("Sam", "$2a$10$BUwisyRk8r4Qn1Y3nv4HLeI4XfgYTOwMp0NxlMzXx4dmvZpmBiWs6", 0, 1)')
-		db.get().query('INSERT INTO announcements (sender_id, message, latitude, longitude) VALUES (1, "test announcement", 100, 100)');
 		server.get("/announcement").expect(401, done);
 	})
 
 	test('Should gave one annoncement', function(done) {
 		db.get().query('INSERT INTO users (user_name, password, online, status) VALUES ("Sam", "12345", 0, 1)', function(err, result) {
-			if (err) {}
+			if (err) {done(err)}
 			else {
 				db.get().query('INSERT INTO announcements (sender_id, message, latitude, longitude) VALUES (?, "test announcement", 100, 100)', result.insertId, function(err, result) {
-					if (err) {}
+					if (err) {done(err)}
 					else {
 						server
 							.post("/join/confirm")
