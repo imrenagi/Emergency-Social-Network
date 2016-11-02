@@ -91,14 +91,12 @@ suite('Search Controller Test', function() {
 				done()
 			}
 			else {
-				console.log(result);
 				db.get().query('INSERT INTO announcements (sender_id, message, latitude, longitude) VALUES (?, "test announcement", 100, 100)', result.insertId, function(err, result) {
 					if (err) {
 						//Fail
 						done()
 					}
 					else {
-						console.log(result);
 						server
 							.post("/join/confirm")
 							.send({
@@ -109,7 +107,6 @@ suite('Search Controller Test', function() {
 	    						server
 	    						.get("/search/announcement?query=announcement")
 	    						.end(function(err, result) {
-	    							console.log(result.body);
 									expect(result.body.results[0].text).to.be.eql('test announcement');
 									done();
 								});
