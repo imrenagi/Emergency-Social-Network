@@ -5,34 +5,31 @@ block append stylesheet
 block append content
   include navbar.jade
   .container
-    .wrapper
-      .row.search-area
-        .col-md-12.col-sm-12.col-xs-12
-          .input-group#search-area
-            input.form-control()#search-textarea
-            .input-group-btn#search-btn-group
-              button.btn.btn-default(type='button')#search-btn
-                i.fa.fa-search
-              button.btn.btn-default.dropdown-toggle(data-toggle='dropdown', aria-haspopup='true',  aria-expanded='false')#option-btn
-                  span.caret
-                  span(id='search-option', option='opt-user')  User
-                span.sr-only
-              ul.dropdown-menu.dropdown-menu-right#dropdown-list
-                li
-                  a(href='#', id='opt-user') User
-                li
-                  a(href='#', id='opt-stat') Status
-                li
-                  a(href='#', id='opt-ann') Announcement
-                li
-                  a(href='#', id='opt-pub-msg') Public Message
-                li
-                  a(href='#', id='opt-pri-msg') Private Message
-    .wrapper
-      .row.result-area
-        .col-md-12.col-sm-12.col-xs-12
-          div(hidden='true', type='user_name', query='', pn='', tpn='')#query-data
-          ul.list-group#result-list
+    .wrapper.row.search-area
+      .col-md-9.col-sm-12.col-xs-12.input-group#search-area
+        input.form-control()#search-textarea
+        .input-group-btn#search-btn-group
+          button.btn.btn-default(type='button')#search-btn
+            i.fa.fa-search
+          button.btn.btn-default.dropdown-toggle(data-toggle='dropdown', aria-haspopup='true',  aria-expanded='false')#option-btn
+              span.caret
+              span(id='search-option', option='opt-user')  User
+            span.sr-only
+          ul.dropdown-menu.dropdown-menu-right#dropdown-list
+            li
+              a(href='#', id='opt-user') User
+            li
+              a(href='#', id='opt-stat') Status
+            li
+              a(href='#', id='opt-ann') Announcement
+            li
+              a(href='#', id='opt-pub-msg') Public Message
+            li
+              a(href='#', id='opt-pri-msg') Private Message
+    .wrapper.row.result-area
+      .col-md-9.col-sm-12.col-xs-12
+        div(hidden='true', type='user_name', query='', pn='', tpn='')#query-data
+        ul.list-group#result-list
     ul.pagination
 block append script
   script(src='https://code.jquery.com/jquery-1.10.2.min.js')

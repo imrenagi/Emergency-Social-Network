@@ -32,7 +32,7 @@ function searchInfo(type, query, pn) {
             switch(type) {
                 case 'user_name':
                 case 'user_status': {
-                    var noColCls = 'col-md-1', nameColCls = 'col-md-4', onlineColCls='col-md-3', statusColCls='col-md-4';
+                    var noColCls = 'col-md-1 col-sm-1 col-xs-1', nameColCls = 'col-md-4 col-sm-4 col-xs-4', onlineColCls='col-md-3 col-sm-3 col-xs-3', statusColCls='col-md-4 col-sm-3 col-xs-3';
                     list.append('<li class="list-group-item text-center text-bold"><div class="row"><div class="' + noColCls + '">#</div><div class="' + nameColCls + '">Name</div><div class="' +  onlineColCls + '">Online</div><div class="' + statusColCls + '">Status</div></div></li>')
                     for (var i = 0; i < results.length; i++) {
                         var id = results[i].id,
