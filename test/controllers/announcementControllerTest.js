@@ -25,26 +25,28 @@ db.connect(getDbEnvironment(), function(err){
 
 suite('Announcement Controller Test', function() {
 
-	setup(function(done) {
-		server.get("/testing/users").expect(200, done)
+	setup(function() {
+		db.get().query('truncate table announcements;')
+		db.get().query('truncate table users;')
 	})
 
-	teardown(function(done) {
-		server.get("/testing/users").expect(200, done)
+	teardown(function() {
+		db.get().query('truncate table announcements;')
+		db.get().query('truncate table users;')
 	})
 
-	test('can retrive all announcements', function(done) {
+	test('Unauthrozed user should get 401', function(done) {
+		db.get().query('INSERT INTO users (id, user_name, password, online, status) VALUES ("Sam", "$2a$10$BUwisyRk8r4Qn1Y3nv4HLeI4XfgYTOwMp0NxlMzXx4dmvZpmBiWs6", 0, 1)')
+		db.get().query('INSERT INTO announcements (sender_id, message, latitude, longitude) VALUES (1, "test announcement", 100, 100)');
+		server.get("/announcement").expect(401, done);
+	})
+
+	test('Should gave one annoncement', function(done) {
 		db.get().query('INSERT INTO users (user_name, password, online, status) VALUES ("Sam", "12345", 0, 1)', function(err, result) {
-			if (err) {
-				//Fail
-				done(err);
-			}
+			if (err) {}
 			else {
 				db.get().query('INSERT INTO announcements (sender_id, message, latitude, longitude) VALUES (?, "test announcement", 100, 100)', result.insertId, function(err, result) {
-					if (err) {
-						//Fail
-						done(err);
-					}
+					if (err) {}
 					else {
 						server
 							.post("/join/confirm")
@@ -57,6 +59,7 @@ suite('Announcement Controller Test', function() {
 	    						.get("/announcement")
 	    						.end(function(err, result) {
 									expect(result.body.announcements[0].text).to.be.eql('test announcement');
+									expect(result.body.announcements.length).to.be.eql(1);
 									done();
 								});
 	    					});

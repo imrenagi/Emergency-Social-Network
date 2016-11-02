@@ -89,14 +89,10 @@ suite('Search Controller Test', function() {
 	test('search announcements', function(done) {
 		db.get().query('INSERT INTO users (user_name, password, online, status) VALUES ("Sam", "12345", 0, 1)', function(err, result) {
 			if (err) {
-				//Fail
-				done()
 			}
 			else {
 				db.get().query('INSERT INTO announcements (sender_id, message, latitude, longitude) VALUES (?, "test announcement", 100, 100)', result.insertId, function(err, result) {
 					if (err) {
-						//Fail
-						done()
 					}
 					else {
 						server
