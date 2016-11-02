@@ -25,9 +25,9 @@ class SearchServiceImpl extends SearchService {
 	offset(page, limit) {
 		let offset = 0;
 		if (page === 0 || page === 1) {
-			offset = 0
+			offset = 0;
 		} else {
-			offset = (page - 1) * limit
+			offset = (page - 1) * limit;
 		}
 		return offset;
 	}
@@ -37,14 +37,14 @@ class SearchServiceImpl extends SearchService {
 		let currentPage = this.currentPage(page);
 		return this.userDAO.searchByUserName(userName, offset, limit).then(result => {
 			var meta = new Meta(parseInt(currentPage), parseInt(limit), Math.ceil(result.total/limit), result.total)
-			var results = result.data
+			var results = result.data;
 			var output = {
 				results: results,
 				meta: meta
-			}		
-			return output
+			};		
+			return output;
 		}).catch(err => {
-			return err
+			return err;
 		})
 	}
 
@@ -53,14 +53,14 @@ class SearchServiceImpl extends SearchService {
 		let currentPage = this.currentPage(page);
 		return this.userDAO.searchByStatus(status, offset, limit).then(result => {
 			var meta = new Meta(parseInt(currentPage), parseInt(limit), Math.ceil(result.total/limit), result.total)
-			var results = result.data
+			var results = result.data;
 			var output = {
 				results: results,
 				meta: meta
-			}		
-			return output
+			};		
+			return output;
 		}).catch(err => {
-			return err
+			return err;
 		})
 	}
 
@@ -77,7 +77,7 @@ class SearchServiceImpl extends SearchService {
 				lat: result.latitude,
 				long: result.longitude
 			}
-		}
+		};
 		return announcement;
 	}
 
@@ -146,7 +146,7 @@ class SearchServiceImpl extends SearchService {
 		}
 		var that = this;
 		return this.privateMessageDAO.searchByQuery(userId, querys, offset, limit).then(function(results) {
-			var meta = new Meta(parseInt(currentPage), parseInt(limit), Math.ceil(results.total/limit), results.total)
+			var meta = new Meta(parseInt(currentPage), parseInt(limit), Math.ceil(results.total/limit), results.total);
 			var json = R.map(result => that.formatMessage(result), results.data);
 			var output = {
 				results : json,
