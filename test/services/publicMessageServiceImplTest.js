@@ -9,24 +9,25 @@ var publicMessageDAO = new PublicMessageDAOImpl();
 var publicMessageService = new PublicMessageServiceImpl();
 //var publicMessageDAOMock = sinon.mock(publicMessageDAO);
 //var dbMock = sinon.mock(db);
-var getMock = sinon.mock(db.get());
 
 suite('Public Message Service Implementation Test', function(){
 
-	test('First Get all Messages with invalid last id should return all messages till limit', function(){
+	test('First Get all Messages with invalid last id should return all messages till limit', function(done){
+		var getMock = sinon.mock(db.get());
 		var limit = 10;
-		var query = 'SELECT pm.*, u.user_name FROM public_messages pm LEFT JOIN users u ON pm.sender_id = u.id order by pm.id desc limit ' + limit
-		getMock.expects('query').once().withArgs(query).returns(
+		var query1 = 'SELECT pm.*, u.user_name FROM public_messages pm LEFT JOIN users u ON pm.sender_id = u.id order by pm.id desc limit ' + limit
+		getMock.expects('query').once().withArgs(query1).returns(
 			Promise.resolve({})
 		);
 		publicMessageService.getAllMessages(-1,10);
 		getMock.verify()
-		publicMessageDAOMock.restore()
-			done()
+		getMock.restore()
+		done();
 	})
 
 
-	test('Store public message should trigger correct db query', function() {
+	test('Store public message should trigger correct db query', function(done) {
+		var getMock = sinon.mock(db.get());
 		var senderId = 1
 		var message = "Hi"
 		var message_status = 1
@@ -46,7 +47,8 @@ suite('Public Message Service Implementation Test', function(){
 		})
 		getMock.verify()
 		getMock.restore()
-		done()
+		done();
+
 	})
 
 
