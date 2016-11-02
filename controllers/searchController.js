@@ -16,11 +16,8 @@ exports.search = function(req, res, next) {
 	var search_type = req.param('search_type')
 	var rawQuery = req.param('query') || ''
 	var query = rawQuery.toLowerCase()
-	//var query = req.param('query').toLowerCase() || ''
 	var page = req.param('page') || 1;
-  	var limit = req.param('limit') || 30;
-	
-  	console.log('hgHJG');
+  	var limit = req.param('limit') || 10;
 
 	if (!isValidSeachType(search_type)) {
 		var err = new Error();
