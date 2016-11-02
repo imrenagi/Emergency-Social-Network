@@ -150,21 +150,20 @@ suite('Search Controller Test', function() {
 	// 	});
 	// });
 
-
-	test('undefined search type must return 400', function(done) {
-		server
-			.post("/join/confirm")
-			.send({
-				"user_name" : "Xiangtian",
-				"password" : "12345"
-			})
-	    	.expect(200, function() {
-	    		server
-	    			.get("/search/undefined_search_type")
-	    			.end(function(err, result) {
-						expect(result.error.status).to.be.eql(400);
-						done();
-					});
-	    	});
-	 });
+	// test('undefined search type must return 400', function(done) {
+	// 	server
+	// 		.post("/join/confirm")
+	// 		.send({
+	// 			"user_name" : "Xiangtian",
+	// 			"password" : "12345"
+	// 		})
+	//     	.expect(200, function() {
+	//     		server
+	//     			.get("/search/undefined_search_type")
+	//     			.end(function(err, result) {
+	// 					expect(result.error.status).to.be.eql(400);
+	// 					done();
+	// 				});
+	//     	});
+	//  });
 })
