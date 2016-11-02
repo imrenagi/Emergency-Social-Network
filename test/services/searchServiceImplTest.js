@@ -21,8 +21,6 @@ var userDAOMock = sinon.mock(userDAO);
 var publicMessageDAOMock = sinon.mock(publicMessageDAO);
 var privateMessageDAOMock = sinon.mock(privateMessageDAO);
 
-
-
 suite('Search Service Implementation Test', function() {
 
 	setup(function() {
@@ -195,6 +193,99 @@ suite('Search Service Implementation Test', function() {
 		})
 	})
 
-	
+	test('Search announcement using stopword will return promise with empty data', function(done){
+		var query = 'able about';
+		var page = 0;
+		var limit = 10;
+
+		searchService.announcementByQuery(query, page, limit).then(function(res) {
+			var expectedMeta = new Meta(1, 10, 0, 0);
+			expect(expectedMeta).to.be.eql(res.meta);
+			expect(0).to.be.eql(res.results.length);
+			done()
+		}).catch(function(err){
+			done(err);
+		})
+	})
+
+	test('Search announcement with correct query will return some data and correct metadata', function(done){
+		var query = 'imre nagi';
+		var page = 0;
+		var limit = 10;
+
+		announcementDAOMock.expects('searchByQuery').once().withExactArgs(['imre','nagi'], 0, 10).returns(
+			Promise.resolve({
+				data: [
+					{ id: 37, sender_id: 2, message: 'a das das das das da sd', latitude: 37.3979, longitude: -122.087, created_at: 'Tue Nov 01 2016 21:52:34 GMT-0700 (PDT)', user_name: 'imre' },
+				  	{ id: 36, sender_id: 2, message: 'asdasd asda as da', latitude: 37.3979, longitude: -122.087, created_at: 'Tue Nov 01 2016 21:52:30 GMT-0700 (PDT)', user_name: 'imre' },
+				  	{ id: 35, sender_id: 2, message: 'asdasd', latitude: 37.4104, longitude: -122.06, created_at: 'Tue Nov 01 2016 21:52:28 GMT-0700 (PDT)', user_name: 'imre' }
+     			],
+				total: 3
+			})
+		)
+
+		searchService.announcementByQuery(query, page, limit).then(function(res) {
+			var expectedMeta = new Meta(1, 10, 1, 3);
+			expect(expectedMeta).to.be.eql(res.meta);
+			expect(37).to.be.eql(res.results[0].id);
+			expect(36).to.be.eql(res.results[1].id);
+			expect(35).to.be.eql(res.results[2].id);
+			expect(3).to.be.eql(res.results.length);
+			done()
+		}).catch(function(err){
+			done(err);
+		})
+	})
+
+	test('Search public message with stopword return promise with empty data', function(done) {
+		var query = 'able about';
+		var page = 0;
+		var limit = 10;
+
+		searchService.publicMessageByQuery(query, page, limit).then(function(res) {
+			var expectedMeta = new Meta(1, 10, 0, 0);
+			expect(expectedMeta).to.be.eql(res.meta);
+			expect(0).to.be.eql(res.results.length);
+			done()
+		}).catch(function(err){
+			done(err);
+		})
+	})
+
+	test('Search private message with stopword return promise with empty data', function(done) {
+		var query = 'able about';
+		var page = 0;
+		var limit = 10;
+
+		searchService.privateMessageByQuery(1, query, page, limit).then(function(res) {
+			var expectedMeta = new Meta(1, 10, 0, 0);
+			expect(expectedMeta).to.be.eql(res.meta);
+			expect(0).to.be.eql(res.results.length);
+			done()
+		}).catch(function(err){
+			done(err);
+		})
+	})
+
+	test('Search public message should return correct metadata', function(done) {
+		var query = 'imre nagi';
+		var page = 0;
+		var limit = 10;
+
+		publicMessageDAOMock.expects('searchByQuery').once().withExactArgs(['imre', 'nagi'], 0, 10).returns(
+			Promise.resolve({
+				data: [],
+				total: 8
+			})
+		)
+
+		searchService.publicMessageByQuery(query, page, limit).then(function(res) {
+			var expectedMeta = new Meta(1, 10, 1, 8);
+			expect(expectedMeta).to.be.eql(res.meta);
+			done()
+		}).catch(function(err){
+			done(err);
+		})
+	})
 
 })

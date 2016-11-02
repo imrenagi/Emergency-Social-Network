@@ -12,8 +12,8 @@ class PublicMessageDAOImpl extends PublicMessageDAO {
 		var paginationQuery = 'SELECT count(*) total from public_messages p WHERE p.message like ';
 		var query = 'SELECT p.*, u.user_name from public_messages p left join users u on u.id = p.sender_id WHERE p.message like '; 
 		var keyword;
-		for(var i in keywords) {
-			if(i == 0) {
+		for(var i = 0; i < keywords.length; i++) {
+			if(i === 0) {
 				keyword = '\'%' + keywords[i] + '%\' ';
 			}
 			else {
