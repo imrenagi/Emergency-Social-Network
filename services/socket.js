@@ -111,7 +111,7 @@ exports.onListening = function(socket) {
 
 		if(conversationId === undefined) {
 			privteMessageService.getConversationId(senderId, receiverId).then(function(result) {
-				if(result.length == 0) {
+				if(result.length === 0) {
 					privteMessageService.createConversation(senderId, receiverId).then(function(results) {
 						conversationId = results;
 						callback(conversationId);
