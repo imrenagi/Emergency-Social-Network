@@ -25,12 +25,12 @@ db.connect(getDbEnvironment(), function(err){
 
 suite('Join community Controller Test', function() {
 
-	setup(function() {
-		db.get().query('delete from users;')
+	setup(function(done) {
+		server.get("/testing/users").expect(200, done)
 	})
 
-	teardown(function() {
-		db.get().query('delete from users;')
+	teardown(function(done) {
+		server.get("/testing/users").expect(200, done)
 	})
 
 	test('new join to community must return 204', function(done) {
