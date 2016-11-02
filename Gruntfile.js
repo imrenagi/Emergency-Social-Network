@@ -1,4 +1,4 @@
-var coverageFolder = process.env.CIRCLE_TEST_REPORTS == undefined ? 'coverage' : process.env.CIRCLE_TEST_REPORTS + '/coverage';
+var coverageFolder = process.env.CIRCLE_TEST_REPORTS === undefined ? 'coverage' : process.env.CIRCLE_TEST_REPORTS + '/coverage';
 module.exports = function(grunt) {
 
 	grunt.initConfig({
@@ -19,7 +19,7 @@ module.exports = function(grunt) {
 	            reporter: 'mocha-junit-reporter',
 	            quiet: false,
 	            reporterOptions: {
-	              mochaFile: process.env.CIRCLE_TEST_REPORTS + '/mocha/results.xml'
+	              mochaFile: coverageFolder + '/mocha/results.xml'
 	            }
 	          },
 	          src: ['test/**/*.js']
