@@ -34,7 +34,7 @@ test:
     - mkdir -p $CIRCLE_TEST_REPORTS/mocha
     - NODE_ENV=circle node bin/www:
         background: true
-    - NODE_ENV=circle grunt circleci
+    - NODE_ENV=circle grunt circleci --force
 
 deployment:
   production:
