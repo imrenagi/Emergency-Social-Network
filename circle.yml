@@ -32,9 +32,9 @@ database:
 test:
   override:
     - mkdir -p $CIRCLE_TEST_REPORTS/mocha
-    - NODE_ENV=circle npm start:
+    - NODE_ENV=circle node bin/www:
         background: true
-    - NODE_ENV=circle grunt circleci --force
+    - NODE_ENV=circle grunt circleci
 
 deployment:
   production:
