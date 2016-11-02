@@ -19,15 +19,15 @@ class SearchServiceImpl extends SearchService {
 		} else {
 			currentPage = page;
 		}
-		return currentPage;
+		return currentPage
 	}
 
 	offset(page, limit) {
 		let offset = 0;
 		if (page === 0 || page === 1) {
-			offset = 0;
+			offset = 0
 		} else {
-			offset = (page - 1) * limit;
+			offset = (page - 1) * limit
 		}
 		return offset;
 	}
@@ -36,15 +36,15 @@ class SearchServiceImpl extends SearchService {
 		let offset = this.offset(page, limit);
 		let currentPage = this.currentPage(page);
 		return this.userDAO.searchByUserName(userName, offset, limit).then(result => {
-			var meta = new Meta(parseInt(currentPage), parseInt(limit), Math.ceil(result.total/limit), result.total);
-			var results = result.data;
+			var meta = new Meta(parseInt(currentPage), parseInt(limit), Math.ceil(result.total/limit), result.total)
+			var results = result.data
 			var output = {
 				results: results,
 				meta: meta
-			};		
-			return output;
+			}		
+			return output
 		}).catch(err => {
-			return err;
+			return err
 		})
 	}
 
@@ -53,14 +53,14 @@ class SearchServiceImpl extends SearchService {
 		let currentPage = this.currentPage(page);
 		return this.userDAO.searchByStatus(status, offset, limit).then(result => {
 			var meta = new Meta(parseInt(currentPage), parseInt(limit), Math.ceil(result.total/limit), result.total)
-			var results = result.data;
+			var results = result.data
 			var output = {
 				results: results,
 				meta: meta
-			};		
-			return output;
+			}		
+			return output
 		}).catch(err => {
-			return err;
+			return err
 		})
 	}
 
@@ -77,16 +77,17 @@ class SearchServiceImpl extends SearchService {
 				lat: result.latitude,
 				long: result.longitude
 			}
-		};
+		}
 		return announcement;
 	}
 
 	announcementByQuery(query, page, limit) {
 		let offset = this.offset(page, limit);
 		let currentPage = this.currentPage(page);
+		var that = this;
 		var querys = this.searchQueryFilter(query);
 
-		if(querys.length === 0) {
+		if(querys.length == 0) {
 			var meta = new Meta(parseInt(currentPage), parseInt(limit), Math.ceil(0/limit), 0);
 			return Promise.resolve({
 				results: [],
@@ -96,6 +97,7 @@ class SearchServiceImpl extends SearchService {
 		var that = this;
 		return this.announcementDAO.searchByQuery(querys, offset, limit).then(function(results) {
 			var meta = new Meta(parseInt(currentPage), parseInt(limit), Math.ceil(results.total/limit), results.total);
+			var res = JSON.parse(JSON.stringify(results));
 			var json = R.map(result => that.formatAnnouncement(result), results.data);
 			var output = { results: json,
 						   meta: meta
@@ -111,7 +113,7 @@ class SearchServiceImpl extends SearchService {
 		let currentPage = this.currentPage(page);
 
 		var querys = this.searchQueryFilter(query);
-		if(querys.length === 0) {
+		if(querys.length == 0) {
 			var meta = new Meta(parseInt(currentPage), parseInt(limit), Math.ceil(0/limit), 0);
 			return Promise.resolve({
 				results: [],
@@ -120,7 +122,7 @@ class SearchServiceImpl extends SearchService {
 		}
 		var that = this;
 		return this.publicMessageDAO.searchByQuery(querys, offset, limit).then(function(results) {
-			var meta = new Meta(parseInt(currentPage), parseInt(limit), Math.ceil(results.total/limit), results.total);
+			var meta = new Meta(parseInt(currentPage), parseInt(limit), Math.ceil(results.total/limit), results.total)
 			var json = R.map(result => that.formatMessage(result), results.data);
 			var output = { results: json,
 						   meta: meta
@@ -137,7 +139,7 @@ class SearchServiceImpl extends SearchService {
 		let currentPage = this.currentPage(page);
 
 		var querys = this.searchQueryFilter(query);	
-		if(querys.length === 0) {
+		if(querys.length == 0) {
 			var meta = new Meta(parseInt(currentPage), parseInt(limit), Math.ceil(0/limit), 0);
 			return Promise.resolve({
 				results: [],
@@ -146,7 +148,7 @@ class SearchServiceImpl extends SearchService {
 		}
 		var that = this;
 		return this.privateMessageDAO.searchByQuery(userId, querys, offset, limit).then(function(results) {
-			var meta = new Meta(parseInt(currentPage), parseInt(limit), Math.ceil(results.total/limit), results.total);
+			var meta = new Meta(parseInt(currentPage), parseInt(limit), Math.ceil(results.total/limit), results.total)
 			var json = R.map(result => that.formatMessage(result), results.data);
 			var output = {
 				results : json,
@@ -163,7 +165,7 @@ class SearchServiceImpl extends SearchService {
 		var querys = query.split(" ");
 		for(var i in STOPWORDS) {
 			for(var j in querys) {
-				if(querys[j].toLowerCase() === STOPWORDS[i] || querys[j].toLowerCase() === '') {
+				if(querys[j].toLowerCase() == STOPWORDS[i] || querys[j].toLowerCase() == '') {
 					querys.splice(j, 1);
 				}
 			}

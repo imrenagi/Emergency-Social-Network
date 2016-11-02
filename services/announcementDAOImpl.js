@@ -65,9 +65,8 @@ class AnnouncementDAOImpl extends AnnouncementDAO {
 		var paginationQuery = 'SELECT count(*) total from announcements a WHERE a.message like '; 
 		var query = 'SELECT a.*, u.user_name from announcements a left join users u on u.id = a.sender_id WHERE a.message like '; 
 		var keyword;
-		console.log(keywords);
-		for(var i in keywords) {
-			if(i == 0) {
+		for(var i = 0; i < keywords.length; i++) {
+			if(i === 0) {
 				keyword = '\'%' + keywords[i] + '%\' ';
 			}
 			else {
@@ -99,6 +98,7 @@ class AnnouncementDAOImpl extends AnnouncementDAO {
 							data: JSON.parse(JSON.stringify(results)),
 							total: total_count
 						};
+						
 						resolve(json);
 					}
 				});

@@ -21,12 +21,10 @@ class PrivateMessageDAOImpl extends PrivateMessageDAO {
 	}
 
 	getMessagesByConversations(userId, conversations) {
-		console.log(conversations);
 		if(conversations.length === 0) {
 			return Promise.resolve([]);
 		}
 		let query = 'SELECT conversation_id, sender_id, receiver_id, sender_name, receiver_name, COUNT(IF (read_flag = 0, read_flag, null) ) AS unread_count FROM private_messages where conversation_id in (' + conversations +') group by conversation_id';
-		console.log(query);
 		return new Promise(function(resolve, reject) {
 			db.get().query(query, function(err, results) {
 				if (err) reject(err);

@@ -85,7 +85,6 @@ class userDAOImpl extends userDAO {
 								data: JSON.parse(JSON.stringify(result)),
 								total: total_result
 							}
-							console.log(results)
 							resolve(results);
 						}
 				})
