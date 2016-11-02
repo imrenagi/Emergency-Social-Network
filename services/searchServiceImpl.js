@@ -19,7 +19,7 @@ class SearchServiceImpl extends SearchService {
 		} else {
 			currentPage = page;
 		}
-		return currentPage
+		return currentPage;
 	}
 
 	offset(page, limit) {
@@ -36,7 +36,7 @@ class SearchServiceImpl extends SearchService {
 		let offset = this.offset(page, limit);
 		let currentPage = this.currentPage(page);
 		return this.userDAO.searchByUserName(userName, offset, limit).then(result => {
-			var meta = new Meta(parseInt(currentPage), parseInt(limit), Math.ceil(result.total/limit), result.total)
+			var meta = new Meta(parseInt(currentPage), parseInt(limit), Math.ceil(result.total/limit), result.total);
 			var results = result.data;
 			var output = {
 				results: results,
@@ -120,7 +120,7 @@ class SearchServiceImpl extends SearchService {
 		}
 		var that = this;
 		return this.publicMessageDAO.searchByQuery(querys, offset, limit).then(function(results) {
-			var meta = new Meta(parseInt(currentPage), parseInt(limit), Math.ceil(results.total/limit), results.total)
+			var meta = new Meta(parseInt(currentPage), parseInt(limit), Math.ceil(results.total/limit), results.total);
 			var json = R.map(result => that.formatMessage(result), results.data);
 			var output = { results: json,
 						   meta: meta
