@@ -12,6 +12,10 @@ general:
     only:
       - master
       - develop
+      - /feature/imre
+      - /feature/bdu
+      - /feature/ashutosh
+      - /feature/xiangtian
 
 # merge master before testing to make sure all tests pass
 # with the updated version of master
