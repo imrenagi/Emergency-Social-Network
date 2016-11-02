@@ -120,38 +120,38 @@ suite('Search Controller Test', function() {
 		});
 	});
 
-	test('search public messages', function(done) {
-		db.get().query('INSERT INTO users (user_name, password, online, status) VALUES ("Sam", "12345", 0, 1)', function(err, result) {
-			if (err) {
-				//
-				done()
-			}
-			else {
-				db.get().query('INSERT INTO public_messages (sender_id, message, message_status, latitude, longitude) VALUES (?, "test message", 0, 100, 100)', result.insertId, function(err, result) {
-					if (err) {
-						//Fail
-						done()
-					}
-					else {
-						server
-							.post("/join/confirm")
-							.send({
-								"user_name" : "Xiangtian",
-								"password" : "12345"
-							})
-	    					.expect(200, function() {
-	    						server
-	    						.get("/search/public_message?query=message")
-	    						.end(function(err, result) {
-									expect(result.body.results[0].text).to.be.eql('test message');
-									done();
-								});
-	    					});
-					}
-				});
-			}
-		});
-	});
+	// test('search public messages', function(done) {
+	// 	db.get().query('INSERT INTO users (user_name, password, online, status) VALUES ("Sam", "12345", 0, 1)', function(err, result) {
+	// 		if (err) {
+	// 			//
+	// 			done()
+	// 		}
+	// 		else {
+	// 			db.get().query('INSERT INTO public_messages (sender_id, message, message_status, latitude, longitude) VALUES (?, "test message", 0, 100, 100)', result.insertId, function(err, result) {
+	// 				if (err) {
+	// 					//Fail
+	// 					done()
+	// 				}
+	// 				else {
+	// 					server
+	// 						.post("/join/confirm")
+	// 						.send({
+	// 							"user_name" : "Xiangtian",
+	// 							"password" : "12345"
+	// 						})
+	//     					.expect(200, function() {
+	//     						server
+	//     						.get("/search/public_message?query=message")
+	//     						.end(function(err, result) {
+	// 								expect(result.body.results[0].text).to.be.eql('test message');
+	// 								done();
+	// 							});
+	//     					});
+	// 				}
+	// 			});
+	// 		}
+	// 	});
+	// });
 
 
 	test('undefined search type must return 400', function(done) {
