@@ -1,8 +1,35 @@
 months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-
+statusType = [
+    {
+        text: 'Undefined',
+        html: '<i class="fa fa-minus"> </i>',
+        color: '#000000',
+        border_color: '#1b809e',
+    },
+    {
+        text: 'OK',
+        html: '<i style="color: #9ccb19" class="fa fa-check-circle"></i>',
+        color: '#9ccb19',
+        border_color: '#9ccb19'
+    },
+    {
+        text: 'Help',
+        html: '<i style="color: #fcd116" class="fa fa-exclamation-triangle"></i>',
+        color: '#fcd116',
+        border_color: '#fcd116'
+    },
+    {
+        text: 'Emergency',
+        html: '<i style="color: #ce4844" class="fa fa-plus-square"></i>',
+        color: '#ce4844',
+        border_color: '#ce4844'
+    }
+]
 var textarea = document.querySelector('textarea');
 
-textarea.addEventListener('keydown', autosize);
+if (textarea) {
+    textarea.addEventListener('keydown', autosize);
+}
              
 function autosize(){
   var el = this;

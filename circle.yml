@@ -7,6 +7,16 @@ machine:
     DB_NAME: circle_test
     DB_USER: ubuntu
 
+general:
+  branches:
+    only:
+      - master
+      - develop
+      - imre
+      - binglei
+      - ashutosh
+      - xiangtian
+
 # merge master before testing to make sure all tests pass
 # with the updated version of master
 checkout:
@@ -17,13 +27,15 @@ checkout:
 
 database:
   override:
-    - mysql -u ubuntu circle_test < ./sql/V1__create_users_and_public_messages_table.sql
+    - db-migrate up -e circleci
 
 # run tests
 test:
   override:
     - mkdir -p $CIRCLE_TEST_REPORTS/mocha
-    - grunt circleci
+    - NODE_ENV=circle node bin/www:
+        background: true
+    - NODE_ENV=circle grunt circleci --force
 
 deployment:
   production:

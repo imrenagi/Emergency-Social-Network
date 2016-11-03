@@ -3,6 +3,8 @@ var sinon = require('sinon');
 
 var PrivateMessageDAOImpl = require('../../services/privateMessageDAOImpl');
 var PrivateMessageServiceImpl = require('../../services/privateMessageServiceImpl');
+var PrivateMessageDAOInterface = require('../../services/interfaces/privateMessageDAO');
+var PrivateMessageServiceInterface = require('../../services/interfaces/privateMessageService');
 
 var privateMessageDAO = new PrivateMessageDAOImpl();
 var privateMessageService = new PrivateMessageServiceImpl(privateMessageDAO);
@@ -10,7 +12,27 @@ var privateMessageDAOMock = sinon.mock(privateMessageDAO);
 
 suite('Private Message Service Implementation Test', function() {
 
-	test('Get All Private Message should called dao for private message', function() {
+	test('interface should return override error', function() {
+		var dao = new PrivateMessageDAOInterface();
+		expect(Error("Must override!")).to.be.eql(dao.getAllConversatonsByUserId());
+		expect(Error("Must override!")).to.be.eql(dao.getPrivateMessagesByConversationId())
+		expect(Error("Must override!")).to.be.eql(dao.getMessagesByConversations())
+		expect(Error("Must override!")).to.be.eql(dao.createConversation())
+		expect(Error("Must override!")).to.be.eql(dao.storePrivateMessage())
+		expect(Error("Must override!")).to.be.eql(dao.getConversationId())
+		expect(Error("Must override!")).to.be.eql(dao.updateMessageReadFlagByIds())
+		expect(Error("Must override!")).to.be.eql(dao.searchByQuery())
+
+		var service = new PrivateMessageServiceInterface();
+			expect(Error("Must override!")).to.be.eql(service.getAllConversations());
+			expect(Error("Must override!")).to.be.eql(service.getAllPrivateMessages());
+			expect(Error("Must override!")).to.be.eql(service.storePrivateMessage());
+			expect(Error("Must override!")).to.be.eql(service.createConversation());
+			expect(Error("Must override!")).to.be.eql(service.getConversationId());
+			expect(Error("Must override!")).to.be.eql(service.updateMessageReadFlag());
+	})
+
+	test('Get All Private Message should call dao for private message', function() {
 		privateMessageDAOMock.expects('getPrivateMessagesByConversationId').once().withExactArgs(1,1,1).returns(
 			Promise.resolve({})
 		);
@@ -101,6 +123,43 @@ suite('Private Message Service Implementation Test', function() {
 		expect(expectedConversation).to.be.eql(formattedConversation)
 		done()
 	})
+
+test('Get all conversations should get no conversations for invalid UserId', function(done) {
+		var userid = -1;
+		privateMessageDAOMock.expects('getAllConversatonsByUserId').once().withExactArgs(-1).returns(
+			Promise.resolve({})
+		);
+		privateMessageService.getAllConversations(userid);
+		privateMessageDAOMock.verify()
+		privateMessageDAOMock.restore()
+		done()
+	})
+
+test('Get conversation ID should return empty result for same sending and recieving user', function(done) {
+		var senderid = 1;
+		var receiverid = 1;
+		privateMessageDAOMock.expects('getConversationId').once().withExactArgs(senderid,receiverid).returns(
+			Promise.resolve({})
+		);
+		privateMessageService.getConversationId(senderid,receiverid);
+		privateMessageDAOMock.verify()
+		privateMessageDAOMock.restore()
+		done()
+	})
+
+
+
+test('Update Message Read flags should call DAO for updating message ids', function(done) {
+		var messageid = 123;
+		privateMessageDAOMock.expects('updateMessageReadFlagByIds').once().withExactArgs('123').returns(
+			Promise.resolve({})
+		);
+		privateMessageService.updateMessageReadFlag(messageid);
+		privateMessageDAOMock.verify()
+		privateMessageDAOMock.restore()
+		done()
+	})
+
 
  
 })

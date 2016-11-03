@@ -61,6 +61,51 @@ class AnnouncementDAOImpl extends AnnouncementDAO {
 		})
 	}
 
+	searchByQuery(keywords, offset, limit) {
+		var paginationQuery = 'SELECT count(*) total from announcements a WHERE a.message like '; 
+		var query = 'SELECT a.*, u.user_name from announcements a left join users u on u.id = a.sender_id WHERE a.message like '; 
+		var keyword;
+		for(var i = 0; i < keywords.length; i++) {
+			if(i === 0) {
+				keyword = '\'%' + keywords[i] + '%\' ';
+			}
+			else {
+				keyword = 'OR a.message like \'%' + keywords[i] + '%\' ';
+			}
+			paginationQuery = paginationQuery + keyword;
+			query = query + keyword;
+		}
+		query = query + 'order by a.id desc limit ' + offset + ' , '+ limit;
+
+		return new Promise(function(resolve, reject) {
+			db.get().query(paginationQuery, function(err, result) {
+				if(err) {
+					reject(err);
+				}
+				else {
+					let total_count = JSON.parse(JSON.stringify(result[0])).total;
+					resolve(total_count);
+				}
+			});
+		}).then(function(total_count) {
+			return new Promise(function(resolve, reject) {
+				db.get().query(query, function(err, results) {
+					if(err) {
+						reject(err);
+					}
+					else {
+						var json = {
+							data: JSON.parse(JSON.stringify(results)),
+							total: total_count
+						};
+						
+						resolve(json);
+					}
+				});
+			});
+		});
+	}
+
 
 }
 

@@ -21,12 +21,10 @@ class PrivateMessageDAOImpl extends PrivateMessageDAO {
 	}
 
 	getMessagesByConversations(userId, conversations) {
-		console.log(conversations);
-		if(conversations.length == 0) {
+		if(conversations.length === 0) {
 			return Promise.resolve([]);
 		}
 		let query = 'SELECT conversation_id, sender_id, receiver_id, sender_name, receiver_name, COUNT(IF (read_flag = 0, read_flag, null) ) AS unread_count FROM private_messages where conversation_id in (' + conversations +') group by conversation_id';
-		console.log(query);
 		return new Promise(function(resolve, reject) {
 			db.get().query(query, function(err, results) {
 				if (err) reject(err);
@@ -129,6 +127,53 @@ class PrivateMessageDAOImpl extends PrivateMessageDAO {
 					console.log(result);
 					resolve(result);
 				}
+			});
+		});
+	}
+
+	searchByQuery(userId, keywords, offset, limit) {
+		var paginationQuery = 'SELECT count(*) total from private_messages p WHERE ( p.message like ';
+		var query = 'SELECT p.*, p.sender_name as user_name from private_messages p WHERE ( p.message like '; 
+		var keyword;
+		console.log(keywords);
+		for(var i = 0; i < keywords.length; i++) {
+			if(i === 0) {
+				keyword = '\'%' + keywords[i] + '%\' ';
+			}
+			else {
+				keyword = 'OR p.message like \'%' + keywords[i] + '%\' ';
+			}
+			paginationQuery = paginationQuery + keyword;
+			query = query + keyword;
+		}
+		paginationQuery = paginationQuery + ') AND (sender_id = ' + userId + ' OR  receiver_id = ' + userId + ' )';
+		query = query + ') AND (sender_id = ' + userId + ' OR  receiver_id = ' + userId + ' ) order by p.id desc limit ' + offset + ' , '+ limit;
+
+		return new Promise(function(resovle, reject) {
+			db.get().query(paginationQuery, function(err, result) {
+				if(err) {
+					reject(err);
+				}
+				else {
+					let total_count = JSON.parse(JSON.stringify(result[0])).total;
+					resovle(total_count);
+				}
+			});
+		}).then(function(total_count) {
+			return new Promise(function(resovle, reject) {
+				db.get().query(query, function(err, results) {
+					if(err) {
+						reject(err);
+					}
+					else {
+						var json = {
+							data: JSON.parse(JSON.stringify(results)),
+							total: total_count
+						};
+						console.log(json)
+						resovle(json);
+					}
+				});
 			});
 		});
 	}

@@ -24,7 +24,19 @@ app.set('port', port);
  * Listen on provided port, on all network interfaces, 
  * when database connection is established.
  */
-var dbEnvironment = (app.get('env') === 'test' ? db.MODE_TEST : db.MODE_PRODUCTION);
+function getDbEnvironment() {
+  if (app.get('env') === 'test') {
+    return db.MODE_TEST;
+  } else if (app.get('env') === 'circle') {
+    return db.MODE_CIRCLE_TEST;
+  }  else {
+    return db.MODE_PRODUCTION;
+  }
+} 
+
+var dbEnvironment = getDbEnvironment()
+console.log(dbEnvironment);
+
 db.connect(dbEnvironment, function(err){
   if (err) {
     console.log('Unable to connect to MySQL')

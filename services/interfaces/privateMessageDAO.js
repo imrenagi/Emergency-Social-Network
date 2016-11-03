@@ -2,27 +2,38 @@
 
 class PrivateMessageDAO {
 	constructor() {
-		if(this.getAllConversatonsByUserId === undefined) {
-			throw Error('Must override!');
-		}
-		if(this.getPrivateMessagesByConversationId === undefined) {
-			throw new Error('Must override!');
-		}
-		if(this.getMessagesByConversations === undefined) {
-			throw new Error('Must override!');
-		}
-		if(this.createConversation === undefined) {
-			throw new Error('Must override!');
-		}
-		if(this.storePrivateMessage === undefined) {
-			throw new Error('Must override!');
-		}
-		if(this.getConversationId === undefined) {
-			throw new Error('Must override!');
-		}
-		if(this.updateMessageReadFlagByIds === undefined) {
-			throw new Error('Must override!');
-		}	
+	}
+
+	getAllConversatonsByUserId() {
+		return new Error("Must override!");
+	}
+
+	getPrivateMessagesByConversationId() {
+		return new Error("Must override!");
+	}
+
+	getMessagesByConversations() {
+		return new Error("Must override!");	
+	}
+
+	createConversation() {
+		return new Error("Must override!");
+	}
+
+	storePrivateMessage() {
+		return new Error("Must override!");
+	}
+
+	getConversationId() {
+		return new Error("Must override!");
+	}
+
+	updateMessageReadFlagByIds() {
+		return new Error("Must override!");
+	}
+
+	searchByQuery() {
+		return new Error("Must override!");
 	}
 }
 
