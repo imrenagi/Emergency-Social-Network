@@ -33,6 +33,10 @@ router.get('/searchInfo', function(req, res) {
     render.requestAsCitizen(req, res, 'search', { title: 'Search - Emergency Social Network'});
 });
 
+router.get('/userProfile', function(req, res) {
+    render.requestAsAdmin(req, res, 'userProfile', { title: 'User Profile - Emergency Social Network'});
+});
+
 router.use('/join', require('./join'));
 router.use('/directory', require('./directory'));
 router.use('/logout', require('./logout'));

@@ -15,6 +15,13 @@ exports.requestAsCitizen = function(req, res, template, data) {
         renderJoinPage(res, 'Please login first');
 }
 
+exports.requestAsAdmin = function(req, res, template, data) {
+    if (req.session.user)
+        res.render(template, data);
+    else
+        renderJoinPage(res, 'Please login first');
+}
+
 function renderJoinPage(res, message) {
     res.render('join', {title: 'Emergency Social Network', message: message});
 }
