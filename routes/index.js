@@ -39,6 +39,7 @@ router.use('/logout', require('./logout'));
 router.use('/message', require('./message'));
 router.use('/announcement', require('./announcement'));
 router.use('/search', require('./search'));
+router.use('/administer', require('./admin'));
 
 if (app.get('env') === 'test' || app.get('env') === 'circle') {
 	router.use('/testing', require('./test'));

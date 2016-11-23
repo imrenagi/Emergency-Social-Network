@@ -91,6 +91,36 @@ class userDAOImpl extends userDAO {
 			})
 		});
 	}
+
+	getAllUsers(offset, limit) {
+		var paginationQuery = 'select count(*) total from users u ;';
+		var itemQuery = 'select u.id, u.user_name, u.is_active, u.privilage from users u limit '+offset +','+limit+';'
+		return new Promise(function(resolve, reject) {
+			db.get().query(paginationQuery, function(err, result) {
+				if (err) {
+					reject(err);
+				} else {
+					let total_results = JSON.parse(JSON.stringify(result[0])).total;
+					resolve(total_results);
+				}
+			})
+		}).then(total_result => {			
+			return new Promise(function(resolve, reject) {
+					db.get().query(itemQuery, function(err, result) {
+						if (err) {					
+							reject(err)
+						}
+						else {
+							var results = {
+								data: JSON.parse(JSON.stringify(result)),
+								total: total_result
+							}
+							resolve(results);
+						}
+				})
+			})
+		});
+	}
 }
 
 module.exports = userDAOImpl;
