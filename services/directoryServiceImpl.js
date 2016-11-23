@@ -126,6 +126,14 @@ class directoryServiceImpl extends directoryService {
 			return err;
 		})
 	}
+
+	updateUser(id, values) {
+		return userDAO.updateUser(id, values).then(function(result) {
+			return result;
+		}).catch(function(err) {
+			return err;
+		});
+	}
 }
 
 module.exports = directoryServiceImpl;
