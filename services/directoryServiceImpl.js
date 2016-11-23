@@ -8,12 +8,30 @@ var userDAOImpl = require('./userDAOImpl');
 var userDAO = new userDAOImpl();
 var dateHelper = require('../helpers/date');
 
-
-
 class directoryServiceImpl extends directoryService {
 
 	constructor() {
 		super();
+	}
+
+	currentPage(page) {
+		let currentPage = 1;
+		if (page === 0 || page === 1) {
+			currentPage = 1;
+		} else {
+			currentPage = page;
+		}
+		return currentPage;
+	}
+
+	offset(page, limit) {
+		let offset = 0;
+		if (page === 0 || page === 1) {
+			offset = 0;
+		} else {
+			offset = (page - 1) * limit;
+		}
+		return offset;
 	}
 
 	getDirectory(page, limit) {
@@ -40,7 +58,7 @@ class directoryServiceImpl extends directoryService {
 				}
 			})
 		}).then(meta => {
-			var query = 'select * from users ORDER BY  `online` DESC, user_name ASC, id ASC limit ' + offset +','+limit;
+			var query = 'select * from users where is_active = 1 ORDER BY `online` DESC, user_name ASC, id ASC limit ' + offset +','+limit;
 			return new Promise(function(resolve, reject) {
 				db.get().query(query, function(err, result) {
 					if (err) reject(err);
@@ -91,6 +109,22 @@ class directoryServiceImpl extends directoryService {
 				return user;
 			})
 		});
+	}
+
+	getUsers(page, limit) {
+		let offset = this.offset(page, limit);
+		let currentPage = this.currentPage(page);
+		return userDAO.getAllUsers(offset, limit).then(result => {
+			var meta = new Meta(parseInt(currentPage), parseInt(limit), Math.ceil(result.total/limit), result.total);
+			var results = result.data;
+			var output = {
+				users: results,
+				meta: meta
+			};		
+			return output;
+		}).catch(err => {
+			return err;
+		})
 	}
 }
 
