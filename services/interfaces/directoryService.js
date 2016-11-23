@@ -14,6 +14,9 @@ class directoryService {
 		if(this.updateUserStatus === undefined) {
 			throw("Must override!");
 		}
+		if(this.updateUser === undefined) {
+			throw("Must override!");
+		}
 	}
 }
 

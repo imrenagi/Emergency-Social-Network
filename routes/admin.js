@@ -12,6 +12,6 @@ router.use(function(req, res, next){
 })
 
 router.get('/user', adminController.getUsers);
-// router.put('/user/:id', adminController.updateUser);
+router.put('/user/:id', adminController.updateUser);
 
 module.exports = router;
