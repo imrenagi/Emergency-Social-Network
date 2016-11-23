@@ -58,7 +58,7 @@ class directoryServiceImpl extends directoryService {
 				}
 			})
 		}).then(meta => {
-			var query = 'select * from users ORDER BY  `online` DESC, user_name ASC, id ASC limit ' + offset +','+limit;
+			var query = 'select * from users where is_active = 1 ORDER BY `online` DESC, user_name ASC, id ASC limit ' + offset +','+limit;
 			return new Promise(function(resolve, reject) {
 				db.get().query(query, function(err, result) {
 					if (err) reject(err);
