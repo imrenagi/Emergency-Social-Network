@@ -34,7 +34,8 @@ exports.joinCommunity = function(req, res, next) {
 		    	case 200:
 		    		req.session.user = {
 		    			id: result.body.id,
-		    			user_name: result.body.user_name
+		    			user_name: result.body.user_name,
+		    			privilage: result.body.privilage
 		    		}
 		        	res.status(200).send(JSON.stringify(result.body));
 		        	break;
@@ -67,7 +68,8 @@ exports.confirm = function(req, res, next) {
 		.then(function(result) {
 			req.session.user = {
 		    	id: result.id,
-		    	user_name: result.user_name
+		    	user_name: result.user_name,
+		    	privilage: result.privilage
 			}
 			res.send(JSON.stringify(result));
 		}).catch(function(err) {

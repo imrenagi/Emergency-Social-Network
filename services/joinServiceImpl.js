@@ -44,10 +44,8 @@ class JoinServiceImpl extends JoinService {
 				var results = JSON.parse(JSON.stringify(result));
 				if (results.length > 0) {
 					if (encryptor.compare(password, results[0].password)) {
-						var user = new User(results[0].id, 
-							results[0].user_name, 
-							results[0].online,
-							results[0].status );
+						var user = new User(results[0].id, results[0].user_name, 
+							results[0].online, results[0].status, results[0].privilage)
 						userDAO.updateOnline(user, 1)
 							.then(function(res) {
 								user.online = 1;
@@ -74,7 +72,7 @@ class JoinServiceImpl extends JoinService {
 					reject(err);
 				} else {
 					var res = JSON.parse(JSON.stringify(result));
-					var user = new User(res.insertId, userName, 0, 0);
+					var user = new User( res.insertId, userName, 0, 0, 0);
 					userDAO.updateOnline(user, 1)
 						.then(function(res) {
 							user.online = 1;
