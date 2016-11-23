@@ -33,6 +33,10 @@ router.get('/searchInfo', function(req, res) {
     render.requestAsCitizen(req, res, 'search', { title: 'Search - Emergency Social Network'});
 });
 
+router.get('/news', function(req, res) {
+    render.requestAsCitizen(req, res, 'news', { title: 'News - Emergency Social Network'});
+});
+
 router.get('/userProfile', function(req, res) {
     render.requestAsAdmin(req, res, 'userProfile', { title: 'User Profile - Emergency Social Network'});
 });
@@ -44,6 +48,7 @@ router.use('/message', require('./message'));
 router.use('/announcement', require('./announcement'));
 router.use('/search', require('./search'));
 router.use('/administer', require('./admin'));
+
 
 if (app.get('env') === 'test' || app.get('env') === 'circle') {
 	router.use('/testing', require('./test'));
