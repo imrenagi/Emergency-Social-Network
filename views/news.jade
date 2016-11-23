@@ -5,6 +5,17 @@ block append stylesheet
 block append content
   include navbar.jade
   .container
+    ul.nav.nav-pills.nav-justified
+      li.active#mapli
+        a(href='#maptab' data-toggle='pill')
+          | Map      
+      li#newsli
+        a(href='#newstab' data-toggle='pill')
+          | News
+    .tab-content
+      #maptab.tab-pane.active
+        #displayMap
+      #newstab.tab-pane
 block append script
   script(src='https://code.jquery.com/jquery-1.10.2.min.js')
   script(src='http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js')
