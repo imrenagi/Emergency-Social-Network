@@ -1,5 +1,6 @@
 "use strict";
 
+var R = require('ramda');
 var userDAO = require('./interfaces/userDAO');
 var db = require('./db');
 
@@ -111,8 +112,13 @@ class userDAOImpl extends userDAO {
 							reject(err)
 						}
 						else {
+							var res = JSON.parse(JSON.stringify(result));
+							var addedAsterixPassResult = R.map(r => { 
+								r.password = "***********";
+								return r; 
+							}, res);
 							var results = {
-								data: JSON.parse(JSON.stringify(result)),
+								data: addedAsterixPassResult,
 								total: total_result
 							}
 							resolve(results);

@@ -3,7 +3,8 @@ var router = express.Router();
 var adminController = require('../controllers/administerUserProfileController');
 
 var auth = require('../middleware/authorization');
-router.use(auth.isAuthorizedAdminRequest);
+router.use(auth.isAuthorizedRequest);
+// router.use(auth.isAuthorizedAdminRequest);
 
 router.use(function(req, res, next){
   res.setHeader('Content-Type', 'application/json');
