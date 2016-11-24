@@ -92,7 +92,7 @@ function updateNews(data, map)
             icon = 'fa-plus-square';
         }
     }
-  var newsItem = '<div class="newsItems pin-' + color + '" id='+newsId+'><div class="info pin-heading-' + color + '"> <span class="fa fa-clock-o"></span> '+ time + '  &nbsp &nbsp <span class="fa fa-map-marker"></span> ('+ lat + ', ' + long + ') &nbsp &nbsp <a href="/privateChat/' + data.reporter.id + '">' + (data.reporter.id == localStorage['ID'] ? '' : '<i class="fa fa-comment-o"></i>') + '</a> </div><div class="pin-heading pin-heading-' + color + '"> <i class="fa ' + icon + '"></i> ' + senderName + ' </div><p>' + (text==''?'':text) + '</p>'+(img==''?'':'<p><a href='+img+'><img class="textImage" src='+img+'></a></p>')+'</div>';
+  var newsItem = '<div class="newsItems pin pin-' + color + '" id=' + newsId + '><div class="info pin-heading-' + color + '"> <span class="fa fa-clock-o"></span> '+ time + '  &nbsp &nbsp <span class="fa fa-map-marker"></span> ('+ lat + ', ' + long + ') &nbsp &nbsp <a href="/privateChat/' + data.reporter.id + '">' + (data.reporter.id == localStorage['ID'] ? '' : '<i class="fa fa-comment-o"></i>') + '</a> </div><div class="pin-heading pin-heading-' + color + '"> <i class="fa ' + icon + '"></i> ' + senderName + ' </div><p>' + (text==''?'':text) + '</p>'+(img==''?'':'<p><a href='+img+'><img class="textImage" src='+img+'></a></p>')+'</div>';
   insertIntoMap(newsItem, lat, long, map);
   lastNewsId = newsId;
   return newsItem;
