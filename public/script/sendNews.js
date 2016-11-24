@@ -15,7 +15,6 @@ function initMap() {
    		deleteMarkers();
   		addMarker(event.latLng, map);
 	});  
-	$.cloudinary.config({ cloud_name: 'atadkase', api_key: '486118391826883'});
 }
 
 function deleteMarkers()
@@ -67,7 +66,7 @@ $('#submitNewsButton').on('click',function(){
 	}
 	if(image_url!=undefined)
 	{
-
+		var ext = $('#sendImageButton').val().split('.').pop().toLowerCase();
 	}
 	$('#news-textarea').val('');
 	$('#news-textarea').focus();
