@@ -1,0 +1,44 @@
+extends base
+block append stylesheet
+  link(rel='stylesheet', href='/css/style.css')
+  link(rel='stylesheet', href='/css/main.css')
+block append content
+  include navbar.jade
+  .container
+    h3
+      |Share News
+    form#imageForm
+      input(type="file" accept=".png, .jpg, .jpeg" capture="camera" style="display: none" onchange="changeColour()")#sendImageButton
+   .wrapper.row.news-area
+      .col-md-9.col-sm-12.col-xs-12.input-group#news-area
+        input.form-control(textarea)#news-textarea
+        .input-group-btn#news-btn-group
+          button.btn.btn-default.dropdown-toggle(data-toggle='dropdown', aria-haspopup='true',  aria-expanded='false')#option-btn
+              span.caret
+              span(id='news-option', option='opt-ok')  Ok
+            span.sr-only
+          ul.dropdown-menu.dropdown-menu-right#dropdown-list
+            li
+              a(href='#', id='opt-ok') Ok
+            li
+              a(href='#', id='opt-help') Help
+            li
+              a(href='#', id='opt-emergency') Emergency
+    #input(style='padding-top:5px;')
+        span.btn.btn-danger#cancelButton
+          span.glyphicon.glyphicon-remove(style="font-size: 25px;")
+        label(for="sendImageButton")
+          span.btn.btn-danger#uploadImageButton
+            span.glyphicon.glyphicon-camera(style="font-size: 25px;")
+        span.btn.btn-danger#submitNewsButton
+          span.glyphicon.glyphicon-send(style="font-size: 25px;")
+    #sendMap(style='padding-top:20px;')      
+block append script
+  script(src='https://code.jquery.com/jquery-1.10.2.min.js')
+  script(src='http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js')
+  script(src='/socket.io/socket.io.js')
+  script(src='/libs/moment.min.js')
+  script(src='/script/main.js')
+  script(src='/script/sendNews.js')
+  script(src='/script/navigationBar.js')
+  script(async defer src='https://maps.googleapis.com/maps/api/js?key=AIzaSyAP2f18eDpFZCz8zsfygQ4tj0V5Qk-xlbc&callback=initMap')

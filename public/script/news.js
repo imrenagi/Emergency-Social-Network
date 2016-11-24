@@ -17,7 +17,23 @@ function initMap() {
                   },
                   "message" : "Something bad is happening!",
                   "image_url" : "http://www.w3schools.com/css/img_fjords.jpg"
+              },
+              {
+                  "id" : 2,
+                  "reporter" : {
+                      "id" : 2,
+                      "user_name" : "Shicheng"
+                  },
+                  "timestamp" : 1476871883,
+                  "status" : 1,
+                  "location" : {
+                      "lat" : 20.0,
+                      "long" : 30.0
+                  },
+                  "message" : "Yoga is happening!",
+                  "image_url" : "http://www.w3schools.com/css/img_fjords.jpg"
               }
+
             ];
         
   var uluru = {lat: -25.363, lng: 131.044};
@@ -26,6 +42,8 @@ function initMap() {
           center: uluru
         });
   var news =updateNews(data[0], map);
+  $('#newsItems').prepend(news);
+   var news =updateNews(data[1], map);
   $('#newsItems').prepend(news);
  /* $.ajax({
       type: "GET",

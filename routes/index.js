@@ -37,6 +37,10 @@ router.get('/news', function(req, res) {
     render.requestAsCitizen(req, res, 'news', { title: 'News - Emergency Social Network'});
 });
 
+router.get('/sendNews', function(req, res) {
+    render.requestAsCitizen(req, res, 'sendNews', { title: 'News - Emergency Social Network'});
+});
+
 router.get('/userProfile', function(req, res) {
     render.requestAsAdmin(req, res, 'userProfile', { title: 'User Profile - Emergency Social Network'});
 });
