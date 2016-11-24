@@ -1,0 +1,49 @@
+extends base
+block append stylesheet
+  link(rel='stylesheet', href='/css/main.css')
+block append content
+  include navbar.jade
+  .container
+    .wrapper.center
+      .col-md-7
+        h3.text-center User Profile
+        br
+        div(class="form-group row")
+          label(for="example-text-input", class="col-sm-2 col-form-label") E-mail
+          div.col-sm-10
+            input(class="form-control", type="text", id="email")   
+
+        div(class="form-group row")
+          div(class="col-sm-15")
+            button(type="submit", class="btn btn-primary center-block", id="submit") Update       
+
+    .div(class="modal fade", id="successDialog", role="dialog")
+      .div.modal-dialog
+        .div.modal-content
+          .div.modal-body
+            .p User profile updated!
+          .div.modal-footer
+            .button(type="button", class="btn btn-default", data-dismiss="modal") OK 
+
+    .div(class="modal fade", id="failedDialog", role="dialog")
+      .div.modal-dialog
+        .div.modal-content
+          .div.modal-body
+            .p Update error! Try Again!
+          .div.modal-footer
+            .button(type="button", class="btn btn-default", data-dismiss="modal") OK             
+
+    .div(class="modal fade", id="invalidEmail", role="dialog")
+      .div.modal-dialog
+        .div.modal-content
+          .div.modal-body
+            .p Invalid email format. Please provide valid email format!
+          .div.modal-footer
+            .button(type="button", class="btn btn-default", data-dismiss="modal") OK             
+
+block append script
+  script(src='https://code.jquery.com/jquery-1.10.2.min.js')
+  script(src='http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js')
+  script(src='/socket.io/socket.io.js')
+  script(src='/script/editProfile.js')
+  script(src='/script/navigationBar.js')

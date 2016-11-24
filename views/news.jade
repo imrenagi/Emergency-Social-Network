@@ -1,6 +1,7 @@
 extends base
 block append stylesheet
   link(rel='stylesheet', href='/css/style.css')
+  link(rel='stylesheet', href='/css/chat.css')
   link(rel='stylesheet', href='/css/main.css')
   link(rel='stylesheet', href='/css/chat.css')
 block append content
@@ -12,28 +13,33 @@ block append content
         h4.modal-title#newsModalTitle  Welcome!
       h4.modal-body#newsModalBody
   .container
-    ul.nav.nav-pills.nav-justified
-      li.active#mapli
-        a(href='#maptab' data-toggle='pill')
-          | Map      
-      li#newsli
-        a(href='#newstab' data-toggle='pill')
-          | News
-    .tab-content
-      #maptab.tab-pane.active
-        #displayMap
-        #input(style='padding-top:5px;')
-          a(href='/sendNews')
-            span.input-group-addon.btn.btn-danger#sendNewsButton
-              span.glyphicon.glyphicon-alert(style="font-size: 25px;")
-      #newstab.tab-pane
-        .wrapper
-          #newsList.panel-fixed-height
-            #newsItems
-        #input(style='padding-top:5px;')
-          a(href='/sendNews')
-            span.input-group-addon.btn.btn-danger#sendNewsButton
-              span.glyphicon.glyphicon-alert(style="font-size: 25px;")
+    .wrapper
+      .row.align-center
+        .col-md-10.col-sm-10.col-xs-12
+          ul.nav.nav-tabs
+            li.active#mapli
+              a(href='#maptab' data-toggle='pill')
+                i.fa.fa-globe
+                |  Map      
+            li#newsli
+              a(href='#newstab' data-toggle='pill')
+                i.fa.fa-newspaper-o
+                |  News
+          br
+          .tab-content
+            #maptab.tab-pane.active
+              #displayMap
+              #input(style='padding-top:5px;')
+                a(href='/sendNews')
+                  span.input-group-addon.btn.btn-danger#sendNewsButton
+                    span.glyphicon.glyphicon-alert(style="font-size: 25px;")
+            #newstab.tab-pane
+              #newsList.panel-fixed-height
+                #newsItems
+              #input(style='padding-top:5px;')
+                a(href='/sendNews')
+                  span.input-group-addon.btn.btn-danger#sendNewsButton
+                    span.glyphicon.glyphicon-alert(style="font-size: 25px;")
 block append script
   script(src='https://code.jquery.com/jquery-1.10.2.min.js')
   script(src='http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js')

@@ -18,6 +18,9 @@ class userDAO {
 			throw Error("Must override!");	
 		}
 
+		if(this.updateUser === undefined) {
+			throw Error("Must override!");	
+		}
 	}
 }
 

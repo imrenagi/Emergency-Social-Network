@@ -5,34 +5,37 @@ block append stylesheet
 block append content
   include navbar.jade
   .container
-    h3
-      |Share News
-    form#imageForm
-      input(type="file" accept=".png, .jpg, .jpeg" capture="camera" style="display: none" onchange="changeColour()")#sendImageButton
-   .wrapper.row.news-area
-      .col-md-9.col-sm-12.col-xs-12.input-group#news-area
-        input.form-control()#news-textarea
-        .input-group-btn#news-btn-group
-          button.btn.btn-default.dropdown-toggle(data-toggle='dropdown', aria-haspopup='true',  aria-expanded='false')#option-btn
-              span.caret
-              span(id='news-option', option='1')  Ok
-            span.sr-only
-          ul.dropdown-menu.dropdown-menu-right#dropdown-list
-            li
-              a(href='#', id='1') Ok
-            li
-              a(href='#', id='2') Help
-            li
-              a(href='#', id='3') Emergency
-    #input(style='padding-top:5px;')
-        span.btn.btn-danger#cancelButton
-          span.glyphicon.glyphicon-remove(style="font-size: 25px;")
-        label(for="sendImageButton")
-          span.btn.btn-danger#uploadImageButton
-            span.glyphicon.glyphicon-camera(style="font-size: 25px;")
-        span.btn.btn-danger#submitNewsButton
-          span.glyphicon.glyphicon-send(style="font-size: 25px;")
-    #sendMap(style='padding-top:20px;')      
+    .wrapper
+      h3
+        |Share News
+      form#imageForm
+        input(type="file" accept=".png, .jpg, .jpeg" capture="camera" style="display: none" onchange="changeColour()")#sendImageButton
+     .wrapper.row.news-area
+      .col-md-9.col-sm-12.col-xs-12
+        .btn-group(role="group")#input
+          button.btn.btn-default(type="button")#cancelButton
+            i.glyphicon.glyphicon-remove
+          label(for="sendImageButton")
+          button.btn.btn-default(type="button")#uploadImageButton
+              span.glyphicon.glyphicon-camera
+          .btn-group(role="group")#news-btn-group
+            button.btn.btn-default.dropdown-toggle(data-toggle='dropdown', aria-haspopup='true',  aria-expanded='false')#option-btn
+                span.caret
+                span(id='news-option', option='1')  Ok
+              span.sr-only
+            ul.dropdown-menu.dropdown-menu-right#dropdown-list
+              li
+                a(href='#', id='1') Ok
+              li
+                a(href='#', id='2') Help
+              li
+                a(href='#', id='3') Emergency
+        .input-group#news-area
+          textarea.form-control.custom-control(rows="4", style='resize:none;' placeholder='Share something...')#news-textarea
+          span.input-group-addon.btn.btn-danger#submitNewsButton
+            span.glyphicon.glyphicon-send(style="font-size: 25px;")
+            
+        #sendMap(style='padding-top:20px;')      
 block append script
   script(src='https://code.jquery.com/jquery-1.10.2.min.js')
   script(src='http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js')

@@ -56,6 +56,7 @@ $('#submitNewsButton').on('click',function(){
 	var news_text = $('#news-textarea').val(); 
 	var image_url = document.getElementById('sendImageButton').files[0];
 	var image='';
+
 	if(loc==undefined||((news_text=='')&&image_url==undefined))
 	{
 		alert("News report is incomplete!");
@@ -127,3 +128,4 @@ function send_news(news_text, image)
 
 
 }
+
