@@ -1,6 +1,9 @@
 var markers=[];
 var loc;
 
+
+
+
 function initMap() {
 	var cmusv = {lat: 37.41043, lng: -122.059753};
   	var map = new google.maps.Map(document.getElementById('sendMap'), {
@@ -12,6 +15,7 @@ function initMap() {
    		deleteMarkers();
   		addMarker(event.latLng, map);
 	});  
+	$.cloudinary.config({ cloud_name: 'atadkase', api_key: '486118391826883'});
 }
 
 function deleteMarkers()
@@ -44,5 +48,29 @@ $('#dropdown-list a').click(function() {
 $('#cancelButton').on('click',function(){
 	$('#news-textarea').val('');
 	$('#news-textarea').focus();
-	$('#imageForm').reset();
+	document.getElementById('imageForm').reset();
+	deleteMarkers();
+});
+
+$('#submitNewsButton').on('click',function(){
+	var news_text = $('#news-textarea').val(); 
+	var image_url = document.getElementById('sendImageButton').files[0];
+	var url='';
+	if(loc==undefined||((news_text=='')&&image_url==undefined))
+	{
+		alert("News report is incomplete!");
+		$('#news-textarea').val('');
+		$('#news-textarea').focus();
+		document.getElementById('imageForm').reset();
+		//deleteMarkers();
+		return;
+	}
+	if(image_url!=undefined)
+	{
+
+	}
+	$('#news-textarea').val('');
+	$('#news-textarea').focus();
+ 	document.getElementById('imageForm').reset();
+	deleteMarkers();
 });
