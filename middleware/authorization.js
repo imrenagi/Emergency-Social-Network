@@ -11,7 +11,7 @@ exports.isAuthorizedRequest = function (req, res, next) {
 };
 
 exports.isAuthorizedAdminRequest = function (req, res, next) {
-	if (req.session.user && req.session.user.privilage == 3) {
+	if (req.session.user && req.session.user.privilage == 2) {
 		next();
   	}
   	else {
