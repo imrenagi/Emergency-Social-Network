@@ -8,6 +8,9 @@ var userDAOImpl = require('./userDAOImpl');
 var userDAO = new userDAOImpl();
 var dateHelper = require('../helpers/date');
 
+var UserDataObject = require('./userDataObjectImpl');
+var userDataObject = new UserDataObject(db);
+
 class directoryServiceImpl extends directoryService {
 
 	constructor() {
@@ -133,6 +136,14 @@ class directoryServiceImpl extends directoryService {
 		}).catch(function(err) {
 			return err;
 		});
+	}
+
+	updateEmail(id, email) {
+		return userDataObject.updateEmails(id, email);
+	}
+
+	getEmail(id) {
+		return userDataObject.getEmail(id);
 	}
 }
 

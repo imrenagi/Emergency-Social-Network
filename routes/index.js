@@ -41,6 +41,11 @@ router.get('/userProfile', function(req, res) {
     render.requestAsAdmin(req, res, 'userProfile', { title: 'User Profile - Emergency Social Network'});
 });
 
+router.get('/editProfile', function(req, res) {
+  res.render('editProfile', { title: 'Search - Emergency Social Network'});
+});
+
+
 router.use('/join', require('./join'));
 router.use('/directory', require('./directory'));
 router.use('/logout', require('./logout'));

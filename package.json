@@ -27,6 +27,7 @@
     "moment": "^2.13.0",
     "morgan": "~1.6.1",
     "mysql": "^2.11.1",
+    "nodemailer": "^2.6.4",
     "promise": "^7.1.1",
     "ramda": "^0.22.1",
     "request": "^2.75.0",

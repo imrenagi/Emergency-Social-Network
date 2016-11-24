@@ -63,11 +63,15 @@ class JoinServiceImpl extends JoinService {
 		})
 	}
 
-	confirm(userName, password) {
+	confirm(userName, password, email) {
 		return new Promise(function(resolve, reject) {
 			let encryptedPassword = encryptor.createHash(password);
 			let values = [userName, encryptedPassword];
-			db.get().query('INSERT INTO users (user_name, password) values (?, ?);', values, function(err, result) {
+			let q = "INSERT INTO users (user_name, password) values ('"+userName +"', '"+encryptedPassword+"');"
+			if (email !== undefined && email !== '') {
+				q = "INSERT INTO users (user_name, password, email) values ('"+userName +"', '"+encryptedPassword+"', '"+email+"');"
+			}
+			db.get().query(q, function(err, result) {
 				if (err) {
 					reject(err);
 				} else {

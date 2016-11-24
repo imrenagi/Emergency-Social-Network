@@ -1,10 +1,12 @@
 var JoinServiceImpl = require('../services/joinServiceImpl');
 var joinService = new JoinServiceImpl();
+var emailValidator = new require('../utils/emailValidator');
 
 const JOIN_ERROR = {
         INCORRECT_PASSWORD: 'JoinError.IncorrectPassword',
         USER_NAME_UNDER_QUALITY: 'JoinError.UserNameIsUnderMinimumQuality',
 		PASS_UNDER_QUALITY: 'JoinError.PasswordIsUnderMinimumQuality',
+		EMAIL_INVALID: 'JoinError.InvalidEmail',
 		UNKNOWN_ERROR: 'JoinError.UnknownError'
     }
 
@@ -64,7 +66,15 @@ exports.joinCommunity = function(req, res, next) {
 exports.confirm = function(req, res, next) {
 	var userName = req.body.user_name;
 	var password = req.body.password;
-	joinService.confirm(userName, password)
+	var email = req.body.email || '';
+	
+	if(email.length > 0 && !emailValidator.isValid(email)) {
+		var err = new Error();
+	  	err.status = 400;
+	  	err.message = JOIN_ERROR.EMAIL_INVALID;
+	  	next(err);
+	} else if (email.length == 0 || emailValidator.isValid(email)) {
+		joinService.confirm(userName, password, email)
 		.then(function(result) {
 			req.session.user = {
 		    	id: result.id,
@@ -75,4 +85,6 @@ exports.confirm = function(req, res, next) {
 		}).catch(function(err) {
 			res.send(err);
 		})
+	}
+
 }

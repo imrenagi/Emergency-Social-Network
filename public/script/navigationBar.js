@@ -98,3 +98,8 @@ $('#navbar-right').on('click', '#logout', function(event) {
         }
     });
 });
+
+$('#navbar-right').on('click', '#edit-profile', function(event){
+    window.location = '/editProfile'
+});
+
