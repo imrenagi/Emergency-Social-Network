@@ -2,8 +2,15 @@ extends base
 block append stylesheet
   link(rel='stylesheet', href='/css/style.css')
   link(rel='stylesheet', href='/css/main.css')
+  link(rel='stylesheet', href='/css/chat.css')
 block append content
   include navbar.jade
+  #newsModal.modal.fade
+    .modal-dialog
+      .modal-header#newsmodalHeader
+        button.close(type='button', data-dismiss='modal', aria-hidden='true') x
+        h3.modal-title#newsModalTitle  Welcome!
+      .modal-body#newsModalBody
   .container
     ul.nav.nav-pills.nav-justified
       li.active#mapli
@@ -20,8 +27,9 @@ block append content
             span.input-group-addon.btn.btn-danger#sendNewsButton
               span.glyphicon.glyphicon-alert(style="font-size: 25px;")
       #newstab.tab-pane
-        #newsList.panel-fixed-height
-          #newsItems
+        .wrapper
+          #newsList.panel-fixed-height
+            #newsItems
         #input(style='padding-top:5px;')
           a(href='/sendNews')
             span.input-group-addon.btn.btn-danger#sendNewsButton

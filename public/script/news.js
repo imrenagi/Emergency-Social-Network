@@ -92,10 +92,11 @@ function updateNews(data, map)
             icon = 'fa-plus-square';
         }
     }
-  var newsItem = '<div class="newsItems pin-' + color + '" id='+newsId+'><div class="info pin-heading-' + color + '"> <span class="fa fa-clock-o"></span> '+ time + '  &nbsp &nbsp <span class="fa fa-map-marker"></span> ('+ lat + ', ' + long + ') &nbsp &nbsp <a href="/privateChat/' + data.reporter.id + '">' + (data.reporter.id == localStorage['ID'] ? '' : '<i class="fa fa-comment-o"></i>') + '</a> </div><div class="pin-heading pin-heading-' + color + '"> <i class="fa ' + icon + '"></i> ' + senderName + ' </div><p>' + (text==''?'':text) + '</p>'+(img==''?'':'<p><a href='+img+'><img class="textImage" src='+img+'></a></p>')+'</div>';
+  var newsItem = '<div class="newsItems pin-' + color + '" id='+newsId+'><div class="info pin-heading-' + color + '"> <span class="fa fa-clock-o"></span> '+ time + '  &nbsp &nbsp <span class="fa fa-map-marker"></span> ('+ lat + ', ' + long + ') &nbsp &nbsp <a href="/privateChat/' + data.reporter.id + '">' + (data.reporter.id == localStorage['ID'] ? '' : '<i class="fa fa-comment-o"></i>') + '</a> </div><div class="pin-heading pin-heading-' + color + '"> <i class="fa ' + icon + '"></i> ' + senderName + ' </div><p>' + (text==''?'':text) + '</p>'+(img==''?'':'<p><a href='+img+'><img class="textImage" style= "max-height: 100px; max-width: 100px;" src='+img+'></a></p>')+'</div>';
   insertIntoMap(newsItem, lat, long, map);
+  var sentNewsItem = '<div class="newsItems btn pin-' + color + '" id='+newsId+' repid="'+data.reporter.id+'" reporter="'+senderName+'"lat = "'+lat+'" long="'+long+'" colour="'+color+'" status="'+status+'" icon="'+icon+'" time="'+time+'" onClick="createModal('+newsId+')"><div class="info pin-heading-' + color + '"> <span class="fa fa-clock-o"></span> '+ time + '  &nbsp &nbsp <span class="fa fa-map-marker"></span> ('+ lat + ', ' + long + ') &nbsp &nbsp <a href="/privateChat/' + data.reporter.id + '">' + (data.reporter.id == localStorage['ID'] ? '' : '<i class="fa fa-comment-o"></i>') + '</a> </div><div id ="newsHead" class="pin-heading pin-heading-' + color + '"> Report No:'+newsId+' &nbsp Status:<i class="fa ' + icon + '"></i> &nbspReporter:' + senderName + ' </div><div id="panelText" text="'+ text + '"></div> <div id="panelImg" imgURL="'+img+'"></div></div>';
   lastNewsId = newsId;
-  return newsItem;
+  return sentNewsItem;
 }
 
 function insertIntoMap(newsItem, latitude, longitude, map)
@@ -112,4 +113,23 @@ function insertIntoMap(newsItem, latitude, longitude, map)
     infowindow.open(map, marker);
   });
   map.panTo(location);
+}
+
+function createModal(newsId)
+{
+  var sentNewsItem = document.getElementById(newsId);
+  var reporterId= sentNewsItem.getAttribute('repid');
+  var reporter = sentNewsItem.getAttribute('reporter');
+  var lat = sentNewsItem.getAttribute('lat');
+  var long = sentNewsItem.getAttribute('long');
+  var color = sentNewsItem.getAttribute('color');
+  var status = sentNewsItem.getAttribute('status');
+  var icon = sentNewsItem.getAttribute('icon');
+  var time = sentNewsItem.getAttribute('time');
+  var text = document.getElementById(newsId).children[2].getAttribute('text');
+  var imgUrl = document.getElementById(newsId).children[3].getAttribute('imgURL');
+  document.getElementById('newsModalTitle').innerHTML=reporter;
+  document.getElementById('newsModalBody').innerHTML=('<p>'+text+'</p><img style= "max-height: 400px; max-width: 400px;" src='+imgUrl+'>');
+  $('#newsModal').modal('show');
+  console.log(text);
 }
