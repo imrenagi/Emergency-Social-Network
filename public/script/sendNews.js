@@ -15,6 +15,8 @@ function initMap() {
    		deleteMarkers();
   		addMarker(event.latLng, map);
 	});  
+
+	$('#news-textarea').focus();
 }
 
 function deleteMarkers()
@@ -49,10 +51,6 @@ $('#cancelButton').on('click',function(){
 });
 
 $('#submitNewsButton').on('click',function(){
-	var confirmation = confirm("Sending this news will send email notifications to everyone in the area. Please use this facility with consideration. Do you still want to continue?");
-	if (confirmation == false) {
-	    location = 'news';
-	} 
 	var news_text = $('#news-textarea').val(); 
 	var image_url = document.getElementById('sendImageButton').files[0];
 	var image='';
@@ -65,6 +63,11 @@ $('#submitNewsButton').on('click',function(){
 		document.getElementById('imageForm').reset();
 		//deleteMarkers();
 		return;
+	}
+	var confirmation = confirm("Sending this news will send email notifications to everyone in the area. Please use this facility with consideration. Do you still want to continue?");
+	if (confirmation == false) {
+	    location = 'news';
+	    return;
 	}
 	if(image_url!=undefined)
 	{
@@ -98,6 +101,7 @@ function reset_page()
 	$('#news-textarea').val('');
 	$('#news-textarea').focus();
  	document.getElementById('imageForm').reset();
+ 	changeColor();
 	deleteMarkers();
 }
 
@@ -129,3 +133,17 @@ function send_news(news_text, image)
 
 }
 
+function changeColor()
+{
+	var imageFile = document.getElementById('sendImageButton').files[0];
+    if(imageFile!=undefined && imageFile!='')
+    {
+        $("#uploadImageButton").removeClass("active").addClass( "active" );
+        $("#uploadImageButton").attr("aria-pressed","true");
+	} 
+	else
+	{
+		$("#uploadImageButton").removeClass("active");
+        $("#uploadImageButton").attr("aria-pressed","false");	
+	}
+}
