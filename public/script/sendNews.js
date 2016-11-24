@@ -49,6 +49,10 @@ $('#cancelButton').on('click',function(){
 });
 
 $('#submitNewsButton').on('click',function(){
+	var confirmation = confirm("Sending this news will send email notifications to everyone in the area. Please use this facility with consideration. Do you still want to continue?");
+	if (confirmation == false) {
+	    location = 'news';
+	} 
 	var news_text = $('#news-textarea').val(); 
 	var image_url = document.getElementById('sendImageButton').files[0];
 	var image='';
