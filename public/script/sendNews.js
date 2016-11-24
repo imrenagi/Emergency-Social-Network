@@ -40,3 +40,9 @@ $('#dropdown-list a').click(function() {
     option.text(' ' + $(this).text());
     option.attr('option', this.id);
 });
+
+$('#cancelButton').on('click',function(){
+	$('#news-textarea').val('');
+	$('#news-textarea').focus();
+	$('#imageForm').reset();
+});
