@@ -3,8 +3,15 @@ block append stylesheet
   link(rel='stylesheet', href='/css/style.css')
   link(rel='stylesheet', href='/css/chat.css')
   link(rel='stylesheet', href='/css/main.css')
+  link(rel='stylesheet', href='/css/chat.css')
 block append content
   include navbar.jade
+  #newsModal.modal.fade
+    .modal-dialog
+      .modal-header#newsmodalHeader
+        button.close(type='button', data-dismiss='modal', aria-hidden='true') x
+        h4.modal-title#newsModalTitle  Welcome!
+      h4.modal-body#newsModalBody
   .container
     .wrapper
       .row.align-center

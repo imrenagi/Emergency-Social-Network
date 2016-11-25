@@ -75,3 +75,9 @@ p {
   -webkit-hyphens: auto;
   hyphens: auto;
 }
+
+
+.modal-backdrop
+{
+    opacity:0.9 !important;
+}
