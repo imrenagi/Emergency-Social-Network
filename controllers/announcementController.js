@@ -1,6 +1,8 @@
 var AnnouncementServiceImpl = require('../services/announcementServiceImpl');
 var AnnouncementDAOImpl = require('../services/announcementDAOImpl');
 
+var db = require('../services/db');
+
 // var NotificationServiceImpl = require('../services/notificationServiceImpl');
 // var UserDataObject = require('../services/userDataObjectImpl');
 // var db = require('../services/db');
@@ -11,7 +13,7 @@ var AnnouncementDAOImpl = require('../services/announcementDAOImpl');
 // var mailSender = new GmailSmtpSenderImpl(transporter);
 // var notificationService = new NotificationServiceImpl(userDataObject, mailSender);
 
-var announcementDAO = new AnnouncementDAOImpl();
+var announcementDAO = new AnnouncementDAOImpl(db);
 var announcementService = new AnnouncementServiceImpl(announcementDAO);
 
 exports.retrieveAnnouncements = function(req, res, next) {
