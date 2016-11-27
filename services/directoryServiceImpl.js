@@ -5,7 +5,7 @@ var User = require('../models/user');
 var Meta = require('../models/meta');
 var directoryService = require('./interfaces/directoryService');
 var userDAOImpl = require('./userDAOImpl');
-var userDAO = new userDAOImpl();
+var userDAO = new userDAOImpl(db);
 var dateHelper = require('../helpers/date');
 
 var UserDataObject = require('./userDataObjectImpl');

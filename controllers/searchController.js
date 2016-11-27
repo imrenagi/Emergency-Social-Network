@@ -6,7 +6,7 @@ var SearchServiceImpl = require('../services/searchServiceImpl');
 var db = require('../services/db');
 
 var announcementDAO = new AnnouncementDAOImpl(db);
-var userDAO = new userDAOImpl();
+var userDAO = new userDAOImpl(db);
 var publicMessageDAO = new PublicMessageDAOImpl();
 var privateMessageDAO = new PrivateMessageDAOImpl();
 var searchService = new SearchServiceImpl(userDAO, announcementDAO, publicMessageDAO, privateMessageDAO);
