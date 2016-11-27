@@ -144,7 +144,6 @@ class userDAOImpl extends userDAO {
 				}
 				else {
 					var output = {code: 200};
-					console.log(result);
 					resolve(output);
 				}
 			});
