@@ -57,6 +57,8 @@ exports.updateUser = function(req, res, next) {
 	var password = req.body.password;
 	var encryptedPassword = encryptor.createHash(password);
 
+
+
 	if (!isValidRequest(userName, isActive, privilage, password)) {
 		var err = new Error();
 	  	err.status = 400;
