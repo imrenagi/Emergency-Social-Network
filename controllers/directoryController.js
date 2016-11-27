@@ -44,7 +44,7 @@ exports.updateStatus = function(req, res, next) {
 		directoryService.updateUserStatus(userId, status, lat, long).then(function(result) {
 				res.send(result);
 			}).catch(function(err) {
-				console.log(err)
+				next(err);
 			})
 	}
 }

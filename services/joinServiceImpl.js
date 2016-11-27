@@ -4,8 +4,9 @@ var db = require('../services/db');
 var User = require('../models/user');
 var encryptor = require('../helpers/passwordEncryptor');
 var JoinService = require('./interfaces/joinService');
+
 var userDAOImpl = require('./userDAOImpl');
-var userDAO = new userDAOImpl();
+var userDAO = new userDAOImpl(db);
 
 const RESERVED_USERNAMES = require('../utils/reservedUsernames');
 
