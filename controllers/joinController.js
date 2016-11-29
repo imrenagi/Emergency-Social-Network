@@ -1,7 +1,11 @@
 var JoinServiceImpl = require('../services/joinServiceImpl');
-var joinService = new JoinServiceImpl();
 var emailValidator = new require('../utils/emailValidator');
 var userValidator = new require('../utils/userValidator');
+var userDAOImpl = require('../services/userDAOImpl');
+var db = require('../services/db');
+
+var userDAO = new userDAOImpl(db);
+var joinService = new JoinServiceImpl(userDAO);
 
 const JOIN_ERROR = {
         INCORRECT_PASSWORD: 'JoinError.IncorrectPassword',
@@ -32,7 +36,11 @@ exports.joinCommunity = function(req, res, next) {
 	  	next(err);
 	}
 	else {
-		joinService.join(userName, password).then(function(result){
+		joinService.join(userName, password)
+		.then(res => {
+			return joinService.validateUser(res);	
+		})
+		.then(function(result){
 			switch(result.code) {
 		    	case 200:
 		    		req.session.user = {
