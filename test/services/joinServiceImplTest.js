@@ -112,6 +112,58 @@ suite('Join Service Implementation Test', function() {
 	// 	})
 	// })
 
-	
+	test('Validate user should return 204', function(done) {
+		var user = [];
+		joinService.validateUser(user, "asep").then(res => {
+			expect(res.code).to.be.eql(204);
+			done();
+		}).catch(err => {
+			done(err);
+		})
+	});
+
+	test('Validate user should return 200 and correct body', function(done) {
+		var user = [{
+			id: 1,
+			user_name: "imre",
+			online: 0,
+			status: 1,
+			privilage: 1,
+			password : "$2a$10$f6CHFr7hwxg9mtmFJaD9CeQ5xQkq31Oiss/uPOhJIGv8f1kUxzqgq"
+		}]
+
+		joinService.validateUser(user, "asep").then(res => {
+			expect(res.code).to.be.eql(200);
+			expect(res.body.id).to.be.eql(1);
+			expect(res.body.user_name).to.be.eql("imre");
+			expect(res.body.online).to.be.eql(0);
+			expect(res.body.status).to.be.eql(1);
+			expect(res.body.privilage).to.be.eql(1);
+			expect(res.body.password).to.be.eql(undefined);
+			done();
+		}).catch(err => {
+			done(err);
+		})
+	});
+
+	test('Validate user should return 400 and because password is incorrect', function(done) {
+		var user = [{
+			id: 1,
+			user_name: "imre",
+			online: 0,
+			status: 1,
+			privilage: 1,
+			password : "$2a$10$f6CHFr7hwxg9mtmFJaD9CeQ5xQkq31Oiss/uPOhJIGv8f1kUxzqgq"
+		}]
+
+		joinService.validateUser(user, "asep1").then(res => {
+			expect(res.code).to.be.eql(400);
+			done();
+		}).catch(err => {
+			done(err);
+		})
+	});
+
+
 
 });
