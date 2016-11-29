@@ -94,6 +94,7 @@ $('#navbar-right').on('click', '#logout', function(event) {
             localStorage.removeItem('STATUS');
             localStorage.removeItem('USER_NAME');
             localStorage.removeItem('ID');
+            localStorage.removeItem('PRIVILAGE');
             window.location = '/'
         }
     });
