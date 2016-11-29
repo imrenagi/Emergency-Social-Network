@@ -1,4 +1,4 @@
-var NewServiceImpl = require('../services/newServiceImpl');
+var NewServiceImpl = require('../services/newsServiceImpl');
 var NewsDAOImpl = require('../services/newsDAOImpl');
 var db = require('../services/db');
 
@@ -15,7 +15,7 @@ exports.getAllNews = function(req, res, next) {
 
 exports.createNews = function(req, res, next) {
 
-	
+
 	newService.createNews().then(function(result) {
 		res.send(JSON.stringify(result));
 	}).catch(function(err) {

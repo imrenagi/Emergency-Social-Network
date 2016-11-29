@@ -10,7 +10,7 @@ router.use(function(req, res, next){
   next();
 })
 
-router.get('/news', newsController.getAllNews);
-router.post('/news', newsController.createNews);
+router.get('/', newsController.getAllNews);
+router.post('/', newsController.createNews);
 
 module.exports = router;
