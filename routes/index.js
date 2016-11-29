@@ -57,7 +57,7 @@ router.use('/message', require('./message'));
 router.use('/announcement', require('./announcement'));
 router.use('/search', require('./search'));
 router.use('/administer', require('./admin'));
-// router.use('/news', require('./news'));
+router.use('/news', require('./news'));
 
 
 if (app.get('env') === 'test' || app.get('env') === 'circle') {
