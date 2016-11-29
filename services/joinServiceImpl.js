@@ -4,6 +4,7 @@ var db = require('../services/db');
 var User = require('../models/user');
 var encryptor = require('../helpers/passwordEncryptor');
 var JoinService = require('./interfaces/joinService');
+var userValidator = require('../utils/userValidator');
 
 var userDAOImpl = require('./userDAOImpl');
 var userDAO = new userDAOImpl(db);
@@ -13,25 +14,6 @@ const RESERVED_USERNAMES = require('../utils/reservedUsernames');
 class JoinServiceImpl extends JoinService {
 	constructor() {
 		super();
-	}
-
-	isUserNameValid(userName) {
-		if(userName.length < 3) {
-			return false;
-		}
-		for (var i in RESERVED_USERNAMES) {
-  			if(userName.toLowerCase() == RESERVED_USERNAMES[i]) {
-				return false;
-			}
-		}
-		return true;
-	}
-
-	isPasswordValid(password) {
-		if(password.length < 4) {
-			return false;
-		}
-		return true;
 	}
 
 	join(userName, password) {
