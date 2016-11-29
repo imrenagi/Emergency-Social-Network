@@ -1,40 +1,13 @@
 var directoryServiceImpl = require('../services/directoryServiceImpl');
 var directoryService = new directoryServiceImpl();
+var userValidator = require('../utils/userValidator');
 
 var encryptor = require('../helpers/passwordEncryptor');
 const RESERVED_USERNAMES = require('../utils/reservedUsernames');
 
-var isValidRequest = function(userName, isActive, privilage, password) {
-	if (userName === null || userName === undefined) {
-		return false;
-	}
-
-	if (userName.length < 3) {
-		return false;
-	}
-	for (var i in RESERVED_USERNAMES) {
-  		if(userName.toLowerCase() === RESERVED_USERNAMES[i]) {
-			return false;
-		}
-	}
-
-	if (isActive != '0' && isActive != '1') {
-		return false;
-	}
-
-	if (privilage != '0' && privilage != '1') {
-		return false;
-	}
-
-	if (password === null || password === undefined) {
-		return false;
-	}
-
-	if (password.length < 4) {
-		return false;
-	}
-	
-	return true;
+const ADMIN_ERROR = {
+        INVALID_FIELD: 'UpdateError.InvalidUserInfor',
+		PASS_UNDER_QUALITY: 'UpdateError.PasswordIsUnderMinimumQuality'
 }
 
 exports.getUsers = function(req, res, next) {
@@ -54,25 +27,38 @@ exports.updateUser = function(req, res, next) {
 	var userName = req.body.user_name;
 	var isActive = req.body.is_active;
 	var privilage = req.body.privilage;
-	var password = req.body.password;
-	var encryptedPassword = encryptor.createHash(password);
-
-
-
-	if (!isValidRequest(userName, isActive, privilage, password)) {
+	var password = req.body.password || '';
+	
+	if (!userValidator.isUserNameValid(userName) ||
+		!userValidator.isValidPrivilage(privilage) ||
+		!userValidator.isValidActiveStatus(isActive)) {
 		var err = new Error();
 	  	err.status = 400;
-	  	err.message = "Bad request body"
-	  	console.log(err);
+	  	err.message = ADMIN_ERROR.INVALID_FIELD
 	  	next(err);
 	}
 
-	var values = [userName, isActive, privilage, encryptedPassword];
-	
-
-	directoryService.updateUser(id, values).then(function(ressult) {
-		res.send(ressult);
-	}).catch(function(err) {
-		res.send(err);
-	});
+	if (password === '') {
+		var values = [userName, isActive, privilage];
+		directoryService.updateUserWithoutPassword(id, values).then(function(ressult) {
+			res.send(ressult);
+		}).catch(function(err) {
+			res.send(err);
+		});
+	} else {
+		if(userValidator.isPasswordValid(password)) {
+			var encryptedPassword = encryptor.createHash(password);
+			var values = [userName, isActive, privilage, encryptedPassword];
+			directoryService.updateUser(id, values).then(function(ressult) {
+				res.send(ressult);
+			}).catch(function(err) {
+				res.send(err);
+			});
+		} else {
+			var err = new Error();
+		  	err.status = 400;
+		  	err.message = ADMIN_ERROR.PASS_UNDER_QUALITY
+		  	next(err);
+		}
+	}	
 }
