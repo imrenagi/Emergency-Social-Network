@@ -1,27 +1,12 @@
 "use strict";
 
 class userDAO {
-	constructor() {
-		if(this.updateOnline === undefined) {
-			throw Error("Must override!");
-		}
-
-		if(this.updateStatus === undefined) {
-			throw Error("Must override!");
-		}
-
-		if(this.searchByUserName === undefined) {
-			throw Error("Must override!");	
-		}
-
-		if(this.searchByStatus === undefined) {
-			throw Error("Must override!");	
-		}
-
-		if(this.updateUser === undefined) {
-			throw Error("Must override!");	
-		}
-	}
+	constructor() {}
+	updateOnline() {}
+	updateStatus() {}
+	searchByUserName() {}
+	searchByStatus() {}
+	updateUser() {}
 }
 
 module.exports = userDAO;

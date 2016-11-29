@@ -38,9 +38,6 @@ exports.updateStatus = function(req, res, next) {
 	  	err.message = "Invalid request!";
 	  	next(err);
 	} else {
-		// var user = directoryService.updateUserStatus(userId);
-		// res.send(user);
-
 		directoryService.updateUserStatus(userId, status, lat, long).then(function(result) {
 				res.send(result);
 			}).catch(function(err) {
@@ -67,7 +64,6 @@ exports.updateEmail = function(req, res, next) {
 		directoryService.updateEmail(userId, email).then(result => {
 			res.send({});
 		}).catch(err => {
-			console.log(err);
 			var err = new Error();
 		  	err.status = 500;
 		  	err.message = "Oops! Something wrong!";
