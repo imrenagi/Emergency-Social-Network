@@ -1,6 +1,5 @@
 "use strict";
 
-var db = require('../services/db');
 var User = require('../models/user');
 var encryptor = require('../helpers/passwordEncryptor');
 var JoinService = require('./interfaces/joinService');
@@ -9,14 +8,16 @@ var userValidator = require('../utils/userValidator');
 const RESERVED_USERNAMES = require('../utils/reservedUsernames');
 
 class JoinServiceImpl extends JoinService {
-	constructor(userDAO) {
+	constructor(userDAO, db) {
 		super();
 		this.userDAO = userDAO;
+		this.db = db;
 	}
 
 	join(userName, password) {
+		var that = this;
 		return new Promise(function(resolve, reject) {
-			db.get().query('SELECT * from users where user_name=?', userName, function(err, result) {
+			that.db.get().query('SELECT * from users where user_name=?', userName, function(err, result) {
 				if (err) reject(err);
 				else resolve(result);
 			})
@@ -62,7 +63,7 @@ class JoinServiceImpl extends JoinService {
 			if (email !== undefined && email !== '') {
 				q = "INSERT INTO users (user_name, password, email) values ('"+userName +"', '"+encryptedPassword+"', '"+email+"');"
 			}
-			db.get().query(q, function(err, result) {
+			that.db.get().query(q, function(err, result) {
 				if (err) {
 					reject(err);
 				} else {

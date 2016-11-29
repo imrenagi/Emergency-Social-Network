@@ -5,7 +5,7 @@ var userDAOImpl = require('../services/userDAOImpl');
 var db = require('../services/db');
 
 var userDAO = new userDAOImpl(db);
-var joinService = new JoinServiceImpl(userDAO);
+var joinService = new JoinServiceImpl(userDAO, db);
 
 const JOIN_ERROR = {
         INCORRECT_PASSWORD: 'JoinError.IncorrectPassword',
