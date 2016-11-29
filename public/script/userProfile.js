@@ -69,11 +69,26 @@ $('#userProfile').on('click', '.role-option', function() {
 $('#userProfile').on('click', '.saveProfile', function() {
     var id = this.getAttribute('userId');
     var username = $('#username-'+id).val();
+    var password = $('#password-'+id).val();
     var is_active = $('#account-option-'+id).attr('option');
     var account = ( is_active == '1' ? 'Active' : 'Inactive');
     var privilage = $('#role-option-'+id).attr('option');
-    var password = '***********';
-    var role = (privilage == '2' ? 'Administer' : (privilage == '1' ? 'Coordinator' : 'Citizen'));
-    var html = '<th class="text-center">' + id +'</th>  <td class="text-center">' + username + '</td><td class="text-center"> ' + account + '</td> <td class="text-center"> ' + role + '</td> <td class="text-center">' + password + '</td> <td class="text-center"> <a href="#" class="editProfile" privilage="' + privilage + '" account="' + is_active + '" username="' + username + '" userId="' + id + '"><i class="fa fa-wrench"></i></a></td>';
-    $('.user-'+id).html(html);
+    $.ajax({
+        type: 'PUT',
+        data: {
+            user_name: username,
+            is_active: is_active,
+            privilage: privilage,
+            password: password
+        },
+        url: '/administer/user/' + id,
+        dataType: "json",
+        success: function(data) {
+            console.log(data);
+            password = '***********';
+            var role = (privilage == '2' ? 'Administer' : (privilage == '1' ? 'Coordinator' : 'Citizen'));
+            var html = '<th class="text-center">' + id +'</th>  <td class="text-center">' + username + '</td><td class="text-center"> ' + account + '</td> <td class="text-center"> ' + role + '</td> <td class="text-center">' + password + '</td> <td class="text-center"> <a href="#" class="editProfile" privilage="' + privilage + '" account="' + is_active + '" username="' + username + '" userId="' + id + '"><i class="fa fa-wrench"></i></a></td>';
+            $('.user-'+id).html(html);
+        }
+    });
 });
