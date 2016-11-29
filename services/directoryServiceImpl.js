@@ -138,6 +138,14 @@ class directoryServiceImpl extends directoryService {
 		});
 	}
 
+	updateUserWithoutPassword(id, values) {
+		return userDAO.updateUserWithoutPassword(id, values).then(function(result) {
+			return result;
+		}).catch(function(err) {
+			return err;
+		});
+	}
+
 	updateEmail(id, email) {
 		return userDataObject.updateEmails(id, email);
 	}
