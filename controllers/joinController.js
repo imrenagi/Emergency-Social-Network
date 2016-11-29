@@ -38,7 +38,14 @@ exports.joinCommunity = function(req, res, next) {
 	else {
 		joinService.join(userName, password)
 		.then(res => {
-			return joinService.validateUser(res);	
+			return joinService.validateUser(res, password);	
+		})
+		.then(res => {
+			if (res.code == 200) {
+				return joinService.updateUserOnlineStatus(res.body);
+			} else {
+				return res;
+			}
 		})
 		.then(function(result){
 			switch(result.code) {

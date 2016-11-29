@@ -23,26 +23,33 @@ class JoinServiceImpl extends JoinService {
 		});
 	}
 
-	validateUser(result) {
+	validateUser(result, password) {
 		var that = this;
 		return new Promise(function(resolve, reject) {
 			var results = JSON.parse(JSON.stringify(result));
 			if (results.length > 0) {
-				if (encryptor.compare(password, results[0].password)) {
+				if (encryptor.compare(password, results[0].password)) { //password valid
 					var user = new User(results[0].id, results[0].user_name, 
 						results[0].online, results[0].status, results[0].privilage)
-					that.userDAO.updateOnline(user, 1).then(function(res) {
-						user.online = 1;
-						resolve({code : 200, body: user});
-					}).catch(function(err) {
-						resolve({code : 200, body: user});
-					})
-				} else {
+					resolve({code : 200, body: user})
+				} else { //password invalid
 					resolve({code : 400, body: {}});
 				}	
 			} else {
 				resolve({code : 204, body: {}});
 			}
+		})
+	}
+
+	updateUserOnlineStatus(user) {
+		var that = this;
+		return new Promise(function(resolve, reject) {
+			that.userDAO.updateOnline(user, 1).then(function(res) {
+				user.online = 1;
+				resolve({code : 200, body: user});
+			}).catch(function(err) {
+				resolve({code : 200, body: user});
+			})
 		})
 	}
 
