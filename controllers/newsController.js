@@ -13,6 +13,16 @@ exports.getAllNews = function(req, res, next) {
 	});
 }
 
+exports.getNewsById = function(req, res, next) {
+	var id = req.param('id');
+
+	newService.getNewsById(id).then(function(result) {
+		res.send(JSON.stringify(result));
+	}).catch(function(err) {
+		res.send(err);
+	});
+}
+
 exports.createNews = function(req, res, next) {
 
 

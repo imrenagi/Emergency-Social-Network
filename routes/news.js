@@ -12,5 +12,6 @@ router.use(function(req, res, next){
 
 router.get('/', newsController.getAllNews);
 router.post('/', newsController.createNews);
+router.get('/:id', newsController.getNewsById);
 
 module.exports = router;

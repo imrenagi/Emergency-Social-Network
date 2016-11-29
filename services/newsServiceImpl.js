@@ -28,13 +28,23 @@ class NewsServiceImpl extends NewsService {
 		}
 		return news;
 	}
+	
+	getNewsById(id) {
+		var that = this;
+		return this.newsDAO.getById(id).then(function(results) {
+			var json = R.map(result => that.formatNews(result), results);
+			var output = { news: json };
+			return output;
+		}).catch(function(err) {
+			return err;
+		});
+
+	}
 
 	getAllNews() {
 		var that = this;
 		return this.newsDAO.getAll().then(function(results) {
-			//console.log(results);
 			var json = R.map(result => that.formatNews(result), results);
-			console.log(json);
 			var output = { news: json };
 			return output;
 		}).catch(function(err) {

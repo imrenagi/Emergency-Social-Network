@@ -6,6 +6,7 @@ class NewsDAO {
 	}
 	getAll() {}
 	save(news) {}
+	getById(id) {}
 }
 
 module.exports = NewsDAO;

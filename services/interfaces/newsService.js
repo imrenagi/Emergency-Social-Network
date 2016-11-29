@@ -6,6 +6,7 @@ class NewsService {
 	}
 	getAllNew() {}
 	createNews() {}
+	getNewsById(id) {}
 }
 
 module.exports = NewsService;
