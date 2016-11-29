@@ -164,6 +164,82 @@ suite('Join Service Implementation Test', function() {
 		})
 	});
 
+	test('Confirm join  without email should return correct user info', function(done) {
+		var queryCallBack = {
+		  query: function(q, cb) {	
+		  	cb(null, {insertId: 1});
+		  }
+		}
+		dbMock.expects('get').once().returns(queryCallBack);
 
+		var user = {
+			online : 0
+		}
+		
+		userDAOMock.expects('updateOnline').returns(Promise.resolve({
+			id: 1,
+			online : 1
+		}));
 
+		joinService.confirm("imre", "imre", "").then(res => {
+			expect(res.id).to.be.eql(1);
+			dbMock.verify();
+			userDAOMock.restore();
+			dbMock.restore();
+			done();
+		}).catch(err => {
+			userDAOMock.restore();
+			dbMock.restore();
+			done(err);
+		})
+	})
+
+	test('Confirm join  with email should return correct user info', function(done) {
+		var queryCallBack = {
+		  query: function(q, cb) {	
+		  	cb(null, {insertId: 1});
+		  }
+		}
+		dbMock.expects('get').once().returns(queryCallBack);
+
+		var user = {
+			online : 0
+		}
+		
+		userDAOMock.expects('updateOnline').returns(Promise.resolve({
+			id: 1,
+			online : 1
+		}));
+
+		joinService.confirm("imre", "imre", "imre@imre.com").then(res => {
+			expect(res.id).to.be.eql(1);
+			dbMock.verify();
+			userDAOMock.restore();
+			dbMock.restore();
+			done();
+		}).catch(err => {
+			userDAOMock.restore();
+			dbMock.restore();
+			done(err);
+		})
+	})
+
+	test('Confirm join should return error', function(done) {
+		var queryCallBack = {
+		  query: function(q, cb) {	
+		  	cb({status: "failed"}, null);
+		  }
+		}
+		dbMock.expects('get').once().returns(queryCallBack);
+
+		joinService.confirm("imre", "imre", "imre@imre.com").then(res => {
+			dbMock.verify();
+			dbMock.restore();
+			done();
+		}).catch(err => {
+			expect(err.status).to.be.eql("failed");
+			dbMock.restore();
+			done();
+		})
+	})
 });
