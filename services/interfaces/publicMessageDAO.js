@@ -1,12 +1,10 @@
 "use strict";
 
 class PublicMessageDAO {
-	constructor() {
-		if(this.searchByQuery === undefined) {
-			throw Error("Must override!");
-		}
-		
+	constructor() {		
 	}
+
+	searchByQuery() {}
 }
 
 module.exports = PublicMessageDAO;

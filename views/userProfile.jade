@@ -14,15 +14,15 @@ block append content
                 th ID
                 th.text-center Username
                 th.text-center Account
-                th.text-center Privilege Level
-                th.text-center Status
+                th.text-center Privilage
+                th.text-center Password
                 th.text-center Edit
-            tbody
+            tbody#userProfile
         span.loadMoreSpan
 
 block append script
   script(src='https://code.jquery.com/jquery-1.10.2.min.js')
-  script(src='http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js')
+  script(src='http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js')
   script(src='/socket.io/socket.io.js')
   script(src='/script/navigationBar.js')
   script(src='/script/userProfile.js')

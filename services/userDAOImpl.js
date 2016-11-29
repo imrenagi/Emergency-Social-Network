@@ -143,8 +143,22 @@ class userDAOImpl extends userDAO {
 					reject(err);
 				}
 				else {
-					var output = {code: 200};
-					resolve(output);
+					resolve(result);
+				}
+			});
+		})
+	}
+
+	updateUserWithoutPassword(id, values) {
+		let query = 'UPDATE users SET user_name = ?, is_active = ?, privilage = ? WHERE id = ' + id;
+		var that = this;
+		return new Promise(function(resolve, reject) {
+			that.db.get().query(query, values, function(err, result) {
+				if (err) {
+					reject(err);
+				}
+				else {
+					resolve(result);
 				}
 			});
 		})

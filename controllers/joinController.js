@@ -1,6 +1,11 @@
 var JoinServiceImpl = require('../services/joinServiceImpl');
-var joinService = new JoinServiceImpl();
 var emailValidator = new require('../utils/emailValidator');
+var userValidator = new require('../utils/userValidator');
+var userDAOImpl = require('../services/userDAOImpl');
+var db = require('../services/db');
+
+var userDAO = new userDAOImpl(db);
+var joinService = new JoinServiceImpl(userDAO, db);
 
 const JOIN_ERROR = {
         INCORRECT_PASSWORD: 'JoinError.IncorrectPassword',
@@ -18,20 +23,31 @@ exports.joinPage = function(req, res, next) {
 exports.joinCommunity = function(req, res, next) {
 	var userName = req.body.user_name;
 	var password = req.body.password;
-	if(!joinService.isUserNameValid(userName)) {
+	if(!userValidator.isUserNameValid(userName)) {
 		var err = new Error();
 	  	err.status = 400;
 	  	err.message = JOIN_ERROR.USER_NAME_UNDER_QUALITY;
 	  	next(err);
 	}
-	else if(!joinService.isPasswordValid(password)) {
+	else if(!userValidator.isPasswordValid(password)) {
 		var err = new Error();
 	  	err.status = 400;
 	  	err.message = JOIN_ERROR.PASS_UNDER_QUALITY;
 	  	next(err);
 	}
 	else {
-		joinService.join(userName, password).then(function(result){
+		joinService.join(userName, password)
+		.then(res => {
+			return joinService.validateUser(res, password);	
+		})
+		.then(res => {
+			if (res.code == 200) {
+				return joinService.updateUserOnlineStatus(res.body);
+			} else {
+				return res;
+			}
+		})
+		.then(function(result){
 			switch(result.code) {
 		    	case 200:
 		    		req.session.user = {

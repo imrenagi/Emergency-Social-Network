@@ -4,10 +4,6 @@
     display: flex;
     justify-content: center;
 }
-.align-right {
-    justify-content: center;
-    display: flex;
-}
 .align-center {
     justify-content: center;
     display: flex;
@@ -17,12 +13,15 @@
 }
 .text-center {
     text-align: center;
+    vertical-align: middle !important;
 }
 .text-left {
     text-align: left;
+    vertical-align: middle !important;
 }
 .text-right {
     text-align: right;
+    vertical-align: middle !important;
 }
 .float-left {
     float: left;
@@ -75,9 +74,6 @@ p {
   -webkit-hyphens: auto;
   hyphens: auto;
 }
-
-
-.modal-backdrop
-{
+.modal-backdrop {
     opacity:0.9 !important;
 }
