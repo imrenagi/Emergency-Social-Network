@@ -47,6 +47,13 @@ exports.onListening = function(socket) {
   		socket.username = username;
   	});
 
+  	socket.on('profile update', function(data) {
+  		var userId = data.user_id || '';
+  		if(users.has(userId)) {
+			users.get(userId).emit('force logout');
+		}
+  	})
+
   	socket.on('send message', function(data) {
   		var senderId = data.sender_id;
 		var message = data.message;
