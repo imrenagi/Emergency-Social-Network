@@ -80,6 +80,29 @@ suite('NewsDAO Impl Test', function() {
 		});
 	});
 
+	test('Save news can return 200', function(done) {
+		var values = [1, 'this is a title', 'this is the content', 100, 100, 1, 'url'];
+		var expectedResult = {code: 200}
+		var queryCallBack = {
+		  query: function(q, values, cb) {	
+		  	expect(q).to.be.eql('INSERT INTO news (sender_id, title, content, latitude, longitude, status, picture) values (?, ?, ?, ?, ?, ?, ?)');		  	
+		  	cb(null, expectedResult);
+		  }
+		}
+		dbMock.expects('get').once().returns(queryCallBack);
+	
+		newsDAO.save([1, 'this is a title', 'this is the content', 100, 100, 1, 'url']).then(res => {
+			expect(res).to.be.eql(expectedResult);
+			dbMock.verify();
+			dbMock.restore();
+			done();
+		}).catch(err => {			
+			dbMock.restore();
+			done(err);
+		});
+	});
+
+
 
 
 })

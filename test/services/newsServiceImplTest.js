@@ -67,5 +67,22 @@ suite('News Service Implementation Test', function() {
 		newsDAOMock.restore();
 	})
 
+	test('Create news works correctly without image', function() {
+		var news = {
+    			"reporter_id" : 2,
+                "status" : 1,
+                "lat" : 100.0,
+                "long" : 100.0,
+                "title" : "this is a title",
+                "message" : "http://www.w3schools.com/css/img_fjords.jpg=",
+                "image_binary" : null
+		}
+		var values = [2, 'this is a title', 'http://www.w3schools.com/css/img_fjords.jpg=', 100.0, 100.0, 1, null];
+		newsDAOMock.expects('save').once().withExactArgs(values).returns(Promise.resolve({}));
+		newsService.createNews(news);
+		newsDAOMock.verify();
+		newsDAOMock.restore();
+	})
+
 
 })
