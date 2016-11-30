@@ -1,9 +1,14 @@
 var NewServiceImpl = require('../services/newsServiceImpl');
 var NewsDAOImpl = require('../services/newsDAOImpl');
+var CloudImageServiceImpl = require('../services/cloudImageServiceImpl');
+
 var db = require('../services/db');
 
+var cloudImageService = new CloudImageServiceImpl();
 var newDAO = new NewsDAOImpl(db);
-var newService = new NewServiceImpl(newDAO);
+var newService = new NewServiceImpl(newDAO, cloudImageService);
+
+
 
 var isValid = function(body) {
 	if (body.reporter_id === undefined || body.reporter_id === null) return false;
@@ -38,7 +43,7 @@ exports.createNews = function(req, res, next) {
 	  	err.message = "Bad request body"
 	  	next(err);
 	}
-	
+
 	newService.createNews(req.body).then(function(result) {
 		res.send(JSON.stringify(result));
 	}).catch(function(err) {
