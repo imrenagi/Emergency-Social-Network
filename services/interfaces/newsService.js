@@ -1,9 +1,10 @@
 "use strict";
 
 class NewsService {
-	constructor(newsDAO, cloudImageService) {
+	constructor(newsDAO, cloudImageService, userDAO) {
 		this.newsDAO = newsDAO;
 		this.cloudImageService = cloudImageService;
+		this.userDAO = userDAO;
 	}
 	getAllNew() {}
 	createNews() {}

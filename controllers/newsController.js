@@ -1,13 +1,19 @@
 var NewServiceImpl = require('../services/newsServiceImpl');
 var NewsDAOImpl = require('../services/newsDAOImpl');
 var CloudImageServiceImpl = require('../services/cloudImageServiceImpl');
-
+var userDAOImpl = require('../services/userDAOImpl');
+var GmailSmtpSenderImpl = require('../services/gmailSmtpSenderImpl');
 var db = require('../services/db');
+var nodemailer = require('nodemailer');
 
 var cloudImageService = new CloudImageServiceImpl();
-var newDAO = new NewsDAOImpl(db);
-var newService = new NewServiceImpl(newDAO, cloudImageService);
+var transporter = nodemailer.createTransport('smtps://sa2.esn@gmail.com:imrenagi@smtp.gmail.com');
+var mailSender = new GmailSmtpSenderImpl(transporter);
 
+var userDAO = new userDAOImpl(db);
+var newDAO = new NewsDAOImpl(db);
+
+var newService = new NewServiceImpl(newDAO, cloudImageService, userDAO, mailSender);
 
 
 var isValid = function(body) {
@@ -36,7 +42,6 @@ exports.getNewsById = function(req, res, next) {
 }
 
 exports.createNews = function(req, res, next) {
-	console.log(req.body);
 	if (!isValid(req.body)) {
 		var err = new Error();
 	  	err.status = 400;

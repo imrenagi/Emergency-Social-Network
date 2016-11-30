@@ -361,5 +361,61 @@ suite('UserDAO Impl Test', function() {
 		});
 	})
 
+	test('Should be able to update user lat and long', function(done) {
+		var queryCallBack = {
+		  query: function(q, v, cb) {		  	
+		  	expect(q).to.be.eql('UPDATE users SET latitude = ?, longitude = ? WHERE id = 1');
+		  	expect(v).to.be.eql([110.2, 12.12]);
+		  	cb(null, {insertId : 10});
+		  }
+		}
+		dbMock.expects('get').once().returns(queryCallBack);
+		userDAO.updateUserLocation(1, 110.2, 12.12).then(res => {
+			expect(res.insertId).to.be.eql(10);
+			dbMock.verify();
+			dbMock.restore();
+			done();
+		}).catch(err => {
+			dbMock.verify();
+			dbMock.restore();
+			done(err);
+		})
+	})
+
+	test('Should get email whose valid locations', function(done) {
+		var queryCallBack = {
+		  query: function(q, cb) {		  	
+		  	cb(null, [{
+				latitude : 37.3789,
+				longitude : -121.866,
+				email : "binglei.du@sv.cmu.edu"
+			}, {
+				latitude : 37.4123,
+				longitude : -122.059,
+				email : "imre.nagi2812@gmail.com"
+			}, {
+				latitude : 37.4123,
+				longitude : -122.059,
+				email : "inagi@andrew.cmu.edu"
+			}]);
+		  }
+		}
+		dbMock.expects('get').once().returns(queryCallBack);
+		userDAO.getUserEmailsWhoseValidLocation().then(res => {
+			expect(res.length).to.be.eql(3);
+			expect(res[0].email).to.be.eql("binglei.du@sv.cmu.edu");
+			expect(res[1].email).to.be.eql("imre.nagi2812@gmail.com");
+			expect(res[2].email).to.be.eql("inagi@andrew.cmu.edu");
+			dbMock.verify();
+			dbMock.restore();
+			done();
+		}).catch(err => {
+			dbMock.verify();
+			dbMock.restore();
+			done(err);
+		})
+	})
+
 });
+
 

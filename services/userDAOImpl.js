@@ -163,6 +163,29 @@ class userDAOImpl extends userDAO {
 			});
 		})
 	}
+
+	updateUserLocation(id, lat, long) {
+		let query = 'UPDATE users SET latitude = ?, longitude = ? WHERE id = ' + id;
+		let values = [lat, long];
+		var that = this;
+		return new Promise(function(resolve, reject) {
+			that.db.get().query(query, values, function(err, result) {
+				if (err) reject(err);
+				else resolve(result);
+			})
+		})
+	}
+
+	getUserEmailsWhoseValidLocation() {
+		let query = 'select latitude, longitude, email from users where latitude is not null and longitude is not null and email is not null and is_active = 1;'
+		var that = this;
+		return new Promise(function(resolve, reject) {
+			that.db.get().query(query, function(err, result) {
+				if (err) reject(err);
+				else resolve(JSON.parse(JSON.stringify(result)));
+			})
+		})
+	}
 }
 
 module.exports = userDAOImpl;

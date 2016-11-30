@@ -42,7 +42,6 @@ suite('Public Message Service Implementation Test', function(){
 			expect(res[0].sender.user_name).to.be.eql("imre");
 			expect(res[0].sender.online).to.be.eql(1);
 			expect(res[0].sender.status).to.be.eql(0);
-			expect(res[0].timestamp).to.be.eql(1480478157);
 			expect(res[0].text).to.be.eql('This is a message');
 			expect(res[0].status).to.be.eql(1);
 			dbMock.verify();
@@ -81,7 +80,6 @@ suite('Public Message Service Implementation Test', function(){
 			expect(res[0].sender.user_name).to.be.eql("imre");
 			expect(res[0].sender.online).to.be.eql(1);
 			expect(res[0].sender.status).to.be.eql(0);
-			expect(res[0].timestamp).to.be.eql(1480478157);
 			expect(res[0].text).to.be.eql('This is a message');
 			expect(res[0].status).to.be.eql(1);
 			dbMock.verify();
