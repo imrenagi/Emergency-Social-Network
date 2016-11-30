@@ -150,5 +150,86 @@ suite('Private Message DAO Impl Test', function() {
 		})
 	})
 
+	test('Create new converation should return inserted id', function(done) {
+		var queryCallBack = {
+		  query: function(q, v, cb) {
+		  	expect(v).to.be.eql([100,200]);
+		  	cb(null, {insertId : 1});
+		  }
+		}
+		dbMock.expects('get').once().returns(queryCallBack);
+
+		privateMsgDAO.createConversation(100, 200).then(res => {
+			expect(res).to.be.eql(1);
+			dbMock.verify();
+			dbMock.restore();
+			done();
+		}).catch(err => {
+			dbMock.verify();
+			dbMock.restore();
+			done(err);
+		})
+	})
+
+	test('Should receive error when creating the conversation return errors', function(done) {
+		var queryCallBack = {
+		  query: function(q, v, cb) {
+		  	expect(v).to.be.eql([100,200]);
+		  	cb({status : "failed"}, null);
+		  }
+		}
+		dbMock.expects('get').once().returns(queryCallBack);
+
+		privateMsgDAO.createConversation(100, 200).then(res => {
+			dbMock.verify();
+			dbMock.restore();
+			done();
+		}).catch(err => {
+			expect(err.status).to.be.eql("failed");
+			dbMock.verify();
+			dbMock.restore();
+			done();
+		})
+	})
+
+	test('Should return conversation id with two user ids as the input', function(done) {
+		var queryCallBack = {
+		  query: function(q, cb) {
+		  	cb(null, {id : 29});
+		  }
+		}
+		dbMock.expects('get').once().returns(queryCallBack);
+		privateMsgDAO.getConversationId(1, 2).then(res => {
+			expect(res.id).to.be.eql(29);
+			dbMock.verify();
+			dbMock.restore();
+			done();
+		}).catch(err => {
+			dbMock.verify();
+			dbMock.restore();
+			done(err);
+		})
+	});
+
+	test('Should catch error if get conversation id return error', function(done) {
+		var queryCallBack = {
+		  query: function(q, cb) {
+		  	cb({status : "failed"}, null);
+		  }
+		}
+		dbMock.expects('get').once().returns(queryCallBack);
+		privateMsgDAO.getConversationId(1, 2).then(res => {
+			dbMock.verify();
+			dbMock.restore();
+			done();
+		}).catch(err => {
+			expect(err.status).to.be.eql("failed");
+			dbMock.verify();
+			dbMock.restore();
+			done();
+		})
+	});
+
 });
+
 
