@@ -54,7 +54,13 @@ suite('News Service Implementation Test', function() {
 			message: 'this is the content',
 			image_url: 'picture url'
 		}
-		expect(newsService.formatNews(result)).to.be.eql(news);
+		expect(newsService.formatNews(result).id).to.be.eql(news.id);
+		expect(newsService.formatNews(result).reporter).to.be.eql(news.reporter);
+		expect(newsService.formatNews(result).status).to.be.eql(news.status);
+		expect(newsService.formatNews(result).location).to.be.eql(news.location);
+		expect(newsService.formatNews(result).title).to.be.eql(news.title);
+		expect(newsService.formatNews(result).message).to.be.eql(news.message);
+		expect(newsService.formatNews(result).image_url).to.be.eql(news.image_url);
 	});
 
 	test('getAllNews should call getAll', function() {
