@@ -9,7 +9,7 @@ router.get('/', function(req, res) {
 });
 
 router.get('/forceLogout', function(req, res) {
-    render.join(req, res, 'You are logged out because your username/password/privilege/account status is changed by Administer.');
+    render.join(req, res, 'You are logged out because your username/password/privilege/account status is changed by Admin.');
 });
 
 router.get('/userDirectory', function(req, res) {
