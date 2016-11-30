@@ -68,15 +68,9 @@ class NewsServiceImpl extends NewsService {
 		var image_url = null;
 
 		if (picture != null) {
-			console.log('hello');
-			console.log(picture);
 			cloudImageService.cloudinaryConfig();
 			return cloudImageService.uploadImage(picture).then(function(result) {
 				image_url = result;
-
-				console.log('hello');
-
-				console.log('url is' + image_url);
 				var values = [senderId, title, content, latitude, longitude, status, image_url]; 
 				return that.newsDAO.save(values).then(function(results) {
 					return results;
@@ -98,7 +92,6 @@ class NewsServiceImpl extends NewsService {
 			});
 
 		}
-		//image_url = "test";
 	}
 
 }
