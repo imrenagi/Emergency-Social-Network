@@ -2,7 +2,7 @@
 
 var R = require('ramda');
 var dateHelper = require('../helpers/date');
-var Location = require('../models/Location');
+var Location = require('../models/location');
 var NewsService = require('./interfaces/newsService');
 var CloudImageServiceImpl = require('./cloudImageServiceImpl');
 var distanceCalc = require('../helpers/distanceCalculator');
