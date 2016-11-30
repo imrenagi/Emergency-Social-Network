@@ -18,6 +18,17 @@ function showStatus() {
 $(document).ready(function(){
     $('#user-setting').append(' ' + localStorage['USER_NAME'] + ' &nbsp<i id="status"></i> <span class="caret"></span>');
     showStatus();
+    if (localStorage['PRIVILAGE'] == '2') {
+        addAdminToDropdown();
+    }
+});
+
+function addAdminToDropdown() {
+    $('#nav-dropdown-list').prepend('<li><a href="#" id="admin-profile"><span class="fa fa-wrench"></span> &nbsp; Profiles</a></li><li role="separator" class="divider"></li>');
+}
+
+$('#navbar-right').on('click', '#admin-profile', function(event) {
+    window.location = '/userProfile';
 });
 
 function updateBell(n, increase) {
@@ -101,6 +112,6 @@ $('#navbar-right').on('click', '#logout', function(event) {
 });
 
 $('#navbar-right').on('click', '#update-email', function(event){
-    window.location = '/updateEmail'
+    window.location = '/updateEmail';
 });
 
