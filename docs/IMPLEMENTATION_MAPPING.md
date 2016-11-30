@@ -15,3 +15,11 @@ IMPLEMENTATION MAPPING
 | Public Chat Controller | `controller/messageController.js` |
 | Public Wall |`services/publicMessageServiceImpl.js`|
 | Message | `services/publicMessageServiceImpl.js` |
+
+### Use Case : Administer User Profile
+| Design | Implementation |
+| -------- | --------------- |
+| Administer User Profile Interface | `views/userProfile.jade`, `script/userProfile.js`|
+| Administer User Profile Controller | `controller/administerUserProfileController.js` |
+| User | `services/userDAOImpl.js`, `service/directoryServiceImpl.js` |
+
