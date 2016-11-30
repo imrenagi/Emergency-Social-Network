@@ -10,7 +10,7 @@ var announcementDAO = new AnnouncementDAOImpl(db);
 var AnnouncementServiceImpl = require('./announcementServiceImpl');
 var announcementService = new AnnouncementServiceImpl(announcementDAO);
 var PrivateMessageDAOImpl = require('./privateMessageDAOImpl');
-var privateMessageDAO = new PrivateMessageDAOImpl();
+var privateMessageDAO = new PrivateMessageDAOImpl(db);
 var PrivateMessageServiceImpl = require('./privateMessageServiceImpl');
 var privteMessageService = new PrivateMessageServiceImpl(privateMessageDAO);
 
