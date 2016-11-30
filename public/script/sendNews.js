@@ -113,7 +113,7 @@ function send_news(news_text, image)
         lat: loc.lat,
         long: loc.lng, 
 	    message: news_text,
-        image_url: image,
+        image_binary: image,
         title:""
     };
 
