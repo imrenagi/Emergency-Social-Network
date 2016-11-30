@@ -7,7 +7,7 @@ var privateMessageDAO = new PrivateMessageDAOImpl(db);
 var PrivateMessageServiceImpl = require('../services/privateMessageServiceImpl');
 var privateMessageService = new PrivateMessageServiceImpl(privateMessageDAO);
 
-var publicMessageService = new PublicMessageServiceImpl();
+var publicMessageService = new PublicMessageServiceImpl(db);
 
 
 const MESSAGE_ERROR = {

@@ -245,7 +245,121 @@ suite('UserDAO Impl Test', function() {
 		});
 	});
 
+	test('Should be able to update user data without password', function(done) {
+		var queryCallBack = {
+			query: function(q, v, cb) {		  	
+		  		cb(null, {insertId : 1});
+		  	}
+		}
+		dbMock.expects('get').once().returns(queryCallBack);
+		userDAO.updateUserWithoutPassword(1, ["imre", 1, 0]).then(res => {
+			expect(res.insertId).to.be.eql(1);
+			dbMock.verify();
+			dbMock.restore();
+			done();
+		}).catch(err => {
+			dbMock.verify();
+			dbMock.restore();
+			done(err);
+		})
+	})
 
+	test('Should be able to update user data with password', function(done) {
+		var queryCallBack = {
+			query: function(q, v, cb) {		  	
+		  		cb(null, {insertId : 1});
+		  	}
+		}
+		dbMock.expects('get').once().returns(queryCallBack);
+		userDAO.updateUser(1, ["imre", 1, 0, "password"]).then(res => {
+			expect(res.insertId).to.be.eql(1);
+			dbMock.verify();
+			dbMock.restore();
+			done();
+		}).catch(err => {
+			dbMock.verify();
+			dbMock.restore();
+			done(err);
+		})
+	})
+
+	test('Should be able to get error message when update user data with password is failing', function(done) {
+		var queryCallBack = {
+			query: function(q, v, cb) {		  	
+		  		cb({message: "error in db"}, null);
+		  	}
+		}
+		dbMock.expects('get').once().returns(queryCallBack);
+		userDAO.updateUser(1, ["imre", 1, 0, "password"]).then(res => {
+			dbMock.verify();
+			dbMock.restore();
+			done();
+		}).catch(err => {
+			expect(err.message).to.be.eql("error in db");
+			dbMock.verify();
+			dbMock.restore();
+			done();
+		})
+	})
+
+	test('Should be able to get error message when update user data without password is failing', function(done) {
+		var queryCallBack = {
+			query: function(q, v, cb) {		  	
+		  		cb({message: "error in db"}, null);
+		  	}
+		}
+		dbMock.expects('get').once().returns(queryCallBack);
+		userDAO.updateUserWithoutPassword(1, ["imre", 1, 0]).then(res => {
+			dbMock.verify();
+			dbMock.restore();
+			done();
+		}).catch(err => {
+			expect(err.message).to.be.eql("error in db");
+			dbMock.verify();
+			dbMock.restore();
+			done();
+		})
+	})
+
+	test('Should be able to get error when get all user returned error', function(done) {
+		var queryCallBack = {
+		  query: function(q, cb) {		  	
+		  	cb({status : "failed"}, null);
+		  }
+		}
+		dbMock.expects('get').once().returns(queryCallBack);
+	
+		userDAO.getAllUsers(0, 10).then(res => {
+			dbMock.verify();
+			dbMock.restore();
+			done();
+		}).catch(err => {
+			expect(err.status).to.be.eql("failed");
+			dbMock.verify();
+			dbMock.restore();
+			done();
+		});
+	})
+
+	test('Should be able to read the error when update status is failed', function(done) {
+		var queryCallBack = {
+		  query: function(q, cb) {		  	
+		  	cb({status : "failed"}, null);
+		  }
+		}
+		dbMock.expects('get').once().returns(queryCallBack);
+	
+		userDAO.updateStatus(0, 10).then(res => {
+			dbMock.verify();
+			dbMock.restore();
+			done();
+		}).catch(err => {
+			expect(err.status).to.be.eql("failed");
+			dbMock.verify();
+			dbMock.restore();
+			done();
+		});
+	})
 
 });
 

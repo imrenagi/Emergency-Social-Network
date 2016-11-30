@@ -10,8 +10,9 @@ var dateHelper = require('../helpers/date');
 var PublicMessageService = require('./interfaces/publicMessageService');
 
 class PublicMessageServiceImpl extends PublicMessageService {
-	constructor() {
+	constructor(db) {
 		super();
+		this.db = db;
 	}
 	
 	getAllMessages(lastId, limit) {
@@ -21,9 +22,9 @@ class PublicMessageServiceImpl extends PublicMessageService {
 		} else {
 			query = 'SELECT pm.*, u.user_name FROM public_messages pm LEFT JOIN users u ON pm.sender_id = u.id where pm.id >='+ (lastId-limit) + ' and pm.id < ' + lastId + ' order by pm.id desc'
 		}
-		
+		var that = this;
 		return new Promise(function(resolve, reject) {
-			db.get().query(query, function(err, result) {
+			that.db.get().query(query, function(err, result) {
 				if (err) reject(err);
 				else {
 					var results = JSON.parse(JSON.stringify(result));
@@ -45,10 +46,11 @@ class PublicMessageServiceImpl extends PublicMessageService {
 	}
 
 	storeMessage(senderId, message, message_status, lat, long) {
+		var that = this;
 		return new Promise(function(resolve, reject) {
 			let query = 'INSERT INTO public_messages (sender_id, message, message_status, latitude, longitude) VALUES (?,?,?,?,?)';
 			let values = [senderId, message, message_status, lat, long]
-			db.get().query(query, values, function(err, result) {
+			that.db.get().query(query, values, function(err, result) {
 				if (err) {
 					reject(err)
 				}
@@ -61,7 +63,7 @@ class PublicMessageServiceImpl extends PublicMessageService {
 		}).then(function(result) {
 			return new Promise(function(resolve, reject) {
 				let query = 'SELECT pm.*, u.user_name FROM public_messages pm LEFT JOIN users u ON pm.sender_id = u.id where pm.id = ?'
-				db.get().query(query, result, function(err, result) {
+				that.db.get().query(query, result, function(err, result) {
 					if (err) reject(err);
 					else {
 						var res = JSON.parse(JSON.stringify(result));
@@ -80,6 +82,9 @@ class PublicMessageServiceImpl extends PublicMessageService {
 			})
 		});
 	}
+
+
+
 }
 
 module.exports = PublicMessageServiceImpl;
