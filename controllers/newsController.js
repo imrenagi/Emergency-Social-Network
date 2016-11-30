@@ -31,6 +31,7 @@ exports.getNewsById = function(req, res, next) {
 }
 
 exports.createNews = function(req, res, next) {
+	console.log(req.body);
 	if (!isValid(req.body)) {
 		var err = new Error();
 	  	err.status = 400;
