@@ -5,7 +5,7 @@ var limit = -1;
 var btnCls = ['contact-normal', 'contact-ok', 'contact-warning', 'contact-danger']
 
 function isCoordinator() {
-    return true;
+    return (localStorage['PRIVILAGE'] > '0');
 }
 
 
