@@ -66,13 +66,14 @@ class NewsServiceImpl extends NewsService {
 		var picture = news.image_binary || null;
 
 		var image_url = null;
-		if (picture != null)
+		if (picture != null) {
 			cloudImageService.uploadImage(picture).then(function(result) {
 				image_url = result;
 				console.log(image_url);
 			}).catch(function(err) {
 				console.log(err);
 			});
+		}
 		//image_url = "test";
 		var values = [senderId, title, content, latitude, longitude, status, image_url]; 
 		return this.newsDAO.save(values).then(function(results) {

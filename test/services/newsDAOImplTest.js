@@ -15,31 +15,31 @@ suite('NewsDAO Impl Test', function() {
 		done();
 	});
 
-	// test('GetAllNews can return all news', function(done) {
-	// 	var queryCallBack = {
-	// 	  query: function(q, cb) {	
-	// 	  	expect(q).to.be.eql("UPDATE users SET online = 1 WHERE id = 1");		  	
-	// 	  	cb(null, {resultId : 1});
-	// 	  }
-	// 	}
-	// 	dbMock.expects('get').once().returns(queryCallBack);
+	test('GetAllNews can return all news', function(done) {
+		var queryCallBack = {
+		  query: function(q, cb) {	
+		  	expect(q).to.be.eql("SELECT n.*, u.user_name FROM news n left join users u on u.id = n.sender_id");		  	
+		  	cb(null, {resultId : 1});
+		  }
+		}
+		dbMock.expects('get').once().returns(queryCallBack);
 	
-	// 	var user = {
-	// 		getId: function() {
-	// 			return 1;
-	// 		}
-	// 	}
+		var user = {
+			getId: function() {
+				return 1;
+			}
+		}
 
-	// 	userDAO.updateOnline(user, 1).then(res => {
-	// 		expect(res.resultId).to.be.eql(1);
-	// 		dbMock.verify();
-	// 		dbMock.restore();
-	// 		done();
-	// 	}).catch(err => {			
-	// 		dbMock.restore();
-	// 		done(err);
-	// 	});
-	// });
+		userDAO.updateOnline(user, 1).then(res => {
+			expect(res.resultId).to.be.eql(1);
+			dbMock.verify();
+			dbMock.restore();
+			done();
+		}).catch(err => {			
+			dbMock.restore();
+			done(err);
+		});
+	});
 
 	test('GetNewsById can return corresponding news', function(done) {
 		var expectedResult = {

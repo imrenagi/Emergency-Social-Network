@@ -38,6 +38,7 @@ exports.createNews = function(req, res, next) {
 	  	err.message = "Bad request body"
 	  	next(err);
 	}
+	
 	newService.createNews(req.body).then(function(result) {
 		res.send(JSON.stringify(result));
 	}).catch(function(err) {
