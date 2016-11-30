@@ -11,7 +11,7 @@ module.exports = function(grunt) {
 					clearRequireCache: false,
 					ui: 'tdd'
 				},
-				src: ['test/services/publicMessageServiceImplTest.js']
+				src: ['test/**/*.js']
 			},
 			circleci: {
 	          options: {
