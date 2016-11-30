@@ -1,8 +1,9 @@
 var express = require('express')
   , PublicMessageServiceImpl = require('../services/publicMessageServiceImpl');
+  var db = require('../services/db');
 
 var PrivateMessageDAOImpl = require('../services/privateMessageDAOImpl');
-var privateMessageDAO = new PrivateMessageDAOImpl();  
+var privateMessageDAO = new PrivateMessageDAOImpl(db);  
 var PrivateMessageServiceImpl = require('../services/privateMessageServiceImpl');
 var privateMessageService = new PrivateMessageServiceImpl(privateMessageDAO);
 
@@ -69,6 +70,7 @@ exports.retrieveAllPrivateMessages = function(req, res, next) {
   	var limit = req.param('limit') || 30;
   	privateMessageService.getAllPrivateMessages(conversationId, lastId, limit).then(function(results) {
 	  		console.log(results);
+
 	      	res.send(JSON.stringify(results));
 	    }).catch(function(err) {
 	      res.send(err);

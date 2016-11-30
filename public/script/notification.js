@@ -5,7 +5,7 @@ var limit = -1;
 var btnCls = ['contact-normal', 'contact-ok', 'contact-warning', 'contact-danger']
 
 function isCoordinator() {
-    return true;
+    return (localStorage['PRIVILAGE'] > '0');
 }
 
 
@@ -242,7 +242,6 @@ $('#textarea').on('click', '#sendButton', function() {
             });
         }
         else  {
-            console.log(tab)
             data = {
                 sender_id: localStorage['ID'],
                 receiver_id: tab,

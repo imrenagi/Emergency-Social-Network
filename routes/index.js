@@ -5,7 +5,11 @@ var app = express();
 var render = require('../helpers/renderHelper');
 
 router.get('/', function(req, res) {
-    render.join(req, res);
+    render.join(req, res, '');
+});
+
+router.get('/forceLogout', function(req, res) {
+    render.join(req, res, 'You are logged out because your username/password/privilage/account status is changed by Administer.');
 });
 
 router.get('/userDirectory', function(req, res) {
@@ -45,8 +49,8 @@ router.get('/userProfile', function(req, res) {
     render.requestAsAdmin(req, res, 'userProfile', { title: 'User Profile - Emergency Social Network'});
 });
 
-router.get('/editProfile', function(req, res) {
-  res.render('editProfile', { title: 'Search - Emergency Social Network'});
+router.get('/updateEmail', function(req, res) {
+  res.render('updateEmail', { title: 'Update Email - Emergency Social Network'});
 });
 
 

@@ -8,7 +8,7 @@ var db = require('../services/db');
 var announcementDAO = new AnnouncementDAOImpl(db);
 var userDAO = new userDAOImpl(db);
 var publicMessageDAO = new PublicMessageDAOImpl();
-var privateMessageDAO = new PrivateMessageDAOImpl();
+var privateMessageDAO = new PrivateMessageDAOImpl(db);
 var searchService = new SearchServiceImpl(userDAO, announcementDAO, publicMessageDAO, privateMessageDAO);
 
 

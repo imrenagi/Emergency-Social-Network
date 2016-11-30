@@ -10,7 +10,7 @@ var announcementDAO = new AnnouncementDAOImpl(db);
 var AnnouncementServiceImpl = require('./announcementServiceImpl');
 var announcementService = new AnnouncementServiceImpl(announcementDAO);
 var PrivateMessageDAOImpl = require('./privateMessageDAOImpl');
-var privateMessageDAO = new PrivateMessageDAOImpl();
+var privateMessageDAO = new PrivateMessageDAOImpl(db);
 var PrivateMessageServiceImpl = require('./privateMessageServiceImpl');
 var privteMessageService = new PrivateMessageServiceImpl(privateMessageDAO);
 
@@ -46,6 +46,13 @@ exports.onListening = function(socket) {
   	socket.on('new login', function(username){
   		socket.username = username;
   	});
+
+  	socket.on('profile update', function(data) {
+  		var userId = data.user_id || '';
+  		if(users.has(userId)) {
+			users.get(userId).emit('force logout');
+		}
+  	})
 
   	socket.on('send message', function(data) {
   		var senderId = data.sender_id;

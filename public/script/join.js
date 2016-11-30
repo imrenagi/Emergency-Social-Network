@@ -14,7 +14,8 @@ $('#content').on('click', '#joinButton',function() {
                 localStorage.setItem('ID', data.id);
                 localStorage.setItem('USER_NAME', data.user_name);
                 localStorage.setItem('STATUS', data.status);
-                window.location = '/userDirectory'
+                localStorage.setItem('PRIVILAGE', data.privilage);
+                window.location = '/userDirectory';
             },
             204: function() {
                 var text = '<p><span style="color: green; font-weight: bold;">' + userName +'</span> does not exist. Do you want to sign up with the username/password you just entered?</p>' + '<p id="hiddenName" hidden="true">' + userName +'</p><p id="hiddenPwd" hidden="true">' + password + '</p>';

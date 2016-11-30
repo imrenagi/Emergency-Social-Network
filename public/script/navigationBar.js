@@ -18,6 +18,17 @@ function showStatus() {
 $(document).ready(function(){
     $('#user-setting').append(' ' + localStorage['USER_NAME'] + ' &nbsp<i id="status"></i> <span class="caret"></span>');
     showStatus();
+    if (localStorage['PRIVILAGE'] == '2') {
+        addAdminToDropdown();
+    }
+});
+
+function addAdminToDropdown() {
+    $('#nav-dropdown-list').prepend('<li><a href="#" id="admin-profile"><span class="fa fa-wrench"></span> &nbsp; Profiles</a></li><li role="separator" class="divider"></li>');
+}
+
+$('#navbar-right').on('click', '#admin-profile', function(event) {
+    window.location = '/userProfile';
 });
 
 function updateBell(n, increase) {
@@ -46,6 +57,22 @@ var socket = io();
 socket.emit('new socket', {
     user_id: localStorage['ID'],
     user_name: localStorage['USER_NAME']
+});
+
+socket.on('force logout', function() {
+    $.ajax({
+        type: "DELETE",
+        data: {},
+        url: "/logout",
+        dataType: "json",
+        success: function() {
+            localStorage.removeItem('STATUS');
+            localStorage.removeItem('USER_NAME');
+            localStorage.removeItem('ID');
+            localStorage.removeItem('PRIVILAGE');
+            window.location = '/forceLogout';
+        }
+    });
 });
 
 socket.on('notification', function() {
@@ -94,12 +121,13 @@ $('#navbar-right').on('click', '#logout', function(event) {
             localStorage.removeItem('STATUS');
             localStorage.removeItem('USER_NAME');
             localStorage.removeItem('ID');
+            localStorage.removeItem('PRIVILAGE');
             window.location = '/'
         }
     });
 });
 
-$('#navbar-right').on('click', '#edit-profile', function(event){
-    window.location = '/editProfile'
+$('#navbar-right').on('click', '#update-email', function(event){
+    window.location = '/updateEmail';
 });
 
