@@ -12,8 +12,8 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
 app.use(logger('dev'));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json({limit: '50mb'}));
+app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 app.use(cookieParser('1M6QMy7359Cyopz9hv8MsAGf2cio2yb2'))
 app.use(session({secret: 't6oCe14uH8tPO8Fr3c7z1qGWFP0mEeN3'}));
 app.use(express.static(path.join(__dirname, 'public')));
