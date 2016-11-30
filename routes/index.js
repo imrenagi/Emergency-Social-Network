@@ -5,7 +5,11 @@ var app = express();
 var render = require('../helpers/renderHelper');
 
 router.get('/', function(req, res) {
-    render.join(req, res);
+    render.join(req, res, '');
+});
+
+router.get('/forceLogout', function(req, res) {
+    render.join(req, res, 'You are logged out because your username/password/privilage/account status is changed by Administer.');
 });
 
 router.get('/userDirectory', function(req, res) {

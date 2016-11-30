@@ -242,7 +242,6 @@ $('#textarea').on('click', '#sendButton', function() {
             });
         }
         else  {
-            console.log(tab)
             data = {
                 sender_id: localStorage['ID'],
                 receiver_id: tab,

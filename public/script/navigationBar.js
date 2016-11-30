@@ -59,6 +59,22 @@ socket.emit('new socket', {
     user_name: localStorage['USER_NAME']
 });
 
+socket.on('force logout', function() {
+    $.ajax({
+        type: "DELETE",
+        data: {},
+        url: "/logout",
+        dataType: "json",
+        success: function() {
+            localStorage.removeItem('STATUS');
+            localStorage.removeItem('USER_NAME');
+            localStorage.removeItem('ID');
+            localStorage.removeItem('PRIVILAGE');
+            window.location = '/forceLogout';
+        }
+    });
+});
+
 socket.on('notification', function() {
     if (document.getElementById('contacts') == undefined) {
         var unread = notification.innerHTML;

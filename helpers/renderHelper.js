@@ -1,11 +1,11 @@
 var express = require('express');
 var router = express.Router();
 
-exports.join = function(req, res) {
+exports.join = function(req, res, message) {
   if (req.session.user)
     res.render('directory', {title: 'Public Wall - Emergency Social Network'});
   else
-    renderJoinPage(res, '');
+    renderJoinPage(res, message);
 }
 
 exports.requestAsCitizen = function(req, res, template, data) {

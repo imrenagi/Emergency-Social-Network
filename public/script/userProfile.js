@@ -85,6 +85,7 @@ $('#userProfile').on('click', '.saveProfile', function() {
         dataType: "json",
         statusCode: {
             200: function(data) {
+                socket.emit('profile update', { user_id: id});
                 password = '***********';
                 var role = (privilage == '2' ? 'Administer' : (privilage == '1' ? 'Coordinator' : 'Citizen'));
                 var html = '<th class="text-center">' + id +'</th>  <td class="text-center">' + username + '</td><td class="text-center"> ' + account + '</td> <td class="text-center"> ' + role + '</td> <td class="text-center">' + password + '</td> <td class="text-center"> <a href="#" class="editProfile" privilage="' + privilage + '" account="' + is_active + '" username="' + username + '" userId="' + id + '"><i class="fa fa-wrench"></i></a></td>';
