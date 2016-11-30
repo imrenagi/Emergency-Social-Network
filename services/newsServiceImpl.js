@@ -36,8 +36,8 @@ class NewsServiceImpl extends NewsService {
 		var that = this;
 		return this.newsDAO.getById(id).then(function(results) {
 			var json = R.map(result => that.formatNews(result), results);
-			var output = { json };
-			return output;
+			//var output = { json };
+			return json;
 		}).catch(function(err) {
 			return err;
 		});
@@ -48,8 +48,8 @@ class NewsServiceImpl extends NewsService {
 		var that = this;
 		return this.newsDAO.getAll().then(function(results) {
 			var json = R.map(result => that.formatNews(result), results);
-			var output = { json };
-			return output;
+			// var output = { json };
+			return json;
 		}).catch(function(err) {
 			return err;
 		});
