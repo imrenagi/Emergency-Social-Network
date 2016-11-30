@@ -15,6 +15,12 @@ var privateMessageDAO = new PrivateMessageDAOImpl(db);
 var PrivateMessageServiceImpl = require('./privateMessageServiceImpl');
 var privteMessageService = new PrivateMessageServiceImpl(privateMessageDAO);
 
+var userDAOImpl = require('./userDAOImpl');
+var userDAO = new userDAOImpl(db);
+
+var UserDataObject = require('./userDataObjectImpl');
+var userDataObject = new UserDataObject(db);
+
 var io = require('../bin/www').io;
 
 //Store all online users' socket
@@ -74,6 +80,14 @@ exports.onListening = function(socket) {
 		}).catch(function(err) {
 			return console.log(err);
 		});
+
+		if (latitude !== null && longitude !== null) {
+			userDAO.updateUserLocation(senderId, latitude, longitude).then(res => {
+				console.log(res);
+			}).catch(err => {
+				console.log(err);
+			})
+		}
   	});
 
   	socket.on('post announcement', function(data) {
@@ -116,6 +130,14 @@ exports.onListening = function(socket) {
 	  		err.status = 400;
 	  		err.message = MESSAGE_ERROR.EMPTY_SENDER_OR_RECEIVER_MESSAGE;
 	  		return console.log(err);
+		}
+
+		if (latitude !== null && longitude !== null) {
+			userDAO.updateUserLocation(senderId, latitude, longitude).then(res => {
+				console.log(res);
+			}).catch(err => {
+				console.log(err);
+			})
 		}
 
 		if(conversationId === undefined) {
