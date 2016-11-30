@@ -4,7 +4,7 @@ var sinon = require('sinon');
 var NewsServiceImpl = require('../../services/newsServiceImpl');
 var NewsDAOImpl = require('../../services/newsDAOImpl');
 var CloudImageServiceImpl = require('../../services/cloudImageServiceImpl');
-
+var Location = require('../../models/location');
 
 var db = require('../../services/db');
 
@@ -108,6 +108,59 @@ suite('News Service Implementation Test', function() {
 		cloudImageServiceMock.restore();
 	})
 
+	test('Should return correct email string if it is one', function() {
+		var data = [{
+			latitude : 37.3789,
+			longitude : -121.866,
+			email : "binglei.du@sv.cmu.edu"
+		}, {
+			latitude : 37.4123,
+			longitude : -122.059,
+			email : "imre.nagi2812@gmail.com"
+		}]
 
+		var eventLocation = new Location(37.4105, -122.06);
+
+		expect(newsService.filteredEmails(eventLocation, data)).to.be.eql(["imre.nagi2812@gmail.com"]);
+	})
+
+	test('Should return empty email array', function() {
+		var data = [{
+			latitude : 37.3789,
+			longitude : -121.866,
+			email : "binglei.du@sv.cmu.edu"
+		}, {
+			latitude : 37.3789,
+			longitude : -121.866,
+			email : "imre.nagi2812@gmail.com"
+		}]
+
+		var eventLocation = new Location(37.4105, -122.06);
+
+		expect(newsService.filteredEmails(eventLocation, data)).to.be.eql([]);
+		expect(newsService.filteredEmails(eventLocation, data).length).to.be.eql(0);
+	})
+
+	test('Should return correct email arrays if there are some emails', function() {
+		var data = [{
+			latitude : 37.3789,
+			longitude : -121.866,
+			email : "binglei.du@sv.cmu.edu"
+		}, {
+			latitude : 37.4123,
+			longitude : -122.059,
+			email : "imre.nagi2812@gmail.com"
+		}, {
+			latitude : 37.4123,
+			longitude : -122.059,
+			email : "inagi@andrew.cmu.edu"
+		}]
+
+		var eventLocation = new Location(37.4105, -122.06);
+
+		expect(newsService.filteredEmails(eventLocation, data)).to.be.eql(["imre.nagi2812@gmail.com", "inagi@andrew.cmu.edu"]);
+	})
 
 })
+
+ 
