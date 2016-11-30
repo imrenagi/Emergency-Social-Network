@@ -12,6 +12,7 @@ var cloudImageService = new CloudImageServiceImpl();
 var newsDAO = new NewsDAOImpl(db);
 var newsService = new NewsServiceImpl(newsDAO, cloudImageService);
 var newsDAOMock = sinon.mock(newsDAO);
+var cloudImageServiceMock = sinon.mock(cloudImageService);
 
 suite('News Service Implementation Test', function() {
 
@@ -86,6 +87,27 @@ suite('News Service Implementation Test', function() {
 		newsDAOMock.verify();
 		newsDAOMock.restore();
 	})
+
+	test('Create news works correctly with image', function() {
+		var news = {
+    			"reporter_id" : 2,
+                "status" : 1,
+                "lat" : 100.0,
+                "long" : 100.0,
+                "title" : "this is a title",
+                "message" : "http://www.w3schools.com/css/img_fjords.jpg=",
+                "image_binary" : '12345'
+		}
+		var values = [2, "this is a title", "http://www.w3schools.com/css/img_fjords.jpg=", 100, 100, 1, null]
+		cloudImageServiceMock.expects('cloudinaryConfig').once();
+		cloudImageServiceMock.expects('uploadImage').once().withExactArgs(news.image_binary).returns(Promise.resolve('url'));
+		newsService.createNews(news);
+		newsDAOMock.verify();
+		cloudImageServiceMock.verify();
+		newsDAOMock.restore();
+		cloudImageServiceMock.restore();
+	})
+
 
 
 })
