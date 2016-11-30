@@ -12,6 +12,7 @@ const JOIN_ERROR = {
         USER_NAME_UNDER_QUALITY: 'JoinError.UserNameIsUnderMinimumQuality',
 		PASS_UNDER_QUALITY: 'JoinError.PasswordIsUnderMinimumQuality',
 		EMAIL_INVALID: 'JoinError.InvalidEmail',
+		USER_INACTIVE: 'JoinError.InactiveUser',
 		UNKNOWN_ERROR: 'JoinError.UnknownError'
     }
 
@@ -64,6 +65,12 @@ exports.joinCommunity = function(req, res, next) {
 		    		var err = new Error();
 	  				err.status = 400;
 	  				err.message = JOIN_ERROR.INCORRECT_PASSWORD;
+	  				next(err)
+		        	break;
+		        case 401:
+		        	var err = new Error();
+	  				err.status = 401;
+	  				err.message = JOIN_ERROR.USER_INACTIVE;
 	  				next(err)
 		        	break;
 		    	default:
