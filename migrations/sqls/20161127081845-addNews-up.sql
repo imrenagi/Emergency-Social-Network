@@ -14,3 +14,5 @@ CREATE TABLE IF NOT EXISTS news (
 	deleted_at TIMESTAMP NULL,
 	FOREIGN KEY fk_sender(sender_id) REFERENCES users(id)
 );
+
+ALTER TABLE news MODIFY picture TEXT DEFAULT NULL;
