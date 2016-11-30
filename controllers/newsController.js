@@ -11,7 +11,9 @@ var transporter = nodemailer.createTransport('smtps://sa2.esn@gmail.com:imrenagi
 var mailSender = new GmailSmtpSenderImpl(transporter);
 
 var userDAO = new userDAOImpl(db);
-var newService = new NewServiceImpl(newDAO, , cloudImageService, userDAO, mailSender);
+var newDAO = new NewsDAOImpl(db);
+
+var newService = new NewServiceImpl(newDAO, cloudImageService, userDAO, mailSender);
 
 
 var isValid = function(body) {

@@ -8,7 +8,7 @@ var CloudImageServiceImpl = require('./cloudImageServiceImpl');
 var distanceCalc = require('../helpers/distanceCalculator');
 
 class NewsServiceImpl extends NewsService {
-	constructor(newsDAO, cloudImageService) {
+	constructor(newsDAO, cloudImageService, userDAO, emailSender) {
 		super(newsDAO, cloudImageService, userDAO);
 		this.sender = emailSender;
 	}
@@ -100,7 +100,7 @@ class NewsServiceImpl extends NewsService {
 		var eventLocation = new Location(parseFloat(latitude), parseFloat(longitude));
 		var that = this;
 
-		let subject = "Someone posted an emergency news in Emergency Social Network!";
+		let subject = "Emergency News: "+ title;
 		let shortMessage = "A citizen has reported " + content;
 		let html = this.htmlText(content, image_url);
 
@@ -117,7 +117,7 @@ class NewsServiceImpl extends NewsService {
 	}
 
 	htmlText(content, imageUrl) {
-		if (imageUrl === undefined) {
+		if (imageUrl === null) {
 			return "Dear Citizen, <br> <br> A citizen has reported this information: <br> <br>" + content + 
 		" <br><br> <a href=\"http://localhost:3000\">Check the latest update in Emergency Social Network here!</a> ";
 		} else {
