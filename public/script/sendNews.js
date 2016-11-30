@@ -48,6 +48,7 @@ $('#dropdown-list a').click(function() {
 
 $('#cancelButton').on('click',function(){
 	reset_page();
+	location='news';
 });
 
 $('#submitNewsButton').on('click',function(){
@@ -58,10 +59,6 @@ $('#submitNewsButton').on('click',function(){
 	if(loc==undefined||((news_text=='')&&image_url==undefined))
 	{
 		alert("News report is incomplete!");
-		$('#news-textarea').val('');
-		$('#news-textarea').focus();
-		document.getElementById('imageForm').reset();
-		//deleteMarkers();
 		return;
 	}
 	var confirmation = confirm("Sending this news will send email notifications to everyone in the area. Please use this facility with consideration. Do you still want to continue?");
