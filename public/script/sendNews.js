@@ -48,6 +48,7 @@ $('#dropdown-list a').click(function() {
 
 $('#cancelButton').on('click',function(){
 	reset_page();
+	location='news';
 });
 
 $('#submitNewsButton').on('click',function(){
