@@ -66,26 +66,39 @@ class NewsServiceImpl extends NewsService {
 		var picture = news.image_binary || null;
 
 		var image_url = null;
+		
 		if (picture != null) {
 			console.log('hello');
 			console.log(picture);
+			cloudImageService.cloudinaryConfig();
 			cloudImageService.uploadImage(picture).then(function(result) {
 				image_url = result;
+
 				console.log('hello');
-				console.log(image_url);
+
+				console.log('url is' + image_url);
+				var values = [senderId, title, content, latitude, longitude, status, image_url]; 
+				return that.newsDAO.save(values).then(function(results) {
+					return results;
+				}).catch(function(err) {
+					console.log(err);
+					return err;
+				});
 			}).catch(function(err) {
 				console.log(err);
 			});
 		}
+		else {
+			var values = [senderId, title, content, latitude, longitude, status, image_url]; 
+			return this.newsDAO.save(values).then(function(results) {
+				return results;
+			}).catch(function(err) {
+				console.log(err);
+				return err;
+			});
+
+		}
 		//image_url = "test";
-		console.log('url is' + image_url);
-		var values = [senderId, title, content, latitude, longitude, status, image_url]; 
-		return this.newsDAO.save(values).then(function(results) {
-			return results;
-		}).catch(function(err) {
-			console.log(err);
-			return err;
-		});
 	}
 
 }
