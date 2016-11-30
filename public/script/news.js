@@ -28,9 +28,10 @@ function initMap() {
 function updateNews(data, map)
 {
   var senderName= data.reporter.user_name;
+  var title = data.title;
   var text = data.message;
   var date = new Date(moment(data.timestamp*1000).format('MM/DD/YYYY hh:mm:ss A') + ' UTC');
-  var time = reformatTime(date);
+  var time = reformatTime2(date);
   var newsStatus = data.status;
   var lat = data.location.lat;
   var long = data.location.long;
@@ -56,7 +57,9 @@ function updateNews(data, map)
     }
   var newsItem = '<div class="newsItems pin pin-' + color + '" id=' + newsId + '><div class="info pin-heading-' + color + '"> <span class="fa fa-clock-o"></span> '+ time + '  &nbsp &nbsp <span class="fa fa-map-marker"></span> ('+ lat + ', ' + long + ') &nbsp &nbsp <a href="/privateChat/' + data.reporter.id + '">' + (data.reporter.id == localStorage['ID'] ? '' : '<i class="fa fa-comment-o"></i>') + '</a> </div><div class="pin-heading pin-heading-' + color + '"> <i class="fa ' + icon + '"></i> ' + senderName + ' </div>' + (text==null?'':'<p>'+ text+ '</p>') +(img==null?'':'<p><a href='+img+'><img class="textImage" style= "max-height: 100px; max-width: 100px;" src='+img+'></a></p>')+'</div>';
   insertIntoMap(newsItem, lat, long, map);
-  var sentNewsItem = '<div class="newsItems btn pin-' + color + '" id='+newsId+' repid="'+data.reporter.id+'" reporter="'+senderName+'"lat = "'+lat+'" long="'+long+'" colour="'+color+'" status="'+status+'" icon="'+icon+'" time="'+time+'" onClick="createModal('+newsId+')"><div class="info pin-heading-' + color + '"> <span class="fa fa-clock-o"></span> '+ time + '  &nbsp &nbsp <span class="fa fa-map-marker"></span> ('+ lat + ', ' + long + ') &nbsp &nbsp <a href="/privateChat/' + data.reporter.id + '">' + (data.reporter.id == localStorage['ID'] ? '' : '<i class="fa fa-comment-o"></i>') + '</a> </div><div id ="newsHead" class="pin-heading pin-heading-' + color + '"> Report No:'+newsId+' &nbsp Status:<i class="fa ' + icon + '"></i> &nbspReporter:' + senderName + ' </div><div id="panelText" text="'+ text + '"></div> <div id="panelImg" imgURL="'+img+'"></div></div>';
+  lat = Number(lat).toPrecision(5);
+  long = Number(long).toPrecision(5);
+  var sentNewsItem = '<div class="newsItems pin pin-' + color + '" title="' + title + '" id='+newsId+' repid="'+data.reporter.id+'" reporter="'+senderName+'"lat = "'+lat+'" long="'+long+'" color="'+color+'" status="'+status+'" icon="'+icon+'" time="'+time+'" onClick="createModal('+newsId+')"><div class="info pin-heading-' + color + '"> <span class="fa fa-clock-o"></span> '+ time + '  &nbsp &nbsp <span class="fa fa-map-marker"></span> ('+ lat + ', ' + long + ') </div><div id ="newsHead" class="pin-heading pin-heading-' + color + '">' + title + '</div><div id="panelText" text="'+ text + '"></div> <div id="panelImg" imgURL="'+img+'"></div></div>';
   lastNewsId = newsId;
   return sentNewsItem;
 }
@@ -80,18 +83,20 @@ function insertIntoMap(newsItem, latitude, longitude, map)
 function createModal(newsId)
 {
   var sentNewsItem = document.getElementById(newsId);
+  var title = sentNewsItem.getAttribute('title');
   var reporterId= sentNewsItem.getAttribute('repid');
   var reporter = sentNewsItem.getAttribute('reporter');
   var lat = sentNewsItem.getAttribute('lat');
   var long = sentNewsItem.getAttribute('long');
+  lat = Number(lat).toPrecision(5);
+  long = Number(long).toPrecision(5);
   var color = sentNewsItem.getAttribute('color');
   var status = sentNewsItem.getAttribute('status');
   var icon = sentNewsItem.getAttribute('icon');
   var time = sentNewsItem.getAttribute('time');
   var text = document.getElementById(newsId).children[2].getAttribute('text');
   var imgUrl = document.getElementById(newsId).children[3].getAttribute('imgURL');
-  document.getElementById('newsModalTitle').innerHTML='<div class="info pin-heading-' + color + '"> <span class="fa fa-clock-o"></span> '+ time + '  &nbsp &nbsp <span class="fa fa-map-marker"></span> ('+ lat + ', ' + long + ') &nbsp &nbsp <a href="/privateChat/' + reporterId + '">' + (reporterId == localStorage['ID'] ? '' : '<i class="fa fa-comment-o"></i>') + '</a> </div><div class="pin-heading pin-heading-' + color + '"> <i class="fa ' + icon + '"></i> ' + reporter + ' </div>';
-  document.getElementById('newsModalBody').innerHTML=((text=='null'?'':('<p>'+text+'</p>'))+(imgUrl=='null'?'':('<span class="img-responsive center-block"><a href='+imgUrl+'><img style= "max-height: 400px; max-width: 400px;" src='+imgUrl+'></a></span>')));
+  document.getElementById('newsModalBody').innerHTML=('<div class="pin pin-' + color + '"><div style="font-size: 14px;" class="info pin-heading-' + color + '">' + reporter +' <br><span class="fa fa-clock-o"></span> '+ time + ' &nbsp <span class="fa fa-map-marker"></span> ('+ lat + ', ' + long + ') &nbsp &nbsp <a href="/privateChat/' + reporterId + '">' + (reporterId == localStorage['ID'] ? '' : '<i class="fa fa-comment-o"></i>') + '</a> </div><div style="font-size: 20px;" class="pin-heading pin-heading-' + color + '">' + title + ' </div>' + (text=='null'?'':('<p>'+text+'</p>'))+(imgUrl=='null'?'':('<span class="img-responsive center-block"><a href='+imgUrl+'><img style= "max-height: 75%; max-width: 75%;" src='+imgUrl+'></a></span>')) + '</div>');
   $('#newsModal').modal('show');
   console.log(text);
 }
