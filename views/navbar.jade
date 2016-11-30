@@ -52,6 +52,14 @@ nav.navbar.navbar-default.navbar-static-top
             a.dropdown-toggle(href='#', data-toggle='dropdown', role='button' aria-haspopup='true' aria-expanded='false')#user-setting
               span.glyphicon.glyphicon-user
             ul.dropdown-menu
+              li#admin
+              li#admin-separator
+              li
+                a(href='#')#update-email
+                  span.fa.fa-envelope-o
+                  | 
+                  | &nbsp Email
+              li.divider(role="separator")
               li
                 a(href='#', style='color: #9ccb19')#status-ok
                   i.fa.fa-check-circle
@@ -65,11 +73,6 @@ nav.navbar.navbar-default.navbar-static-top
                   i.fa.fa-plus-square
                   | &nbsp Emergency
               li.divider(role="separator")
-              li.dropdown-header
-                a(href='#')#edit-profile
-                  span.fa.fa-user
-                  | 
-                  | Profile
               li.dropdown-header
                 a(href='#')#logout
                   span.fa.fa-sign-out
