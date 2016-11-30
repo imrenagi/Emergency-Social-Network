@@ -44,7 +44,7 @@ $('#content').on('click', '#joinButton',function() {
                 $('#warningMessage').replaceWith('<p id="warningMessage" style="color: red"><span class="fa fa-exclamation-triangle"></span>' + errMessage + '</p>');
             },
             401: function(data) {
-                $('#warningMessage').replaceWith('<p id="warningMessage" style="color: red"><span class="fa fa-exclamation-triangle"></span> The user is inactive. Please contact the adminster.</p>');
+                $('#warningMessage').replaceWith('<p id="warningMessage" style="color: red"><span class="fa fa-exclamation-triangle"></span> The user is inactive. Please contact the admin.</p>');
             },
             500: function() {
                 $('#warningMessage').replaceWith('<p id="warningMessage" style="color: red"><span class="fa fa-exclamation-triangle"></span> Ops! Something wrong!</p>');  

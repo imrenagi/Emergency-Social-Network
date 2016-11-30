@@ -4,12 +4,12 @@
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="selenium.base" href="http://localhost:3000/" />
-<title>UserSubmitsImageOnly</title>
+<title>UserSubmitsCompleteNews</title>
 </head>
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
-<tr><td rowspan="1" colspan="3">UserSubmitsImageOnly</td></tr>
+<tr><td rowspan="1" colspan="3">UserSubmitsCompleteNews</td></tr>
 </thead><tbody>
 <tr>
 	<td>open</td>
@@ -43,7 +43,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>css=span.glyphicon.glyphicon-alert</td>
+	<td>id=sendNewsButton</td>
 	<td></td>
 </tr>
 <tr>
@@ -58,13 +58,28 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>//div[@id='sendMap']/div/div/div/div[3]</td>
+	<td>id=option-btn</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=3</td>
 	<td></td>
 </tr>
 <tr>
 	<td>type</td>
 	<td>id=news-title</td>
-	<td>Everything is Ok!!</td>
+	<td>Conflicting news!</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=news-textarea</td>
+	<td>This is just to confuse you.</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//div[@id='sendMap']/div/div/div/div[3]</td>
+	<td></td>
 </tr>
 <tr>
 	<td>click</td>
@@ -93,13 +108,18 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>id=newsHead</td>
+	<td>css=div.info.pin-heading-danger</td>
 	<td></td>
 </tr>
 <tr>
 	<td>assertText</td>
-	<td>css=div.pin-heading.pin-heading-ok</td>
-	<td>Everything is Ok!!</td>
+	<td>css=div.pin-heading.pin-heading-danger</td>
+	<td>Conflicting news!</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>css=p</td>
+	<td>This is just to confuse you.</td>
 </tr>
 <tr>
 	<td>assertElementPresent</td>
