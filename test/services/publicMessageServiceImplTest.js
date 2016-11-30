@@ -137,7 +137,6 @@ suite('Public Message Service Implementation Test', function(){
 			expect(res.sender.user_name).to.be.eql("imre");
 			expect(res.sender.online).to.be.eql(1);
 			expect(res.sender.status).to.be.eql(0);
-			expect(res.timestamp).to.be.eql(1480478157);
 			expect(res.text).to.be.eql('This is a message');
 			expect(res.status).to.be.eql(1);
 			dbMock.verify();
