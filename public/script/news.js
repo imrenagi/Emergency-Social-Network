@@ -1,54 +1,16 @@
 var limit = 30;
 var lastNewsId;
 function initMap() {
-  var data = 
-             [
-              {
-                  "id" : 1,
-                  "reporter" : {
-                      "id" : 2,
-                      "user_name" : "Shicheng"
-                  },
-                  "timestamp" : 1476871883,
-                  "status" : 3,
-                  "location" : {
-                      "lat" : 30.0,
-                      "long" : 20.0
-                  },
-                  "message" : "Something bad is happening!",
-                  "image_url" : "https://upload.wikimedia.org/wikipedia/commons/3/36/Large_bonfire.jpg"
-              },
-              {
-                  "id" : 2,
-                  "reporter" : {
-                      "id" : 2,
-                      "user_name" : "Shicheng"
-                  },
-                  "timestamp" : 1476871883,
-                  "status" : 1,
-                  "location" : {
-                      "lat" : 20.0,
-                      "long" : 30.0
-                  },
-                  "message" : "Yoga is happening!",
-                  "image_url" : "http://www.w3schools.com/css/img_fjords.jpg"
-              }
-
-            ];
         
-  var uluru = {lat: -25.363, lng: 131.044};
+  var cmu = {lat: -25.363, lng: 131.044};
   var map = new google.maps.Map(document.getElementById('displayMap'), {
           zoom: 4,
-          center: uluru
+          center: cmu
         });
-  var news =updateNews(data[0], map);
-  $('#newsItems').prepend(news);
-   var news =updateNews(data[1], map);
-  $('#newsItems').prepend(news);
- /* $.ajax({
+  $.ajax({
       type: "GET",
       data: {},
-      url: "/message/news",
+      url: "/emergencyNews",
       dataType: "json",
       statusCode: {
           200: function(data) {
@@ -59,7 +21,7 @@ function initMap() {
               $('#newsItems').prepend(news);
           }
       }
-  });  */
+  });  
   
 }
 
@@ -92,7 +54,7 @@ function updateNews(data, map)
             icon = 'fa-plus-square';
         }
     }
-  var newsItem = '<div class="newsItems pin pin-' + color + '" id=' + newsId + '><div class="info pin-heading-' + color + '"> <span class="fa fa-clock-o"></span> '+ time + '  &nbsp &nbsp <span class="fa fa-map-marker"></span> ('+ lat + ', ' + long + ') &nbsp &nbsp <a href="/privateChat/' + data.reporter.id + '">' + (data.reporter.id == localStorage['ID'] ? '' : '<i class="fa fa-comment-o"></i>') + '</a> </div><div class="pin-heading pin-heading-' + color + '"> <i class="fa ' + icon + '"></i> ' + senderName + ' </div><p>' + (text==''?'':text) + '</p>'+(img==''?'':'<p><a href='+img+'><img class="textImage" src='+img+'></a></p>')+'</div>';
+  var newsItem = '<div class="newsItems pin pin-' + color + '" id=' + newsId + '><div class="info pin-heading-' + color + '"> <span class="fa fa-clock-o"></span> '+ time + '  &nbsp &nbsp <span class="fa fa-map-marker"></span> ('+ lat + ', ' + long + ') &nbsp &nbsp <a href="/privateChat/' + data.reporter.id + '">' + (data.reporter.id == localStorage['ID'] ? '' : '<i class="fa fa-comment-o"></i>') + '</a> </div><div class="pin-heading pin-heading-' + color + '"> <i class="fa ' + icon + '"></i> ' + senderName + ' </div>' + (text==null?'':'<p>'+ text+ '</p>') +(img==null?'':'<p><a href='+img+'><img class="textImage" src='+img+'></a></p>')+'</div>';
   insertIntoMap(newsItem, lat, long, map);
   var sentNewsItem = '<div class="newsItems btn pin-' + color + '" id='+newsId+' repid="'+data.reporter.id+'" reporter="'+senderName+'"lat = "'+lat+'" long="'+long+'" colour="'+color+'" status="'+status+'" icon="'+icon+'" time="'+time+'" onClick="createModal('+newsId+')"><div class="info pin-heading-' + color + '"> <span class="fa fa-clock-o"></span> '+ time + '  &nbsp &nbsp <span class="fa fa-map-marker"></span> ('+ lat + ', ' + long + ') &nbsp &nbsp <a href="/privateChat/' + data.reporter.id + '">' + (data.reporter.id == localStorage['ID'] ? '' : '<i class="fa fa-comment-o"></i>') + '</a> </div><div id ="newsHead" class="pin-heading pin-heading-' + color + '"> Report No:'+newsId+' &nbsp Status:<i class="fa ' + icon + '"></i> &nbspReporter:' + senderName + ' </div><div id="panelText" text="'+ text + '"></div> <div id="panelImg" imgURL="'+img+'"></div></div>';
   lastNewsId = newsId;
@@ -101,9 +63,9 @@ function updateNews(data, map)
 
 function insertIntoMap(newsItem, latitude, longitude, map)
 {
-  var location = {lat: latitude, lng: longitude}
+  var loc = {lat: latitude, lng: longitude}
   var marker = new google.maps.Marker({
-    position: location,
+    position: loc,
     map: map
   });
   var infowindow = new google.maps.InfoWindow({
@@ -112,7 +74,7 @@ function insertIntoMap(newsItem, latitude, longitude, map)
   marker.addListener('click', function() {
     infowindow.open(map, marker);
   });
-  map.panTo(location);
+  map.panTo(loc);
 }
 
 function createModal(newsId)
@@ -129,7 +91,7 @@ function createModal(newsId)
   var text = document.getElementById(newsId).children[2].getAttribute('text');
   var imgUrl = document.getElementById(newsId).children[3].getAttribute('imgURL');
   document.getElementById('newsModalTitle').innerHTML='<div class="info pin-heading-' + color + '"> <span class="fa fa-clock-o"></span> '+ time + '  &nbsp &nbsp <span class="fa fa-map-marker"></span> ('+ lat + ', ' + long + ') &nbsp &nbsp <a href="/privateChat/' + reporterId + '">' + (reporterId == localStorage['ID'] ? '' : '<i class="fa fa-comment-o"></i>') + '</a> </div><div class="pin-heading pin-heading-' + color + '"> <i class="fa ' + icon + '"></i> ' + reporter + ' </div>';
-  document.getElementById('newsModalBody').innerHTML=((text==''?'':('<p>'+text+'</p>'))+(imgUrl==''?'':('<span class="img-responsive center-block"><a href='+imgUrl+'><img style= "max-height: 400px; max-width: 400px;" src='+imgUrl+'></a></span>')));
+  document.getElementById('newsModalBody').innerHTML=((text=='null'?'':('<p>'+text+'</p>'))+(imgUrl=='null'?'':('<span class="img-responsive center-block"><a href='+imgUrl+'><img style= "max-height: 400px; max-width: 400px;" src='+imgUrl+'></a></span>')));
   $('#newsModal').modal('show');
   console.log(text);
 }
