@@ -67,6 +67,8 @@ class NewsServiceImpl extends NewsService {
 
 		var image_url = null;
 		if (picture != null) {
+			console.log('hello');
+			console.log(picture);
 			cloudImageService.uploadImage(picture).then(function(result) {
 				image_url = result;
 				console.log('hello');
