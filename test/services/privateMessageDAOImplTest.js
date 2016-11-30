@@ -230,6 +230,220 @@ suite('Private Message DAO Impl Test', function() {
 		})
 	});
 
+	test('Should update the read flags by message id and return the results as it is', function(done) {
+		var queryCallBack = {
+		  query: function(q, cb) {
+		  	cb(null, "success");
+		  }
+		}
+		dbMock.expects('get').once().returns(queryCallBack);
+		privateMsgDAO.updateMessageReadFlagByIds("1,2,3,4").then(res => {
+			expect(res).to.be.eql("success");
+			dbMock.verify();
+			dbMock.restore();
+			done();
+		}).catch(err => {
+			dbMock.verify();
+			dbMock.restore();
+			done(err);
+		})
+	})
+
+	test('Should get the error if updating message flag is failed', function(done) {
+		var queryCallBack = {
+		  query: function(q, cb) {
+		  	cb({status: "failed"}, null);
+		  }
+		}
+		dbMock.expects('get').once().returns(queryCallBack);
+		privateMsgDAO.updateMessageReadFlagByIds("1,2,3,4").then(res => {
+			dbMock.verify();
+			dbMock.restore();
+			done();
+		}).catch(err => {
+			expect(err.status).to.be.eql("failed");
+			dbMock.verify();
+			dbMock.restore();
+			done();
+		})
+	})
+
+	test('Should be able to store message and get stored message', function(done) {
+		var queryCallBack = {
+		  query: function(q, v, cb) {
+		  	cb(null, [{
+		  		id : 1,
+		  		sender_id : 1,
+		  		sender_name : "imre",
+		  		receiver_id : 2,
+		  		receiver_name : "nagi"
+		  	}]);
+		  }
+		}
+		dbMock.expects('get').twice().returns(queryCallBack);
+
+		privateMsgDAO.storePrivateMessage([1,"imre", 2, "nagi", 1, "message", 0, 0.0, 0.0, 0]).then(res => {
+			expect(res.id).to.be.eql(1);
+			expect(res.sender_id).to.be.eql(1);
+			expect(res.sender_name).to.be.eql("imre");
+			dbMock.verify();
+			dbMock.restore();
+			done();
+		}).catch(err => {
+			dbMock.verify();
+			dbMock.restore();
+			done(err);
+		})
+	})
+
+	test('Should be to get the error message when storing the message is error', function(done) {
+		var queryCallBack = {
+		  query: function(q, v, cb) {
+		  	cb({status : "failed"}, null);
+		  }
+		}
+		dbMock.expects('get').once().returns(queryCallBack);
+
+		privateMsgDAO.storePrivateMessage([1,"imre", 2, "nagi", 1, "message", 0, 0.0, 0.0, 0]).then(res => {
+			dbMock.verify();
+			dbMock.restore();
+			done();
+		}).catch(err => {
+			expect(err.status).to.be.eql("failed");
+			dbMock.verify();
+			dbMock.restore();
+			done();
+		})
+	})
+
+	test('Should return correct json in searching by message', function(done) {
+		var queryCallBack = {
+		  query: function(q, cb) {		  	
+		  	cb(null, [{id:1, message:"imre message", total:3}, 
+		  		{id:2, message:"second message"}, 
+		  		{id:3, message:"third message"}]);
+		  }
+		}
+
+		dbMock.expects('get').twice().returns(queryCallBack);
+	
+		privateMsgDAO.searchByQuery(1, ["message"], 0, 10).then(res => {
+			expect(res.data.length).to.be.eql(3);
+			expect(res.data[0].id).to.be.eql(1);
+			expect(res.data[0].message).to.be.eql("imre message");
+			expect(res.data[1].id).to.be.eql(2);
+			expect(res.data[1].message).to.be.eql("second message");
+			expect(res.data[2].id).to.be.eql(3);
+			expect(res.data[2].message).to.be.eql("third message");
+			dbMock.verify();
+			dbMock.restore();
+			done();
+		}).catch(err => {
+			dbMock.verify();
+			dbMock.restore();
+			done(err);
+		});
+	});
+
+	test('Should return correct json in searching by message with multiple keywords', function(done) {
+		var queryCallBack = {
+		  query: function(q, cb) {		  	
+		  	cb(null, [{id:1, message:"imre message", total:3}, 
+		  		{id:2, message:"second message"}, 
+		  		{id:3, message:"third message"}]);
+		  }
+		}
+
+		dbMock.expects('get').twice().returns(queryCallBack);
+	
+		privateMsgDAO.searchByQuery(1, ["message", "bagus"], 0, 10).then(res => {
+			expect(res.data.length).to.be.eql(3);
+			expect(res.data[0].id).to.be.eql(1);
+			expect(res.data[0].message).to.be.eql("imre message");
+			expect(res.data[1].id).to.be.eql(2);
+			expect(res.data[1].message).to.be.eql("second message");
+			expect(res.data[2].id).to.be.eql(3);
+			expect(res.data[2].message).to.be.eql("third message");
+			dbMock.verify();
+			dbMock.restore();
+			done();
+		}).catch(err => {
+			dbMock.verify();
+			dbMock.restore();
+			done(err);
+		});
+	});
+
+	test('Should error in searching by message if the database is error', function(done) {
+		var queryCallBack = {
+		  query: function(q, cb) {		  	
+		  	cb({status : "failed"}, null);
+		  }
+		}
+
+		dbMock.expects('get').once().returns(queryCallBack);
+	
+		privateMsgDAO.searchByQuery(1, ["message", "bagus"], 0, 10).then(res => {
+			dbMock.verify();
+			dbMock.restore();
+			done();
+		}).catch(err => {
+			expect(err.status).to.be.eql("failed")
+			dbMock.verify();
+			dbMock.restore();
+			done();
+		});
+	});
+
+
 });
+
+// searchByQuery(userId, keywords, offset, limit) {
+// 		var that = this;
+// 		var paginationQuery = 'SELECT count(*) total from private_messages p WHERE ( p.message like ';
+// 		var query = 'SELECT p.*, p.sender_name as user_name from private_messages p WHERE ( p.message like '; 
+// 		var keyword;
+// 		for(var i = 0; i < keywords.length; i++) {
+// 			if(i === 0) {
+// 				keyword = '\'%' + keywords[i] + '%\' ';
+// 			}
+// 			else {
+// 				keyword = 'OR p.message like \'%' + keywords[i] + '%\' ';
+// 			}
+// 			paginationQuery = paginationQuery + keyword;
+// 			query = query + keyword;
+// 		}
+// 		paginationQuery = paginationQuery + ') AND (sender_id = ' + userId + ' OR  receiver_id = ' + userId + ' )';
+// 		query = query + ') AND (sender_id = ' + userId + ' OR  receiver_id = ' + userId + ' ) order by p.id desc limit ' + offset + ' , '+ limit;
+ 
+// 		return new Promise(function(resovle, reject) {
+// 			that.db.get().query(paginationQuery, function(err, result) {
+// 				if(err) {
+// 					reject(err);
+// 				}
+// 				else {
+// 					let total_count = JSON.parse(JSON.stringify(result[0])).total;
+// 					resovle(total_count);
+// 				}
+// 			});
+// 		}).then(function(total_count) {
+// 			return new Promise(function(resovle, reject) {
+// 				that.db.get().query(query, function(err, results) {
+// 					if(err) {
+// 						reject(err);
+// 					}
+// 					else {
+// 						var json = {
+// 							data: JSON.parse(JSON.stringify(results)),
+// 							total: total_count
+// 						};
+// 						resovle(json);
+// 					}
+// 				});
+// 			});
+// 		});
+// 	}
+
+
 
 
