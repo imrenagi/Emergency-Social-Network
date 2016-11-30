@@ -40,7 +40,18 @@ class NewsDAOImpl extends NewsDAO {
 	}
 
 	save(news) {
-
+		let query = 'INSERT INTO news (sender_id, title, content, latitude, longitude, status, picture) values (?, ?, ?, ?, ?, ?, ?)';
+		let that = this;
+		return new Promise(function(resolve, reject) {
+			that.db.get().query(query, news, function(err, results) {
+				if (err) {
+					reject(err);
+				}
+				else {
+					resolve({code: 200});
+				}
+			});
+		});
 	}
 
 }

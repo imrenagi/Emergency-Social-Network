@@ -3,6 +3,9 @@
 var R = require('ramda');
 var dateHelper = require('../helpers/date');
 var NewsService = require('./interfaces/newsService');
+var CloudImageServiceImpl = require('./cloudImageServiceImpl');
+
+var cloudImageService = new CloudImageServiceImpl();
 
 class NewsServiceImpl extends NewsService {
 	constructor(newsDAO) {
@@ -28,12 +31,12 @@ class NewsServiceImpl extends NewsService {
 		}
 		return news;
 	}
-	
+
 	getNewsById(id) {
 		var that = this;
 		return this.newsDAO.getById(id).then(function(results) {
 			var json = R.map(result => that.formatNews(result), results);
-			var output = { news: json };
+			var output = { json };
 			return output;
 		}).catch(function(err) {
 			return err;
@@ -45,15 +48,39 @@ class NewsServiceImpl extends NewsService {
 		var that = this;
 		return this.newsDAO.getAll().then(function(results) {
 			var json = R.map(result => that.formatNews(result), results);
-			var output = { news: json };
+			var output = { json };
 			return output;
 		}).catch(function(err) {
 			return err;
 		});
 	}
 
-	createNews() {
+	createNews(news) {
+		var that = this;
+		var senderId = news.reporter_id;
+		var title = news.title;
+		var content = news.message;
+		var latitude = news.lat || null;
+		var longitude = news.long || null;
+		var status = news.status || 0;
+		var picture = news.image_binary || null;
 
+		var image_url = null;
+		if (picture != null)
+			cloudImageService.uploadImage(picture).then(function(result) {
+				image_url = result;
+				console.log(image_url);
+			}).catch(function(err) {
+				console.log(err);
+			});
+		//image_url = "test";
+		var values = [senderId, title, content, latitude, longitude, status, image_url]; 
+		return this.newsDAO.save(values).then(function(results) {
+			return results;
+		}).catch(function(err) {
+			console.log(err);
+			return err;
+		});
 	}
 
 }
