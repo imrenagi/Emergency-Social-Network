@@ -6,16 +6,17 @@ block append content
   .container
     .wrapper.center
       .col-md-7
-        h3.text-center User Profile
+        h1.text-center
+          span.fa.fa-envelope-o
+        h3.text-center Update Email
         br
-        div(class="form-group row")
-          label(for="example-text-input", class="col-sm-2 col-form-label") E-mail
-          div.col-sm-10
-            input(class="form-control", type="text", id="email")   
+        .form-group.row
+          label(for="example-text-input", class="col-sm-2 col-form-label")
+          .col-md-12.col-sm-12.col-xs-12
+            input.text-center(class="form-control", type="text", id="email")   
 
-        div(class="form-group row")
-          div(class="col-sm-15")
-            button(type="submit", class="btn btn-primary center-block", id="submit") Update       
+        .form-group
+          button(type="submit", class="btn btn-primary center-block", id="submit") Update       
 
     .div(class="modal fade", id="successDialog", role="dialog")
       .div.modal-dialog

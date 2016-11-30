@@ -16,8 +16,12 @@ exports.requestAsCitizen = function(req, res, template, data) {
 }
 
 exports.requestAsAdmin = function(req, res, template, data) {
-    if (req.session.user)
-        res.render(template, data);
+    if (req.session.user) {
+        if (req.session.user.privilage == 2)
+            res.render(template, data);
+        else
+            res.render('directory', {title: 'Public Wall - Emergency Social Network'});
+    }
     else
         renderJoinPage(res, 'Please login first');
 }

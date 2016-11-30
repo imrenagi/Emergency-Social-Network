@@ -45,8 +45,8 @@ router.get('/userProfile', function(req, res) {
     render.requestAsAdmin(req, res, 'userProfile', { title: 'User Profile - Emergency Social Network'});
 });
 
-router.get('/editProfile', function(req, res) {
-  res.render('editProfile', { title: 'Search - Emergency Social Network'});
+router.get('/updateEmail', function(req, res) {
+  res.render('updateEmail', { title: 'Update Email - Emergency Social Network'});
 });
 
 
