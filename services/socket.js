@@ -2,8 +2,9 @@
 
 var express = require('express')
 var PublicMessageServiceImpl = require('./publicMessageServiceImpl');
-var publicMessageService = new PublicMessageServiceImpl();
 var db = require('./db');
+var publicMessageService = new PublicMessageServiceImpl(db);
+
 
 var AnnouncementDAOImpl = require('./announcementDAOImpl');
 var announcementDAO = new AnnouncementDAOImpl(db);

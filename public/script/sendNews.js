@@ -48,6 +48,7 @@ $('#dropdown-list a').click(function() {
 
 $('#cancelButton').on('click',function(){
 	reset_page();
+	location='news';
 });
 
 $('#submitNewsButton').on('click',function(){
@@ -58,10 +59,6 @@ $('#submitNewsButton').on('click',function(){
 	if(loc==undefined||((news_text=='')&&image_url==undefined))
 	{
 		alert("News report is incomplete!");
-		$('#news-textarea').val('');
-		$('#news-textarea').focus();
-		document.getElementById('imageForm').reset();
-		//deleteMarkers();
 		return;
 	}
 	var confirmation = confirm("Sending this news will send email notifications to everyone in the area. Please use this facility with consideration. Do you still want to continue?");
@@ -79,14 +76,13 @@ $('#submitNewsButton').on('click',function(){
 		}
 
 		var reader = new FileReader();
-		var imageFile;
 		alert('Your image is uploading. Upon upload, you will be redirected to the News page.')
 		reader.onload = function(){
 	        console.log('Image reading done');
 	        image = reader.result;
 	        send_news(news_text, image);         
         };
-		reader.readAsDataURL(imageFile)
+		reader.readAsDataURL(image_url);
 	}
 	else
 	{
@@ -111,16 +107,17 @@ function send_news(news_text, image)
 	var news={ 
         reporter_id: localStorage['ID'],
         status: stat, 
-        lat: location.lat,
-        long: location.lng, 
+        lat: loc.lat,
+        long: loc.lng, 
 	    message: news_text,
-        image_url: image
+        image_binary: image,
+        title:""
     };
 
-   /* $.ajax({
+    $.ajax({
             type: "POST",
             data: news,
-            url: "/news",
+            url: "/emergencyNews",
             dataType: "json",
             statusCode: {
                 200: function(data) {
@@ -128,7 +125,7 @@ function send_news(news_text, image)
                			location='news';
                 }
             }
-    });*/
+    });
 
 
 }

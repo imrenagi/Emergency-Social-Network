@@ -29,7 +29,9 @@ class JoinServiceImpl extends JoinService {
 		return new Promise(function(resolve, reject) {
 			var results = JSON.parse(JSON.stringify(result));
 			if (results.length > 0) {
-				if (encryptor.compare(password, results[0].password)) { //password valid
+				if (results[0].is_active === 0) {
+					resolve({code : 401, body: {}});
+				} else if (encryptor.compare(password, results[0].password)) { //password valid
 					var user = new User(results[0].id, results[0].user_name, 
 						results[0].online, results[0].status, results[0].privilage)
 					resolve({code : 200, body: user})

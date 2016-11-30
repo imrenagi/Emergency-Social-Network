@@ -28,22 +28,26 @@ $('#content').on('click', '#joinButton',function() {
                 let errMessage = 'Invalid username or password';
                 switch (message) {
                     case 'JoinError.IncorrectPassword':
-                        errMessage = 'Invalid password. Reenter username/password!'
+                        errMessage = ' Invalid password. Reenter username/password!'
                         break;
                     case 'JoinError.UserNameIsUnderMinimumQuality':
-                        errMessage = 'Username is under quality. Please provide another username!'
+                        errMessage = ' Username is under quality. Please provide another username!'
                         break;                    
                     case 'JoinError.PasswordIsUnderMinimumQuality':
-                        errMessage = 'Password is under quality. Please provide another password!'
+                        errMessage = ' Password is under quality. Please provide another password!'
                         break;
+
                     case 'JoinError.UnknownError':
-                        errMessage = 'Ups! Something wrong!'
+                        errMessage = ' Ops! Something wrong!'
                         break;
                 }
                 $('#warningMessage').replaceWith('<p id="warningMessage" style="color: red"><span class="fa fa-exclamation-triangle"></span>' + errMessage + '</p>');
             },
+            401: function(data) {
+                $('#warningMessage').replaceWith('<p id="warningMessage" style="color: red"><span class="fa fa-exclamation-triangle"></span> The user is inactive. Please contact the adminster.</p>');
+            },
             500: function() {
-                $('#warningMessage').replaceWith('<p id="warningMessage" style="color: red"><span class="fa fa-exclamation-triangle"></span> Ups! Something wrong!</p>');  
+                $('#warningMessage').replaceWith('<p id="warningMessage" style="color: red"><span class="fa fa-exclamation-triangle"></span> Ops! Something wrong!</p>');  
             }
         }
     });
