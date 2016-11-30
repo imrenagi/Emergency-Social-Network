@@ -3,11 +3,14 @@ var sinon = require('sinon');
 
 var NewsServiceImpl = require('../../services/newsServiceImpl');
 var NewsDAOImpl = require('../../services/newsDAOImpl');
+var CloudImageServiceImpl = require('../../services/cloudImageServiceImpl');
+
 
 var db = require('../../services/db');
 
+var cloudImageService = new CloudImageServiceImpl();
 var newsDAO = new NewsDAOImpl(db);
-var newsService = new NewsServiceImpl(newsDAO);
+var newsService = new NewsServiceImpl(newsDAO, cloudImageService);
 var newsDAOMock = sinon.mock(newsDAO);
 
 suite('News Service Implementation Test', function() {

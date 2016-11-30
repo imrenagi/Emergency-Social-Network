@@ -3,13 +3,13 @@
 var R = require('ramda');
 var dateHelper = require('../helpers/date');
 var NewsService = require('./interfaces/newsService');
-var CloudImageServiceImpl = require('./cloudImageServiceImpl');
+// var CloudImageServiceImpl = require('./cloudImageServiceImpl');
 
-var cloudImageService = new CloudImageServiceImpl();
+// var cloudImageService = new CloudImageServiceImpl();
 
 class NewsServiceImpl extends NewsService {
-	constructor(newsDAO) {
-		super(newsDAO);
+	constructor(newsDAO, cloudImageService) {
+		super(newsDAO, cloudImageService);
 	}
 
 	formatNews(data) {
@@ -68,8 +68,8 @@ class NewsServiceImpl extends NewsService {
 		var image_url = null;
 
 		if (picture != null) {
-			cloudImageService.cloudinaryConfig();
-			return cloudImageService.uploadImage(picture).then(function(result) {
+			this.cloudImageService.cloudinaryConfig();
+			return this.cloudImageService.uploadImage(picture).then(function(result) {
 				image_url = result;
 				var values = [senderId, title, content, latitude, longitude, status, image_url]; 
 				return that.newsDAO.save(values).then(function(results) {

@@ -1,8 +1,9 @@
 "use strict";
 
 class NewsService {
-	constructor(newsDAO) {
+	constructor(newsDAO, cloudImageService) {
 		this.newsDAO = newsDAO;
+		this.cloudImageService = cloudImageService;
 	}
 	getAllNew() {}
 	createNews() {}
