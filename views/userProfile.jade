@@ -5,20 +5,18 @@ block append content
   include navbar.jade
   .container
     .wrapper
-      .col-md-7
-        .panel.panel-default#panel
-          .panel-heading.text-center User Profile
-          table.table.directorytable
-            thead
-              tr
-                th ID
-                th.text-center Username
-                th.text-center Account
-                th.text-center Privilage
-                th.text-center Password
-                th.text-center Edit
-            tbody#userProfile
-        span.loadMoreSpan
+      .panel.panel-default#panel
+        .panel-heading.text-center User Profile
+        table.table.directorytable
+          thead(style='font-size: 12px;')
+            tr
+              th.text-center Username
+              th.text-center Status
+              th.text-center Privilege
+              th.text-center Password
+              th.text-center Edit
+          tbody(style='font-size: 12px;')#userProfile
+      span.loadMoreSpan
 
 block append script
   script(src='https://code.jquery.com/jquery-1.10.2.min.js')
