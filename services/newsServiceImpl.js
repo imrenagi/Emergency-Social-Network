@@ -66,12 +66,12 @@ class NewsServiceImpl extends NewsService {
 		var picture = news.image_binary || null;
 
 		var image_url = null;
-		
+
 		if (picture != null) {
 			console.log('hello');
 			console.log(picture);
 			cloudImageService.cloudinaryConfig();
-			cloudImageService.uploadImage(picture).then(function(result) {
+			return cloudImageService.uploadImage(picture).then(function(result) {
 				image_url = result;
 
 				console.log('hello');
