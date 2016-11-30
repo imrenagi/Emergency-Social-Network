@@ -2,133 +2,170 @@ var expect = require('expect.js');
 var sinon = require('sinon');
 
 var PublicMessageServiceImpl = require('../../services/publicMessageServiceImpl');
-var PublicMessageDAOImpl = require('../../services/publicMessageDAOImpl');
 var db = require('../../services/db');
 
-var publicMessageDAO = new PublicMessageDAOImpl();
-var publicMessageService = new PublicMessageServiceImpl();
-//var publicMessageDAOMock = sinon.mock(publicMessageDAO);
-//var dbMock = sinon.mock(db);
+var publicMessageService;
+var dbMock;
 
 suite('Public Message Service Implementation Test', function(){
 
-	test('First Get all Messages with invalid last id should return all messages till limit', function(done){
-		var getMock = sinon.mock(db.get());
-		var limit = 10;
+	setup(function(done) {
+		dbMock = sinon.mock(db);
+		publicMessageService = new PublicMessageServiceImpl(db);
+		done();
+	});
 
-
-
-		var response = {"messages": [
-	    		{
-	      		"id": 1,
-	      		"sender": {
-        			"id": "123",
-        			"user_name": "xabi"
-      			},
-	      		"text": "this is the message",
-	      		"timestamp": 1474613458,
-	      		"status": 1,
-	      		"location": {
-	        		"lat": 37.3992766,
-	        		"long": -122.0894144
-	      			}
-	    		},
-	    		{
-	      		"id": 2,
-	      		"sender": {
-       		 		"id": "123",
-	    			"user_name": "xabi"
-	      		},
-		      	"text": "this is the message",
-		      	"timestamp": 1474613458,
-			    "status": 2,
-	      			"location": {
-	        		"lat": 37.3992766,
-	        		"long": -122.0894144
-	    			}
-    			}
-  			]
+	test('Should be able to get all messages started with page 1', function(done) {
+		var queryCallBack = {
+		  query: function(q, cb) {	
+		  	cb(null, [{
+		  		id : 1,
+		  		created_at : "2016-11-29 19:55:57",
+		  		message : "This is a message",
+		  		message_status : "1",
+		  		latitude : 100.0,
+		  		longitude : 120.0,
+		  		sender_id : 20,
+		  		user_name : "imre",
+		  		online: 1,
+		  		status: 0
+		  	}]);
+		  }
 		}
-		var query1 = 'SELECT pm.*, u.user_name FROM public_messages pm LEFT JOIN users u ON pm.sender_id = u.id order by pm.id desc limit ' + limit;
-		getMock.expects('query').once().withArgs(query1).returns(
-			Promise.resolve(response)
-		);
-		publicMessageService.getAllMessages(-1,10).then(function(result){
-				expect(result).to.be.eql(response);
-			}).catch(function(err){
+
+		dbMock.expects('get').once().returns(queryCallBack);
+	
+		publicMessageService.getAllMessages(-1,10).then(res => {
+			expect(res.length).to.be.eql(1);
+			expect(res[0].id).to.be.eql(1);
+			expect(res[0].sender.id).to.be.eql(20);
+			expect(res[0].sender.user_name).to.be.eql("imre");
+			expect(res[0].sender.online).to.be.eql(1);
+			expect(res[0].sender.status).to.be.eql(0);
+			expect(res[0].text).to.be.eql('This is a message');
+			expect(res[0].status).to.be.eql(1);
+			dbMock.verify();
+			dbMock.restore();
+			done();
+		}).catch(err => {			
+			dbMock.restore();
 			done(err);
 		});
-		getMock.verify()
-		getMock.restore()
-		done();
-	})
+	});
 
-
-
-		test('Get all Messages with valid last id should return next messages till limit', function(done){
-		var getMock = sinon.mock(db.get());
-		var limit = 10;
-		var lastId = 1;
-		var query1 = 'SELECT pm.*, u.user_name FROM public_messages pm LEFT JOIN users u ON pm.sender_id = u.id where pm.id >='+ (lastId-limit) + ' and pm.id < ' + lastId + ' order by pm.id desc';
-		var response = {"messages": [
-	    		{
-	      		"id": 2,
-	      		"sender": {
-       		 		"id": "123",
-	    			"user_name": "xabi"
-	      		},
-		      	"text": "this is the message",
-		      	"timestamp": 1474613458,
-			    "status": 2,
-	      			"location": {
-	        		"lat": 37.3992766,
-	        		"long": -122.0894144
-	    			}
-    			}
-  			]
+	test('Should be able to get all messages using offset and limit', function(done) {
+		var queryCallBack = {
+		  query: function(q, cb) {	
+		  	cb(null, [{
+		  		id : 1,
+		  		created_at : "2016-11-29 19:55:57",
+		  		message : "This is a message",
+		  		message_status : "1",
+		  		latitude : 100.0,
+		  		longitude : 120.0,
+		  		sender_id : 20,
+		  		user_name : "imre",
+		  		online: 1,
+		  		status: 0
+		  	}]);
+		  }
 		}
-		getMock.expects('query').once().withArgs(query1).returns(
-			Promise.resolve(response)
-		);
-		publicMessageService.getAllMessages(1,10).then(function(result){
-				expect(result).to.be.eql(response);
-				expect(2).to.be.eql(result.messages[0].id)
-			}).catch(function(err){
+
+		dbMock.expects('get').once().returns(queryCallBack);
+	
+		publicMessageService.getAllMessages(10,5).then(res => {
+			expect(res.length).to.be.eql(1);
+			expect(res[0].id).to.be.eql(1);
+			expect(res[0].sender.id).to.be.eql(20);
+			expect(res[0].sender.user_name).to.be.eql("imre");
+			expect(res[0].sender.online).to.be.eql(1);
+			expect(res[0].sender.status).to.be.eql(0);
+			expect(res[0].text).to.be.eql('This is a message');
+			expect(res[0].status).to.be.eql(1);
+			dbMock.verify();
+			dbMock.restore();
+			done();
+		}).catch(err => {			
+			dbMock.restore();
 			done(err);
-		});;
-		getMock.verify()
-		getMock.restore()
-		done();
+		});
+	});
+
+	test('Should be able to get the error message when getting all messages', function(done) {
+		var queryCallBack = {
+		  query: function(q, cb) {	
+		  	cb({status : "failed"}, null);
+		  }
+		}
+
+		dbMock.expects('get').once().returns(queryCallBack);
+	
+		publicMessageService.getAllMessages(10,5).then(res => {
+			dbMock.verify();
+			dbMock.restore();
+			done();
+		}).catch(err => {		
+			expect(err.status).to.be.eql("failed");
+			dbMock.restore();
+			done();
+		});
+	});
+
+	test('Should be able to store message to database', function(done) {
+		var queryCallBack = {
+		  query: function(q, v, cb) {	
+		  	cb(null, [{
+		  		id : 1,
+		  		created_at : "2016-11-29 19:55:57",
+		  		message : "This is a message",
+		  		message_status : "1",
+		  		latitude : 100.0,
+		  		longitude : 120.0,
+		  		sender_id : 20,
+		  		user_name : "imre",
+		  		online: 1,
+		  		status: 0
+		  	}] );
+		  }
+		}
+
+		dbMock.expects('get').twice().returns(queryCallBack);
+	
+		publicMessageService.storeMessage(20, "This is a message", 1, 100.0, 120.0).then(res => {
+			expect(res.id).to.be.eql(1);
+			expect(res.sender.id).to.be.eql(20);
+			expect(res.sender.user_name).to.be.eql("imre");
+			expect(res.sender.online).to.be.eql(1);
+			expect(res.sender.status).to.be.eql(0);
+			expect(res.text).to.be.eql('This is a message');
+			expect(res.status).to.be.eql(1);
+			dbMock.verify();
+			dbMock.restore();
+			done();
+		}).catch(err => {		
+			dbMock.restore();
+			done(err);
+		});
 	})
 
+	test('Should be able to get error message when storing message is failed', function(done) {
+		var queryCallBack = {
+		  query: function(q, v, cb) {	
+		  	cb({status : "failed"},  null);
+		  }
+		}
 
-	test('Store public message should trigger correct db query', function(done) {
-		var getMock = sinon.mock(db.get());
-		var senderId = 1
-		var message = "Hi"
-		var message_status = 1
-		var lat = 192
-		var long = 168
-		var values = [senderId, message, message_status, lat, long];
-    	var query = 'INSERT INTO public_messages (sender_id, message, message_status, latitude, longitude) VALUES (?,?,?,?,?)';
-		var query2 = 'SELECT pm.*, u.user_name FROM public_messages pm LEFT JOIN users u ON pm.sender_id = u.id where pm.id = ?'
-		var result = 1
-		getMock.expects('query').once().withArgs(query, values).returns(
-			Promise.resolve(1)
-			);;
-		publicMessageService.storeMessage(senderId, message, message_status, lat, long).then(function(result){
-				expect(result).to.be(1);
-			}).catch(function(err){
-			done(err);
-		})
-		getMock.verify()
-		getMock.restore()
-		done();
-
+		dbMock.expects('get').twice().returns(queryCallBack);
+	
+		publicMessageService.storeMessage(20, "This is a message", 1, 100.0, 120.0).then(res => {
+			dbMock.verify();
+			dbMock.restore();
+			done();
+		}).catch(err => {	
+			expect(err.status).to.be.eql("failed");
+			dbMock.restore();
+			done();
+		});
 	})
-
-
-
-
 
 })

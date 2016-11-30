@@ -2,16 +2,24 @@
 
 var express = require('express')
 var PublicMessageServiceImpl = require('./publicMessageServiceImpl');
-var publicMessageService = new PublicMessageServiceImpl();
+var db = require('./db');
+var publicMessageService = new PublicMessageServiceImpl(db);
+
 
 var AnnouncementDAOImpl = require('./announcementDAOImpl');
-var announcementDAO = new AnnouncementDAOImpl();
+var announcementDAO = new AnnouncementDAOImpl(db);
 var AnnouncementServiceImpl = require('./announcementServiceImpl');
 var announcementService = new AnnouncementServiceImpl(announcementDAO);
 var PrivateMessageDAOImpl = require('./privateMessageDAOImpl');
-var privateMessageDAO = new PrivateMessageDAOImpl();
+var privateMessageDAO = new PrivateMessageDAOImpl(db);
 var PrivateMessageServiceImpl = require('./privateMessageServiceImpl');
 var privteMessageService = new PrivateMessageServiceImpl(privateMessageDAO);
+
+var userDAOImpl = require('./userDAOImpl');
+var userDAO = new userDAOImpl(db);
+
+var UserDataObject = require('./userDataObjectImpl');
+var userDataObject = new UserDataObject(db);
 
 var io = require('../bin/www').io;
 
@@ -46,6 +54,13 @@ exports.onListening = function(socket) {
   		socket.username = username;
   	});
 
+  	socket.on('profile update', function(data) {
+  		var userId = data.user_id || '';
+  		if(users.has(userId)) {
+			users.get(userId).emit('force logout');
+		}
+  	})
+
   	socket.on('send message', function(data) {
   		var senderId = data.sender_id;
 		var message = data.message;
@@ -65,6 +80,14 @@ exports.onListening = function(socket) {
 		}).catch(function(err) {
 			return console.log(err);
 		});
+
+		if (latitude !== null && longitude !== null) {
+			userDAO.updateUserLocation(senderId, latitude, longitude).then(res => {
+				console.log(res);
+			}).catch(err => {
+				console.log(err);
+			})
+		}
   	});
 
   	socket.on('post announcement', function(data) {
@@ -107,6 +130,14 @@ exports.onListening = function(socket) {
 	  		err.status = 400;
 	  		err.message = MESSAGE_ERROR.EMPTY_SENDER_OR_RECEIVER_MESSAGE;
 	  		return console.log(err);
+		}
+
+		if (latitude !== null && longitude !== null) {
+			userDAO.updateUserLocation(senderId, latitude, longitude).then(res => {
+				console.log(res);
+			}).catch(err => {
+				console.log(err);
+			})
 		}
 
 		if(conversationId === undefined) {

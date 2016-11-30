@@ -12,13 +12,14 @@ block append content
       div
         p.label Join us
       br
-      p#warningMessage
+      p#warningMessage #{message}
       form
         .form-group
           input.form-control(name='username', type='text', placeholder='username')#username
         .form-group
           input.form-control(name='password', type='password', placeholder='password')#password
         input.btn.btn-primary.btn-block(type='button', value='Submit')#joinButton
+      br
       p If you're a new user, enter your desired username and password.
 block append script
   script(src='https://code.jquery.com/jquery-1.10.2.min.js')

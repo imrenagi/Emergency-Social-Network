@@ -1,10 +1,18 @@
 var JoinServiceImpl = require('../services/joinServiceImpl');
-var joinService = new JoinServiceImpl();
+var emailValidator = new require('../utils/emailValidator');
+var userValidator = new require('../utils/userValidator');
+var userDAOImpl = require('../services/userDAOImpl');
+var db = require('../services/db');
+
+var userDAO = new userDAOImpl(db);
+var joinService = new JoinServiceImpl(userDAO, db);
 
 const JOIN_ERROR = {
         INCORRECT_PASSWORD: 'JoinError.IncorrectPassword',
         USER_NAME_UNDER_QUALITY: 'JoinError.UserNameIsUnderMinimumQuality',
 		PASS_UNDER_QUALITY: 'JoinError.PasswordIsUnderMinimumQuality',
+		EMAIL_INVALID: 'JoinError.InvalidEmail',
+		USER_INACTIVE: 'JoinError.InactiveUser',
 		UNKNOWN_ERROR: 'JoinError.UnknownError'
     }
 
@@ -16,25 +24,37 @@ exports.joinPage = function(req, res, next) {
 exports.joinCommunity = function(req, res, next) {
 	var userName = req.body.user_name;
 	var password = req.body.password;
-	if(!joinService.isUserNameValid(userName)) {
+	if(!userValidator.isUserNameValid(userName)) {
 		var err = new Error();
 	  	err.status = 400;
 	  	err.message = JOIN_ERROR.USER_NAME_UNDER_QUALITY;
 	  	next(err);
 	}
-	else if(!joinService.isPasswordValid(password)) {
+	else if(!userValidator.isPasswordValid(password)) {
 		var err = new Error();
 	  	err.status = 400;
 	  	err.message = JOIN_ERROR.PASS_UNDER_QUALITY;
 	  	next(err);
 	}
 	else {
-		joinService.join(userName, password).then(function(result){
+		joinService.join(userName, password)
+		.then(res => {
+			return joinService.validateUser(res, password);	
+		})
+		.then(res => {
+			if (res.code == 200) {
+				return joinService.updateUserOnlineStatus(res.body);
+			} else {
+				return res;
+			}
+		})
+		.then(function(result){
 			switch(result.code) {
 		    	case 200:
 		    		req.session.user = {
 		    			id: result.body.id,
-		    			user_name: result.body.user_name
+		    			user_name: result.body.user_name,
+		    			privilage: result.body.privilage
 		    		}
 		        	res.status(200).send(JSON.stringify(result.body));
 		        	break;
@@ -45,6 +65,12 @@ exports.joinCommunity = function(req, res, next) {
 		    		var err = new Error();
 	  				err.status = 400;
 	  				err.message = JOIN_ERROR.INCORRECT_PASSWORD;
+	  				next(err)
+		        	break;
+		        case 401:
+		        	var err = new Error();
+	  				err.status = 401;
+	  				err.message = JOIN_ERROR.USER_INACTIVE;
 	  				next(err)
 		        	break;
 		    	default:
@@ -63,14 +89,25 @@ exports.joinCommunity = function(req, res, next) {
 exports.confirm = function(req, res, next) {
 	var userName = req.body.user_name;
 	var password = req.body.password;
-	joinService.confirm(userName, password)
+	var email = req.body.email || '';
+	
+	if(email.length > 0 && !emailValidator.isValid(email)) {
+		var err = new Error();
+	  	err.status = 400;
+	  	err.message = JOIN_ERROR.EMAIL_INVALID;
+	  	next(err);
+	} else if (email.length == 0 || emailValidator.isValid(email)) {
+		joinService.confirm(userName, password, email)
 		.then(function(result) {
 			req.session.user = {
 		    	id: result.id,
-		    	user_name: result.user_name
+		    	user_name: result.user_name,
+		    	privilage: result.privilage
 			}
 			res.send(JSON.stringify(result));
 		}).catch(function(err) {
 			res.send(err);
 		})
+	}
+
 }

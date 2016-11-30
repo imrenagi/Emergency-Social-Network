@@ -20,6 +20,11 @@ nav.navbar.navbar-default.navbar-static-top
               | 
               | Help
           li
+            a(href='/news')#help
+              span.fa.fa-newspaper-o
+              | 
+              | News
+          li
             a(href='/searchInfo')#search-link
               span.fa.fa-search(style='font-size: 16px')#search-icon
               | 
@@ -46,7 +51,13 @@ nav.navbar.navbar-default.navbar-static-top
           li.dropdown
             a.dropdown-toggle(href='#', data-toggle='dropdown', role='button' aria-haspopup='true' aria-expanded='false')#user-setting
               span.glyphicon.glyphicon-user
-            ul.dropdown-menu
+            ul.dropdown-menu#nav-dropdown-list
+              li
+                a(href='#')#update-email
+                  span.fa.fa-envelope-o
+                  | 
+                  | &nbsp Email
+              li.divider(role="separator")
               li
                 a(href='#', style='color: #9ccb19')#status-ok
                   i.fa.fa-check-circle

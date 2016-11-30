@@ -3,12 +3,12 @@ var AnnouncementDAOImpl = require('../services/announcementDAOImpl');
 var PublicMessageDAOImpl = require('../services/publicMessageDAOImpl');
 var PrivateMessageDAOImpl = require('../services/privateMessageDAOImpl');
 var SearchServiceImpl = require('../services/searchServiceImpl');
+var db = require('../services/db');
 
-
-var announcementDAO = new AnnouncementDAOImpl();
-var userDAO = new userDAOImpl();
+var announcementDAO = new AnnouncementDAOImpl(db);
+var userDAO = new userDAOImpl(db);
 var publicMessageDAO = new PublicMessageDAOImpl();
-var privateMessageDAO = new PrivateMessageDAOImpl();
+var privateMessageDAO = new PrivateMessageDAOImpl(db);
 var searchService = new SearchServiceImpl(userDAO, announcementDAO, publicMessageDAO, privateMessageDAO);
 
 

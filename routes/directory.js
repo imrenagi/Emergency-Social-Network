@@ -14,5 +14,7 @@ router.use(function(req, res, next){
 router.get('/', directoryController.displayDirectory);
 router.get('/user/:id', directoryController.getUser);
 router.put('/user/:id/status', directoryController.updateStatus);
+router.get('/user_email', directoryController.getUserEmail);
+router.put('/user/email', directoryController.updateEmail);
 
 module.exports = router;

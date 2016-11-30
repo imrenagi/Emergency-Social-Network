@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="http://localhost:3000/" />
+<title>UserSubmitsImageOnly</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">UserSubmitsImageOnly</td></tr>
+</thead><tbody>
+<tr>
+	<td>open</td>
+	<td>/</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=username</td>
+	<td>reporter</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=password</td>
+	<td>reporter</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=joinButton</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>css=button.navbar-toggle</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=News</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>css=span.glyphicon.glyphicon-alert</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=uploadImageButton</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=sendImageButton</td>
+	<td>/home/atadkase/private/fse/ESN-F16-SA2/ui_tests/1475457519_tick_16.png</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//div[@id='sendMap']/div/div/div/div[3]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=news-title</td>
+	<td>Everything is Ok!!</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=submitNewsButton</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertConfirmation</td>
+	<td>Sending this news will send email notifications to everyone in the area. Please use this facility with consideration. Do you still want to continue?</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertAlert</td>
+	<td>Your image is uploading. Upon upload, you will be redirected to the News page.</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertAlert</td>
+	<td>News sent. Redirecting to News page.</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>css=#newsli &gt; a</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=newsHead</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>css=div.pin-heading.pin-heading-ok</td>
+	<td>Everything is Ok!!</td>
+</tr>
+<tr>
+	<td>assertElementPresent</td>
+	<td>css=img</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>css=button.close</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>css=button.navbar-toggle</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=user-setting</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>id=logout</td>
+	<td></td>
+</tr>
+
+</tbody></table>
+</body>
+</html>

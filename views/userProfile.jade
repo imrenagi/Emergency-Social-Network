@@ -1,0 +1,26 @@
+extends base
+block append stylesheet
+  link(rel='stylesheet', href='/css/main.css')
+block append content
+  include navbar.jade
+  .container
+    .wrapper
+      .panel.panel-default#panel
+        .panel-heading.text-center User Profile
+        table.table.directorytable
+          thead
+            tr
+              th.text-center Username
+              th.text-center Status
+              th.text-center Privilege
+              th.text-center Password
+              th.text-center Edit
+          tbody#userProfile
+      span.loadMoreSpan
+
+block append script
+  script(src='https://code.jquery.com/jquery-1.10.2.min.js')
+  script(src='http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js')
+  script(src='/socket.io/socket.io.js')
+  script(src='/script/navigationBar.js')
+  script(src='/script/userProfile.js')

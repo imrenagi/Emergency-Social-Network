@@ -38,13 +38,45 @@ exports.updateStatus = function(req, res, next) {
 	  	err.message = "Invalid request!";
 	  	next(err);
 	} else {
-		// var user = directoryService.updateUserStatus(userId);
-		// res.send(user);
-
 		directoryService.updateUserStatus(userId, status, lat, long).then(function(result) {
 				res.send(result);
 			}).catch(function(err) {
-				console.log(err)
+				next(err);
 			})
 	}
+}
+
+var emailValidator = new require('../utils/emailValidator');
+
+const ERROR = {
+		EMAIL_INVALID: 'JoinError.InvalidEmail'
+    }
+
+exports.updateEmail = function(req, res, next) {
+	var email = req.body.email;
+	if (!emailValidator.isValid(email) || email === undefined) {
+		var err = new Error();
+	  	err.status = 400;
+	  	err.message = ERROR.EMAIL_INVALID;
+	  	next(err);
+	} else {
+		var userId = req.session.user.id;
+		directoryService.updateEmail(userId, email).then(result => {
+			res.send({});
+		}).catch(err => {
+			var err = new Error();
+		  	err.status = 500;
+		  	err.message = "Oops! Something wrong!";
+		  	next(err);
+		});	
+	}
+}
+
+exports.getUserEmail = function(req, res, next) {
+	var userId = req.session.user.id;
+	directoryService.getEmail(userId).then(result => {
+		res.send(result);
+	}).catch(err => {
+		next(err);
+	});
 }

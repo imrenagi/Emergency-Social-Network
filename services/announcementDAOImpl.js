@@ -1,11 +1,13 @@
 "use strict";
 
 var AnnouncementDAO = require('./interfaces/announcementDAO');
-var db = require('./db');
+// var db = require('./db');
 
 class AnnouncementDAOImpl extends AnnouncementDAO {
-	constructor() {
+	
+	constructor(db) {
 		super();
+		this.db = db;
 	}
 
 	save(announcement) {
@@ -23,8 +25,10 @@ class AnnouncementDAOImpl extends AnnouncementDAO {
 			values = [senderId, message, lat, long];
 			query = 'INSERT INTO announcements (sender_id, message, latitude, longitude) values (?,?,?,?)';
 		}
+		
+		var that = this;
 		return new Promise(function(resolve, reject) {
-			db.get().query(query, values, function(err, result) {
+			that.db.get().query(query, values, function(err, result) {
 				if(err) {
 					reject(err);
 				}
@@ -38,8 +42,9 @@ class AnnouncementDAOImpl extends AnnouncementDAO {
 
 	getByAnnouncementId(id) {
 		let query = 'SELECT a.*, u.user_name from announcements a left join users u on u.id = a.sender_id where a.id = ?';
+		var that = this;
 		return new Promise(function(resolve, reject) {
-			db.get().query(query, id, function(err, results) {
+			that.db.get().query(query, id, function(err, results) {
 				if(err) reject(err);
 				else resolve(results[0]);
 			});
@@ -53,8 +58,9 @@ class AnnouncementDAOImpl extends AnnouncementDAO {
 		} else {
 			query = 'SELECT a.*, u.user_name from announcements a left join users u on u.id = a.sender_id where a.id >='+ (lastId-limit) + ' and a.id < ' + lastId + ' order by a.id desc';
 		}
+		var that = this;
 		return new Promise(function(resolve, reject) {
-			db.get().query(query, function(err, results) {
+			that.db.get().query(query, function(err, results) {
 				if (err) reject(err);
 				else resolve(results);
 			})
@@ -65,6 +71,7 @@ class AnnouncementDAOImpl extends AnnouncementDAO {
 		var paginationQuery = 'SELECT count(*) total from announcements a WHERE a.message like '; 
 		var query = 'SELECT a.*, u.user_name from announcements a left join users u on u.id = a.sender_id WHERE a.message like '; 
 		var keyword;
+		var that = this;
 		for(var i = 0; i < keywords.length; i++) {
 			if(i === 0) {
 				keyword = '\'%' + keywords[i] + '%\' ';
@@ -78,7 +85,7 @@ class AnnouncementDAOImpl extends AnnouncementDAO {
 		query = query + 'order by a.id desc limit ' + offset + ' , '+ limit;
 
 		return new Promise(function(resolve, reject) {
-			db.get().query(paginationQuery, function(err, result) {
+			that.db.get().query(paginationQuery, function(err, result) {
 				if(err) {
 					reject(err);
 				}
@@ -89,7 +96,7 @@ class AnnouncementDAOImpl extends AnnouncementDAO {
 			});
 		}).then(function(total_count) {
 			return new Promise(function(resolve, reject) {
-				db.get().query(query, function(err, results) {
+				that.db.get().query(query, function(err, results) {
 					if(err) {
 						reject(err);
 					}
